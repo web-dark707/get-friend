@@ -1,8 +1,43 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import './styles.scss';
+import Overlay from '../../components/vip-ui/Overlay';
+
 const Home: FC = () => {
+    const [visible, setVisible] = useState(true);
     return (
         <div className="my">
+            <Overlay
+                visible={visible}
+                onCancel={() => {
+                    setVisible(false);
+                }}
+            >
+                <div className="modal-wrap">
+                    <header>優惠券</header>
+                    <div className="content">
+                        <div className="order">
+                            <div className="top">
+                                <span className="money">1,000P</span>
+                                <p className="remark">
+                                    <span className="r-1">系統福利</span>
+                                    <span className="r-2">無門檻</span>
+                                </p>
+                            </div>
+                            <p className="bottom">有效期限: 2024-09-09</p>
+                        </div>
+                        <div className="order">
+                            <div className="top">
+                                <span className="money">1,000P</span>
+                                <p className="remark">
+                                    <span className="r-1">系統福利</span>
+                                    <span className="r-2">無門檻</span>
+                                </p>
+                            </div>
+                            <p className="bottom">有效期限: 2024-09-09</p>
+                        </div>
+                    </div>
+                </div>
+            </Overlay>
             <header className="header">
                 <span>我的</span>
                 <img src={require('@/assets/images/home/my-logo.jpg')} />
@@ -17,7 +52,9 @@ const Home: FC = () => {
             </div>
             <div className="boon">
                 <span>會員福利</span>
-                <span className="show-more">查看優惠券</span>
+                <span className="show-more" onClick={() => setVisible(true)}>
+                    查看優惠券
+                </span>
             </div>
             <div className="content">
                 <div className="line-1">推廣福利</div>
