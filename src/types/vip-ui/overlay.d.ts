@@ -2,11 +2,11 @@ export interface OverlayProps {
     /**
      * 控制显示隐藏
      */
-    visible: boolean;
+    visible?: boolean;
     /**
      * 取消回调
      */
-    onCancel: () => void;
+    onCancel?: () => void;
     /**
      * 点击内容区外部关闭弹窗
      */
@@ -19,6 +19,10 @@ export interface OverlayProps {
      * 关闭按钮
      */
     closeIcon?: React.ReactNode;
+    /**
+     * 用于触发弹框打开的
+     */
+    trigger?: JSX.Element;
 }
 
 export interface OverlayRef {

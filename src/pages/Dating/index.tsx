@@ -6,6 +6,9 @@ import { Button } from '@/components/vip-ui';
 import { handleClipboard } from '@/utils/clipboard';
 import 'swiper/css/effect-cards';
 import 'swiper/css/pagination';
+import MedicalReportModal from './components/MedicalReportModal';
+import CouponModal from './components/CouponModal';
+import ContactDetailsModal from './components/ContactDetailsModal';
 
 const Dating: FC = () => {
     const imageList = [
@@ -79,7 +82,7 @@ const Dating: FC = () => {
             </div>
             <div className="flex justify-between items-center px-[12px] py-[8px]">
                 <div>體檢時間: 2024-09-09</div>
-                <Button width="w-[80px]">查看报告</Button>
+                <MedicalReportModal />
             </div>
             {/* --------------- */}
 
@@ -110,12 +113,7 @@ const Dating: FC = () => {
             <div className="px-[12px] py-[8px] relative">
                 <div>基本服務：按摩三小時兩次 8,000P</div>
                 <div>日期：9月11日</div>
-                <Button
-                    className=" absolute right-[12px] bottom-[12px]"
-                    width="w-[80px]"
-                >
-                    使用優惠券
-                </Button>
+                <CouponModal />
             </div>
             {/* --------------- */}
             <div className="bg-[#FD6298] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
@@ -123,6 +121,7 @@ const Dating: FC = () => {
             </div>
             <div className="px-[12px] py-[8px]">
                 <div>手機：09987633253</div>
+                <ContactDetailsModal />
             </div>
             {/* --------------- */}
             <div className="bg-[#521933] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">

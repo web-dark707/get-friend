@@ -1,62 +1,44 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import UserToken from '@/common/token';
-import { Input, Form, Button, Toast } from '@/components/vip-ui';
+import { Input, Form, Button } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
-import { getUserInfo, userLogin } from '@/api/user';
-import { useSetIsChangePwdState, useSetUserInfo } from '@/store/user/hooks';
-import { cryptoEncrypt } from '@/utils/tools';
+import { cryptoEncrypt, getQueryString } from '@/utils/tools';
 import { ACCOUNT_AES_KEY } from '@/common/constants';
-import { UserLoginParams } from '@/types/api/user';
-import { setStorage } from '@/utils/storage';
+import { register } from '@/api/login';
+import { RegisterParams } from '@/types/api/login';
 
 type RegisterPageProps = {};
 
 const RegisterPage: FC<RegisterPageProps> = () => {
     const navigate = useNavigate();
+    const code = getQueryString('code'); // 邀请码
     const [loginDisabled, setLoginDisabled] = useState(true);
     const [form] = useForm();
-    const location = useLocation();
-    const { t } = useTranslation();
-    const setIsChangePwdState = useSetIsChangePwdState();
-    const setUserInfo = useSetUserInfo();
-
-    const { mutateAsync: mutateUserLogin, isLoading } = useMutation(userLogin);
-    const { mutateAsync: mutateGetUserInfo } = useMutation(getUserInfo);
+    const { mutateAsync: mutateRegister, isLoading } = useMutation(register);
 
     const fetchUserLogin = async (values) => {
-        const params: UserLoginParams = {
-            account: values.account,
-            password: undefined,
+        const params: RegisterParams = {
+            username: values.username,
+            pwd: undefined,
+            activationCode: values.activationCode,
         };
-        params.password = cryptoEncrypt(values.password, ACCOUNT_AES_KEY);
-        const res = await mutateUserLogin(params);
+        params.pwd = cryptoEncrypt(values.password, ACCOUNT_AES_KEY);
+        const res = await mutateRegister(params);
 
         if (res.code === 10000) {
-            Toast.success(t('app.message.success.login'));
-
-            UserToken.setToken(res.data.token);
-
-            await fetchGetUserInfo();
-            if (location.state?.pathname) {
-                navigate(location.state?.pathname + location.state?.search);
-            } else {
-                navigate('/', { replace: true });
-            }
-            window.location.reload();
+            // Toast.success(t('app.message.success.login'));
+            // UserToken.setToken(res.data.token);
+            // await fetchGetUserInfo();
+            // if (location.state?.pathname) {
+            //     navigate(location.state?.pathname + location.state?.search);
+            // } else {
+            //     navigate('/', { replace: true });
+            // }
+            // window.location.reload();
         } else {
-            return t('message.content.codeError');
-        }
-    };
-
-    // 获取用户信息
-    const fetchGetUserInfo = async () => {
-        const res = await mutateGetUserInfo();
-        if (res.code === 10000) {
-            setUserInfo(res.data);
-            setIsChangePwdState(!!res.data.r);
+            return;
         }
     };
 
@@ -85,7 +67,7 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                     {/* -------------------------------------------户口号--------------------------------------------- */}
                     <Form.Item
                         label="帳號"
-                        field="account"
+                        field="username"
                         className="mb-16px"
                         labelClassName="w-50px mr-16px text-right flex-shrink-0 leading-[30px]"
                         rules={[
@@ -105,9 +87,6 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                                     className="w-22px h-22px"
                                 />
                             }
-                            onClear={() => {
-                                setStorage('account', '');
-                            }}
                         />
                     </Form.Item>
                     <Form.Item
@@ -118,8 +97,16 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                                 required: true,
                                 message: '請輸入密碼',
                             },
+                            {
+                                validator: (value, callback) => {
+                                    if (form.getFieldValue('repeat-pwd')) {
+                                        form.validateField('repeat-pwd');
+                                    }
+                                    return Promise.resolve(true);
+                                },
+                            },
                         ]}
-                        field="password"
+                        field="pwd"
                         className="mb-16px"
                     >
                         {/* -------------------------------------------密码--------------------------------------------- */}
@@ -144,8 +131,18 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                                 required: true,
                                 message: '請輸入重複密碼',
                             },
+                            {
+                                validator: (value, callback) => {
+                                    if (value !== form.getFieldValue('pwd')) {
+                                        callback(
+                                            '两次输入密码不一致,请重新输入',
+                                        );
+                                    }
+                                    return Promise.resolve(true);
+                                },
+                            },
                         ]}
-                        field="repeat-password"
+                        field="repeat-pwd"
                         className="mb-16px"
                     >
                         {/* -------------------------------------------密码--------------------------------------------- */}
@@ -164,7 +161,7 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                     </Form.Item>
                     <Form.Item
                         label="啟用設定"
-                        field="enabling-settings"
+                        field="activationCode"
                         className="mb-16px"
                         labelClassName="w-50px mr-16px text-right flex-shrink-0 leading-[30px]"
                         rules={[
@@ -173,6 +170,7 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                                 message: '請輸入啟用設定',
                             },
                         ]}
+                        initialValue={code}
                     >
                         <Input
                             inputClass="placeholder-primaryColor"
@@ -184,12 +182,8 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                                     className="w-22px h-22px"
                                 />
                             }
-                            onClear={() => {
-                                setStorage('account', '');
-                            }}
                         />
                     </Form.Item>
-
                     <Button
                         onClick={() => form.submit()}
                         disabled={loginDisabled}

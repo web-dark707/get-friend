@@ -23,7 +23,7 @@ export enum RequestEnum {
  */
 export enum ContentTypeEnum {
     // json
-    JSON = 'application/json;charset=UTF-8',
+    JSON = 'application/json; charset=utf-8',
     // form-data qs
     FORM_URLENCODED = 'application/x-www-form-urlencoded;charset=UTF-8',
     // form-data  upload
