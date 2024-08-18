@@ -181,26 +181,7 @@ module.exports = {
                     Cookie: '',
                 },
                 pathRewrite: {
-                    '^': '',
-                },
-            },
-            '/h5': {
-                target: REACT_APP_OFFICIAL_API_URL,
-                changeOrigin: true,
-                logLevel: 'debug',
-                headers: {
-                    Cookie: '',
-                },
-                pathRewrite: {
-                    '^': '',
-                },
-            },
-            '/nats': {
-                target: REACT_APP_WS_URL,
-                ws: true,
-                changeOrigin: true,
-                pathRewrite: {
-                    '^': '',
+                    '^/api': '',
                 },
             },
         },

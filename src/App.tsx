@@ -9,7 +9,6 @@ import {
 } from '@/components/HOC';
 import WarpCommon from '@/components/WrapCommon';
 import RenderRouter from './router';
-import { NatsProvider } from './components/Context/NatsContext';
 
 function App() {
     const RouteComponent = () => {
@@ -31,11 +30,7 @@ function App() {
 
     const Main = renderer(RouteComponent);
 
-    return (
-        <NatsProvider>
-            <Main></Main>
-        </NatsProvider>
-    );
+    return <Main></Main>;
 }
 
 export default App;
