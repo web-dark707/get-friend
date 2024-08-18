@@ -14,3 +14,4 @@ export { default as Dialog } from './Dialog';
 export { default as CodeInput } from './CodeInput';
 export { default as UploadFile } from './UploadFile';
 export { default as ImageViewer } from './ImageViewer';
+export { default as Overlay } from './Overlay';
