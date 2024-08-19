@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import UserToken from '@/common/token';
-import { Input, Form, Button } from '@/components/vip-ui';
+import { Input, Form, Button, Toast } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
 import { cryptoEncrypt, getQueryString } from '@/utils/tools';
 import { ACCOUNT_AES_KEY } from '@/common/constants';
@@ -16,6 +16,7 @@ const RegisterPage: FC<RegisterPageProps> = () => {
     const code = getQueryString('code'); // 邀请码
     const [loginDisabled, setLoginDisabled] = useState(true);
     const [form] = useForm();
+    const location = useLocation();
     const { mutateAsync: mutateRegister, isLoading } = useMutation(register);
 
     const fetchUserLogin = async (values) => {
@@ -24,21 +25,20 @@ const RegisterPage: FC<RegisterPageProps> = () => {
             pwd: undefined,
             activationCode: values.activationCode,
         };
-        params.pwd = cryptoEncrypt(values.password, ACCOUNT_AES_KEY);
+        params.pwd = cryptoEncrypt(values.pwd, ACCOUNT_AES_KEY);
         const res = await mutateRegister(params);
+        console.log(res);
 
-        if (res.code === 10000) {
-            // Toast.success(t('app.message.success.login'));
-            // UserToken.setToken(res.data.token);
-            // await fetchGetUserInfo();
-            // if (location.state?.pathname) {
-            //     navigate(location.state?.pathname + location.state?.search);
-            // } else {
-            //     navigate('/', { replace: true });
-            // }
-            // window.location.reload();
+        if (res.code) {
+            Toast.error(res.message);
         } else {
-            return;
+            Toast.success('注册成功');
+            UserToken.setToken(res.data);
+            if (location.state?.pathname) {
+                navigate(location.state?.pathname + location.state?.search);
+            } else {
+                navigate('/', { replace: true });
+            }
         }
     };
 

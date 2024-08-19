@@ -1,58 +1,42 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import UserToken from '@/common/token';
-import { Input, Form, Button } from '@/components/vip-ui';
+import { Input, Form, Button, Toast } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
-import { getUserInfo, userLogin } from '@/api/user';
-import { useSetIsChangePwdState, useSetUserInfo } from '@/store/user/hooks';
 import { cryptoEncrypt } from '@/utils/tools';
 import { ACCOUNT_AES_KEY } from '@/common/constants';
-import { UserLoginParams } from '@/types/api/user';
-import { setStorage } from '@/utils/storage';
+import { getStorage, setStorage } from '@/utils/storage';
+import { login } from '@/api/login';
+import { LoginParams } from '@/types/api/login';
 
 type LoginPageProps = {};
 
 const LoginPage: FC<LoginPageProps> = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [loginDisabled, setLoginDisabled] = useState(true);
     const [form] = useForm();
     const location = useLocation();
-    const setIsChangePwdState = useSetIsChangePwdState();
-    const setUserInfo = useSetUserInfo();
 
-    const { mutateAsync: mutateUserLogin, isLoading } = useMutation(userLogin);
-    const { mutateAsync: mutateGetUserInfo } = useMutation(getUserInfo);
+    const { mutateAsync: mutateUserLogin, isLoading } = useMutation(login);
 
     const fetchUserLogin = async (values) => {
-        const params: UserLoginParams = {
-            account: values.account,
-            password: undefined,
+        const params: LoginParams = {
+            username: values.username,
+            pwd: undefined,
         };
-        params.password = cryptoEncrypt(values.password, ACCOUNT_AES_KEY);
-        // const res = await mutateUserLogin(params);
-        UserToken.setToken('----');
-        if (location.state?.pathname) {
-            navigate(location.state?.pathname + location.state?.search);
+        params.pwd = cryptoEncrypt(values.pwd, ACCOUNT_AES_KEY);
+        const res = await mutateUserLogin(params);
+        console.log(res);
+
+        if (res.code) {
+            Toast.error(res.message);
         } else {
+            Toast.success(t('app.message.success.login'));
+            UserToken.setToken(res.data);
             navigate('/', { replace: true });
-        }
-
-        // if (res.code === 10000) {
-        //     Toast.success(t('app.message.success.login'));
-
-        //     window.location.reload();
-        // } else {
-        //     return t('message.content.codeError');
-        // }
-    };
-
-    // 获取用户信息
-    const fetchGetUserInfo = async () => {
-        const res = await mutateGetUserInfo();
-        if (res.code === 10000) {
-            setUserInfo(res.data);
-            setIsChangePwdState(!!res.data.r);
         }
     };
 
@@ -81,8 +65,9 @@ const LoginPage: FC<LoginPageProps> = () => {
                     {/* -------------------------------------------户口号--------------------------------------------- */}
                     <Form.Item
                         label="帳號"
-                        field="account"
+                        field="username"
                         className="mb-16px"
+                        initialValue={getStorage('username')}
                         labelClassName="w-50px mr-16px text-right flex-shrink-0 leading-[30px]"
                         rules={[
                             {
@@ -102,7 +87,7 @@ const LoginPage: FC<LoginPageProps> = () => {
                                 />
                             }
                             onClear={() => {
-                                setStorage('account', '');
+                                setStorage('username', '');
                             }}
                         />
                     </Form.Item>
@@ -115,7 +100,7 @@ const LoginPage: FC<LoginPageProps> = () => {
                                 message: '請輸入密碼',
                             },
                         ]}
-                        field="password"
+                        field="pwd"
                         className="mb-35px"
                     >
                         {/* -------------------------------------------密码--------------------------------------------- */}
@@ -141,6 +126,12 @@ const LoginPage: FC<LoginPageProps> = () => {
                         登入
                     </Button>
                 </Form>
+                <div
+                    className="text-center"
+                    onClick={() => navigate('/register')}
+                >
+                    去注册
+                </div>
             </div>
         </div>
     );

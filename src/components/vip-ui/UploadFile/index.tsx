@@ -91,7 +91,7 @@ const UploadFile = forwardRef(
                                 imageItem.tempUrl,
                                 ImageStatus.ERROR,
                             );
-                            reject(res.msg);
+                            reject(res.message);
                         }
                     })
                     .catch(async (err: any) => {
