@@ -1,14 +1,18 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useNavigate } from 'react-router-dom';
 import { Pagination, EffectCards } from 'swiper';
+import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/vip-ui';
+import { getDatingGirls, getDict } from '@/api/home';
 import Search from './components/Search';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-cards';
 const Home: FC = () => {
     const navigate = useNavigate();
-
+    const { mutateAsync: mutateDatingGirls } = useMutation(getDatingGirls);
+    const { mutateAsync: mutateDict, data: dictData } = useMutation(getDict);
+    const swiperRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const imageList = [
         [
@@ -36,14 +40,36 @@ const Home: FC = () => {
 
     const handleClick = () => {
         // 点击时切换到下一个图片集
-        // setActiveIndex((prevIndex) => (prevIndex + 1) % imageList.length);
+        if (swiperRef.current && swiperRef.current.swiper) {
+            const swiper = swiperRef.current.swiper;
+            if (swiper.activeIndex === swiper.slides.length - 1) {
+                swiper.slideTo(0); // Go to the first slide
+            } else {
+                swiper.slideNext(); // Go to the next slide
+            }
+        }
     };
+    // 搜索
+    const handleSearch = (filters) => {
+        console.log(filters);
+        mutateDatingGirls({
+            filters,
+        });
+    };
+
+    useEffect(() => {
+        mutateDict();
+    }, [mutateDatingGirls, mutateDict]);
 
     return (
         <div className="w-full h-full overflow-hidden">
-            <Search />
+            <Search
+                onSelected={handleSearch}
+                filtersData={dictData?.data?.filterCondition.conditionItems}
+            />
             <div className="relative w-full h-full overflow-hidden">
                 <Swiper
+                    ref={swiperRef}
                     effect={'cards'}
                     grabCursor={true}
                     pagination={{ clickable: true }} // 启用分页器
