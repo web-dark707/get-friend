@@ -1,5 +1,4 @@
 import { isString } from 'lodash';
-import { t } from 'i18next';
 import { ContentTypeEnum } from '@/enums/httpEnum';
 import log from '@/utils/log';
 import { Toast } from '@/components/vip-ui';
@@ -7,7 +6,6 @@ import UserToken from '@/common/token';
 import { Recordable } from '@/types/common/global';
 import type { AxiosInterceptor, CreateAxiosOptions } from './axiosConfig';
 import { iAxios } from './iAxios';
-import { checkStatus } from './axiosStatus';
 import { errorData } from './errorConfig';
 
 /**
@@ -21,24 +19,18 @@ const interceptor: AxiosInterceptor = {
         /**
          *对请求回来的数据进行处理
          */
-        const { data } = res;
-        if (data) {
-            if (data.code !== 10000) {
-                Toast.error({
-                    content: data.msg || options.errorMessage,
-                });
-                return Promise.resolve(errorData(res));
-            } else {
-                const { code, data: dataInfo, msg } = data;
-                const toData = {
-                    code,
-                    data: dataInfo,
-                    msg,
-                };
-                return Promise.resolve(toData);
-            }
+        if (res.status === 200) {
+            return Promise.resolve({
+                data: res.data,
+                code: undefined,
+                message: undefined,
+            });
+        } else {
+            Toast.error({
+                content: res.data.message || options.errorMessage,
+            });
+            return Promise.resolve(errorData(res));
         }
-        return data;
     },
 
     /**
@@ -94,9 +86,9 @@ const interceptor: AxiosInterceptor = {
     responseInterceptorsCatch: (error: any) => {
         // log.error('响应拦截错误', error);
         const { response } = error || {};
-        checkStatus(response ? response?.status : 500);
-        if (error.code === 'ECONNABORTED') {
-            Toast.error(t('app.message.error.http408'));
+
+        if (response?.data?.message) {
+            Toast.error(response?.data?.message);
         }
         if (response?.status === 401) {
             UserToken.clearToken();

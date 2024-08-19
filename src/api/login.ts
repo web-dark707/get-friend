@@ -2,7 +2,7 @@ import { deffHttp } from '@/utils/axios';
 import { LoginParams, RegisterParams } from '@/types/api/login';
 
 enum Api {
-    LOGIN_LOGIN = '/login/login',
+    LOGIN_LOGIN = '/api/login/login',
     LOGIN_REGISTER = '/api/login/register',
 }
 

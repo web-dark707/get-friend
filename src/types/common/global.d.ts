@@ -16,7 +16,7 @@ export interface ResponseData<T = any> {
     /**
      * 消息
      */
-    msg: string;
+    message: string;
 }
 
 //分页类型
