@@ -1,22 +1,21 @@
+import {
+    DatingGirlsParams,
+    DatingGirlsResult,
+    DictResult,
+} from '@/types/api/home';
 import { deffHttp } from '@/utils/axios';
-import { HomeMenuResult, HomeSetMenuParams } from '@/types/api/home';
 
 enum Api {
-    CMS_HALL_CACHE = '/api/cms/hall/cache',
-    APP_GET_HOME_MENU = '/api/pwa/member/center',
-    APP_SET_HOME_MENU = '/api/pwa/member/center/update',
+    DATING_GIRLS = '/api/dating/girls',
+    DICT_DICTS = '/api/dict/dicts',
 }
 
-// 获取首页菜单
-export const getHomeMenu = () =>
-    deffHttp.post<HomeMenuResult>(
-        { url: Api.APP_GET_HOME_MENU },
+//  查找女生信息列表
+export const getDatingGirls = (params: DatingGirlsParams) =>
+    deffHttp.post<DatingGirlsResult[]>(
+        { url: Api.DATING_GIRLS, data: params },
         { withToken: true },
     );
-
-// 修改首页菜单
-export const setHomeMenu = (params: HomeSetMenuParams) =>
-    deffHttp.post<null>(
-        { url: Api.APP_SET_HOME_MENU, data: params },
-        { withToken: true },
-    );
+// 获取字典配置
+export const getDict = () =>
+    deffHttp.get<DictResult>({ url: Api.DICT_DICTS }, { withToken: true });

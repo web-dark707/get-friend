@@ -56,9 +56,10 @@ const interceptor: AxiosInterceptor = {
     requestInterceptors: (config) => {
         const { requestOptions } = config;
         if (requestOptions?.withToken) {
-            (config as Recordable).headers['t'] = UserToken.getToken();
+            (config as Recordable).headers['Authorization'] =
+                UserToken.getToken();
             if (requestOptions?.specialToken)
-                (config as Recordable).headers['t'] =
+                (config as Recordable).headers['Authorization'] =
                     requestOptions?.specialToken;
         }
         config.headers['L'] = localStorage.getItem('i18nextLng');
