@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { isEqual, sortBy, uniq } from 'lodash';
 import Checkbox from '@/components/Checkbox';
 import { CheckboxValue } from '@/types/vip-ui/check';
@@ -7,47 +7,42 @@ interface Option {
     label: string;
     value: CheckboxValue;
 }
-const FilterBox = () => {
-    const [checkedMap, setCheckedMap] = useState({});
+interface Props {
+    filtersData: {
+        checkboxItems: {
+            canSelect: boolean;
+            checked: boolean;
+            text: string;
+            value: string;
+        }[];
+        text: string;
+        value: string;
+    }[];
+    onChange: (obj: { [key: string]: string[] }) => void;
+    checkedMap: { [key: string]: string[] };
+}
+const FilterBox = (props: Props) => {
+    const { filtersData, onChange, checkedMap } = props;
     const handleChange = (key, values) => {
         const temp = {
             ...checkedMap,
             [key]: values,
         };
-        setCheckedMap(temp);
+        onChange(temp);
     };
 
-    const filter = [
-        {
-            value: 'job',
-            label: '职业',
-            options: [
-                { value: 1, label: '学生' },
-                { value: 2, label: '老师' },
-            ],
-        },
-        {
-            value: 'age',
-            label: '年龄',
-            options: [
-                { value: 1, label: '12' },
-                { value: 2, label: '10' },
-            ],
-        },
-    ];
-
-    // 初始化选中
-    useEffect(() => {
-        console.log(checkedMap);
-    }, [checkedMap]);
     return (
         <div className="">
-            {filter.map((item) => (
+            {filtersData.map((item) => (
                 <FilterItem
-                    {...item}
                     key={item.value}
                     checkedList={checkedMap?.[item.value]}
                     onChange={handleChange}
+                    label={item.text}
+                    value={item.value}
+                    options={item.checkboxItems
+                        .filter((it) => it.canSelect)
+                        .map((it) => ({ value: it.value, label: it.text }))}
                 />
             ))}
         </div>
@@ -90,6 +85,7 @@ const FilterItem = (props: {
                     {label}
                 </span>
                 <Checkbox
+                    key={key}
                     value={key}
                     label={'全选'}
                     checked={isEqual(
@@ -99,10 +95,10 @@ const FilterItem = (props: {
                     onChange={handleAllChange}
                 />
             </div>
-            <div className="flex  px-[14px] py-[8px]">
+            <div className="flex justify-between flex-wrap px-[14px] py-[8px]">
                 {options.map((it) => (
                     <Checkbox
-                        className="mr-[8px]"
+                        className="mr-[8px] flex-1"
                         value={it.value}
                         label={it.label}
                         key={it.value}
@@ -110,6 +106,11 @@ const FilterItem = (props: {
                         onChange={handleItemChange}
                     />
                 ))}
+                {Array(options.length % 4)
+                    .fill('')
+                    .map((_, i) => (
+                        <i className="w-1/4" key={i} />
+                    ))}
             </div>
         </div>
     );

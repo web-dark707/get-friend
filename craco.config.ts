@@ -169,9 +169,9 @@ module.exports = {
         port: 3000,
         hot: true,
         // https: true,
-        // client: {
-        //     overlay: false, // 关闭错误弹窗
-        // },
+        client: {
+            overlay: false, // 关闭错误弹窗
+        },
         proxy: {
             '/api': {
                 target: REACT_APP_API_URL,

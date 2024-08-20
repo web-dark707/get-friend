@@ -12,13 +12,16 @@ const Checkbox = (props: CheckboxProps) => {
         <div className={classNames('flex-row-center', className)}>
             <input
                 type="checkbox"
-                id={label}
+                id={String(value)}
                 name={label}
                 checked={checked}
                 onChange={handleChange}
                 className="mr-2 h-4 w-4 text-primaryColor border-gray-300 rounded"
             />
-            <label htmlFor={label} className="text-baseColor">
+            <label
+                htmlFor={String(value)}
+                className="text-baseColor whitespace-nowrap"
+            >
                 {label}
             </label>
         </div>
