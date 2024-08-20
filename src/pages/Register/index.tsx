@@ -52,7 +52,15 @@ const RegisterPage: FC<RegisterPageProps> = () => {
     }, []);
 
     return (
-        <div className="w-full flex-col-center-start">
+        <div className="w-full flex-col-center-start h-full bg-[#C95793]">
+            <h2 className="mt-50px text-[26px] text-[#E7B6D0]">
+                桜花私人俱楽部
+            </h2>
+            <h4 className="text-[#E7B6D0] mb-10px">さくらプライベートクラブ</h4>
+            <img
+                src={require('@/assets/images/home/login.jpg')}
+                className="h-180px w-180px rounded-[48px]"
+            />
             <div className="w-350px bg-[#BF2A81] rounded-16px mt-32px">
                 <Form
                     form={form}
