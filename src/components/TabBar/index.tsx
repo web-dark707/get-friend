@@ -29,9 +29,9 @@ const TabBar: FC<TabBarProps> = () => {
                 onClick: () => {},
             },
             {
-                key: 'home',
-                link: '/home',
-                label: '首页',
+                key: 'record',
+                link: '/record',
+                label: '约会记录',
                 selectedIcon: require('@/assets/images/icon/tab/home1.png'),
                 unselectedIcon: require('@/assets/images/icon/tab/home0.png'),
                 onClick: () => {},
