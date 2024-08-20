@@ -8,15 +8,14 @@ import Redirect from './Redirect';
 NProgress.configure({ showSpinner: false });
 const Login = lazy(() => import('@/pages/Login'));
 const Register = lazy(() => import('@/pages/Register'));
-
+const Record = lazy(() => import('@/pages/Record'));
+const RecordDetail = lazy(() => import('@/pages/RecordDetail'));
 const Home = lazy(() => import('@/pages/Home'));
 const UserCenter = lazy(() => import('@/pages/UserCenter'));
 const Dating = lazy(() => import('@/pages/Dating'));
 const StartDating = lazy(() => import('@/pages/Dating/StartDating'));
-
 const NotAuthority = lazy(() => import('@/components/ResultPage/NotAuthority'));
 const NotFound = lazy(() => import('@/components/ResultPage/NotFound'));
-
 const routeList: RouteObject[] = [
     {
         path: '/',
@@ -38,6 +37,27 @@ const routeList: RouteObject[] = [
         element: (
             <WrapperRouteComponent
                 element={<UserCenter />}
+                isMotion={false}
+                tabBar
+                navBar={false}
+            />
+        ),
+    },
+    {
+        path: '/recordDetail',
+        element: (
+            <WrapperRouteComponent
+                element={<RecordDetail />}
+                isMotion={false}
+                navBar={false}
+            />
+        ),
+    },
+    {
+        path: '/record',
+        element: (
+            <WrapperRouteComponent
+                element={<Record />}
                 isMotion={false}
                 tabBar
                 navBar={false}

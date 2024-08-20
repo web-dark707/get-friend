@@ -50,12 +50,20 @@ const LoginPage: FC<LoginPageProps> = () => {
     }, []);
 
     return (
-        <div className="w-full flex-col-center-start">
-            <div className="w-350px rounded-16px mt-32px login-form-bg">
+        <div className="w-full flex-col-center-start  h-full  bg-[#C95793]">
+            <h2 className="mt-50px text-[26px] text-[#E7B6D0]">
+                桜花私人俱楽部
+            </h2>
+            <h4 className="text-[#E7B6D0] mb-10px">さくらプライベートクラブ</h4>
+            <img
+                src={require('@/assets/images/home/login.jpg')}
+                className="h-180px w-180px rounded-[48px]"
+            />
+            <div className="w-350px rounded-16px mt-32px bg-[#BF2A81] login-form-bg">
                 <Form
                     form={form}
                     onSubmit={onSubmit}
-                    className="w-full  p-24px"
+                    className="bg-[#BF2A81] h-full  rounded-16px  p-24px"
                     onValuesChange={() => {
                         form.getFieldsError().then((res) => {
                             setLoginDisabled(res.hasError);
@@ -127,7 +135,7 @@ const LoginPage: FC<LoginPageProps> = () => {
                     </Button>
                 </Form>
                 <div
-                    className="text-center"
+                    className="text-center mt-10px"
                     onClick={() => navigate('/register')}
                 >
                     去注册

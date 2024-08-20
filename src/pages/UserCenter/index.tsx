@@ -3,7 +3,7 @@ import './styles.scss';
 import Overlay from '../../components/vip-ui/Overlay';
 
 const Home: FC = () => {
-    const [visible, setVisible] = useState(true);
+    const [visible, setVisible] = useState(false);
     return (
         <div className="my">
             <Overlay
