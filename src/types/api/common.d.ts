@@ -13,6 +13,20 @@ export interface RateItem {
     to_currency_code: string; //转换的币种
     to_currency_id: number; //
 }
+export interface UserInfo {
+    code: string;
+    activationCode: string;
+    customerLevel: string;
+    username: string;
+    subActivationCode: Array<SubActivationCode>;
+}
+interface SubActivationCode {
+    code: string;
+    invitationCopyContent: string;
+    invitationWords: string;
+    upperOwner: string;
+    username: string;
+}
 
 export interface AllHallResult {
     hall_name: string;

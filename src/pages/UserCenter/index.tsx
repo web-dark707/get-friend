@@ -1,9 +1,17 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import './styles.scss';
+import { useMutation } from '@tanstack/react-query';
+import { getUserInfo } from '@/api/common';
 import Overlay from '../../components/vip-ui/Overlay';
 
 const Home: FC = () => {
     const [visible, setVisible] = useState(false);
+    const { mutateAsync: mutateUserInfo, data: userInfo } =
+        useMutation(getUserInfo);
+    useEffect(() => {
+        mutateUserInfo();
+    }, [mutateUserInfo]);
+    console.log(userInfo);
     return (
         <div className="my">
             <Overlay
@@ -45,9 +53,9 @@ const Home: FC = () => {
             <div className="asset">
                 <p className="title">帳號資訊</p>
                 <div className="detail">
-                    <p>登入帳號: ak345</p>
-                    <p>啟用設定: YFNd943c#$</p>
-                    <p>會員等級: VIP</p>
+                    <p>登入帳號: {userInfo?.data.username}</p>
+                    <p>啟用設定: {userInfo?.data.activationCode}</p>
+                    <p>會員等級: {userInfo?.data.customerLevel}</p>
                 </div>
             </div>
             <div className="boon">
