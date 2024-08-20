@@ -11,9 +11,10 @@ import Search from './components/Search';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-cards';
 import ContactDetailsModal from './components/ContactDetailsModal';
-import MedicalReportModal from './components/ContactDetailsModal';
+import MedicalReportModal from './components/MedicalReportModal';
 import CouponModal from './components/CouponModal';
 import BasicServicesFilter from './components/BasicServicesFilter';
+import SlotFilter from './components/SlotFilter';
 const Home: FC = () => {
     const navigate = useNavigate();
     const [girlData, setGirlData] = useState<DatingGirlsResult>();
@@ -117,7 +118,7 @@ const Home: FC = () => {
                         <div className="">
                             <span>{girlData?.name}</span>
                             <span>{girlData?.age}</span>
-                            <span>有档期</span>
+                            <span>{girlData?.validTimeslots && '有档期'}</span>
                         </div>
                         <div className="flex">
                             <div className="flex mt-[12px] flex-1">
@@ -176,7 +177,11 @@ const Home: FC = () => {
             <div className="bg-[#FD6298] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
                 檔期
             </div>
-            <div className="px-[12px] py-[8px]">9月11日</div>
+            <div className="px-[12px] py-[8px]">
+                <SlotFilter
+                    filterList={girlData?.validTimeslots?.split(',') ?? []}
+                />
+            </div>
             {/* --------------- */}
             <div className="bg-[#521933] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
                 約會詳情

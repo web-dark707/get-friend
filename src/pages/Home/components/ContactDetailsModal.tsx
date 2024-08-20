@@ -3,7 +3,7 @@ import { Button, Form, Input, Overlay } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
 import { isWithDotNumber } from '@/utils/validate';
 
-const MedicalReportModal = () => {
+const ContactDetailsModal = () => {
     const [form] = useForm();
     const onSubmit = () => {};
 
@@ -111,4 +111,4 @@ const MedicalReportModal = () => {
     );
 };
 
-export default MedicalReportModal;
+export default ContactDetailsModal;
