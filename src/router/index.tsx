@@ -10,27 +10,14 @@ const Login = lazy(() => import('@/pages/Login'));
 const Register = lazy(() => import('@/pages/Register'));
 const Record = lazy(() => import('@/pages/Record'));
 const RecordDetail = lazy(() => import('@/pages/RecordDetail'));
-const Home = lazy(() => import('@/pages/Home'));
-const UserCenter = lazy(() => import('@/pages/UserCenter'));
 const Dating = lazy(() => import('@/pages/Dating'));
-const StartDating = lazy(() => import('@/pages/Dating/StartDating'));
+const UserCenter = lazy(() => import('@/pages/UserCenter'));
 const NotAuthority = lazy(() => import('@/components/ResultPage/NotAuthority'));
 const NotFound = lazy(() => import('@/components/ResultPage/NotFound'));
 const routeList: RouteObject[] = [
     {
         path: '/',
-        element: <Redirect to="/home" />,
-    },
-    {
-        path: '/home',
-        element: (
-            <WrapperRouteComponent
-                element={<Home />}
-                isMotion={false}
-                navBar={false}
-                tabBar
-            />
-        ),
+        element: <Redirect to="/dating" />,
     },
     {
         path: '/userCenter',
@@ -75,17 +62,17 @@ const routeList: RouteObject[] = [
             />
         ),
     },
-    {
-        path: '/dating/startDating',
-        element: (
-            <WrapperRouteComponent
-                element={<StartDating />}
-                isMotion={false}
-                tabBar
-                navBar={false}
-            />
-        ),
-    },
+    // {
+    //     path: '/dating/startDating',
+    //     element: (
+    //         <WrapperRouteComponent
+    //             element={<StartDating />}
+    //             isMotion={false}
+    //             tabBar
+    //             navBar={false}
+    //         />
+    //     ),
+    // },
     {
         path: '/login',
         element: (

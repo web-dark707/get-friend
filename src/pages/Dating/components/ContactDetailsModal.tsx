@@ -1,16 +1,28 @@
 import React from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input, Overlay } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
 import { isWithDotNumber } from '@/utils/validate';
+import { getLastAddress } from '@/api/home';
 
 const ContactDetailsModal = () => {
     const [form] = useForm();
-    const onSubmit = () => {};
+    const { mutateAsync: mutateLastAddress, isLoading } =
+        useMutation(getLastAddress);
+
+    const onSubmit = (values) => {
+        console.log(values);
+    };
+    const handleUseLastAddress = async () => {
+        const res = await mutateLastAddress();
+        console.log(res);
+    };
+    const handleConfirm = () => {};
 
     return (
         <Overlay
             trigger={
-                <Button className="button-gradient text-white font-bold">
+                <Button className="w-[100px] button-gradient text-white font-bold absolute right-[12px] bottom-[12px]">
                     輸入聯絡方式
                 </Button>
             }
@@ -25,7 +37,7 @@ const ContactDetailsModal = () => {
                     onSubmit={onSubmit}
                 >
                     <Form.Item
-                        field="mobile"
+                        field="tel"
                         label={
                             <div className="flex items-center text-[16px] text-center">
                                 <div className="w-[80px]">手机</div>
@@ -105,6 +117,18 @@ const ContactDetailsModal = () => {
                 </Form>
                 <div className="text-[14px] text-[#ff4d4f] mt-[20px] text-center font-semibold">
                     注意：請提供真實有效的聯絡方式並保持暢通，以便為您安排後續約會
+                </div>
+                <Button
+                    className="w-[100px]"
+                    onClick={handleUseLastAddress}
+                    loading={isLoading}
+                >
+                    使用上次地址
+                </Button>
+                <div className="flex justify-end">
+                    <Button className="w-[60px]" onClick={handleConfirm}>
+                        确认
+                    </Button>
                 </div>
             </div>
         </Overlay>

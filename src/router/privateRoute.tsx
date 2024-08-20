@@ -7,7 +7,7 @@ const PrivateRoute = (props: any) => {
 
     return token ? (
         location.pathname === '/' ? (
-            <Navigate to={{ pathname: '/home' }} replace />
+            <Navigate to={{ pathname: '/dating' }} replace />
         ) : (
             props.element
         )
