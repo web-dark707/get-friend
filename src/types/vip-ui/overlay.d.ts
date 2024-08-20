@@ -30,4 +30,8 @@ export interface OverlayRef {
      * 最外层元素 DOM
      */
     dom: HTMLDivElement | null;
+    /**
+     * 关闭弹窗
+     */
+    close: () => void;
 }

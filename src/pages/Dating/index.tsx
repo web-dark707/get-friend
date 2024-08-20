@@ -217,7 +217,9 @@ const Home: FC = () => {
                         <div>地址:{addressInfo.address}</div>
                     </>
                 )}
-                <ContactDetailsModal />
+                <ContactDetailsModal
+                    handleChange={(values) => setAddressInfo(values)}
+                />
             </div>
             {/* --------------- */}
             <div className="bg-[#521933] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">

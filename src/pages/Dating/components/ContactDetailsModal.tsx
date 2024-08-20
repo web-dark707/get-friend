@@ -4,20 +4,26 @@ import { Button, Form, Input, Overlay } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
 import { isWithDotNumber } from '@/utils/validate';
 import { getLastAddress } from '@/api/home';
-
-const ContactDetailsModal = () => {
+import { LastAddressResult } from '@/types/api/home';
+interface Props {
+    handleChange: (values: LastAddressResult) => void;
+}
+const ContactDetailsModal = ({ handleChange }: Props) => {
     const [form] = useForm();
     const { mutateAsync: mutateLastAddress, isLoading } =
         useMutation(getLastAddress);
 
     const onSubmit = (values) => {
         console.log(values);
+        handleChange(values);
     };
     const handleUseLastAddress = async () => {
         const res = await mutateLastAddress();
         console.log(res);
     };
-    const handleConfirm = () => {};
+    const handleConfirm = () => {
+        form.submit();
+    };
 
     return (
         <Overlay
@@ -83,7 +89,6 @@ const ContactDetailsModal = () => {
                         <Input
                             placeholder="请输入Telegram"
                             isClear={false}
-                            validator={isWithDotNumber}
                             className="!border-none !opacity-100"
                             inputClass="text-right text-[14px] font-semibold bg-[#5d394d] text-[#ffffff] border border-[#c72c77] rounded-[8px] px-[10px] py-[8px]"
                         />

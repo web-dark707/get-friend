@@ -50,6 +50,7 @@ const Overlay = forwardRef(
 
         useImperativeHandle(ref, () => ({
             dom: domRef.current,
+            close: handleCancel,
         }));
 
         useOverFlowScroll('html', visible);
