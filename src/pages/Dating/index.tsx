@@ -201,6 +201,7 @@ const Home: FC = () => {
                 {isShowCouponModal && (
                     <CouponModal
                         visible={isShowCouponModal}
+                        isShowBtn
                         onCancel={() => setIsShowCouponModal(false)}
                     />
                 )}

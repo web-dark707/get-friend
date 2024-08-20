@@ -2,7 +2,8 @@ import React, { FC, useEffect, useState } from 'react';
 import './styles.scss';
 import { useMutation } from '@tanstack/react-query';
 import { getUserInfo } from '@/api/common';
-import Overlay from '../../components/vip-ui/Overlay';
+import { handleClipboard } from '@/utils/clipboard';
+import CouponModal from '../Dating/components/CouponModal';
 
 const Home: FC = () => {
     const [visible, setVisible] = useState(false);
@@ -14,38 +15,13 @@ const Home: FC = () => {
     console.log(userInfo);
     return (
         <div className="my">
-            <Overlay
-                visible={visible}
-                onCancel={() => {
-                    setVisible(false);
-                }}
-            >
-                <div className="modal-wrap">
-                    <header>優惠券</header>
-                    <div className="content">
-                        <div className="order">
-                            <div className="top">
-                                <span className="money">1,000P</span>
-                                <p className="remark">
-                                    <span className="r-1">系統福利</span>
-                                    <span className="r-2">無門檻</span>
-                                </p>
-                            </div>
-                            <p className="bottom">有效期限: 2024-09-09</p>
-                        </div>
-                        <div className="order">
-                            <div className="top">
-                                <span className="money">1,000P</span>
-                                <p className="remark">
-                                    <span className="r-1">系統福利</span>
-                                    <span className="r-2">無門檻</span>
-                                </p>
-                            </div>
-                            <p className="bottom">有效期限: 2024-09-09</p>
-                        </div>
-                    </div>
-                </div>
-            </Overlay>
+            {visible && (
+                <CouponModal
+                    visible={visible}
+                    isShowBtn={false}
+                    onCancel={() => setVisible(false)}
+                />
+            )}
             <header className="header">
                 <span>我的</span>
                 <img src={require('@/assets/images/home/my-logo.jpg')} />
@@ -73,18 +49,26 @@ const Home: FC = () => {
                     本平台為私人俱樂部，不對外開放註冊，均為邀請制，會員資格有限，請珍惜名額
                 </div>
                 <div className="line-4">
-                    <p>
-                        <span>名额1:未註冊</span>
-                        <span>複製註冊連接</span>
-                    </p>
-                    <p>
-                        <span>名额1:未註冊</span>
-                        <span>複製註冊連接</span>
-                    </p>
-                    <p>
-                        <span>名额1:未註冊</span>
-                        <span>複製註冊連接</span>
-                    </p>
+                    {userInfo?.data.subActivationCode.map((item, index) => {
+                        return (
+                            <p key={index}>
+                                <span>
+                                    名额{index + 1}:
+                                    {item.username ? item.username : '未注册'}
+                                </span>
+                                <span
+                                    onClick={(e) =>
+                                        handleClipboard(
+                                            item.invitationCopyContent,
+                                            e,
+                                        )
+                                    }
+                                >
+                                    複製註冊連接
+                                </span>
+                            </p>
+                        );
+                    })}
                 </div>
             </div>
         </div>

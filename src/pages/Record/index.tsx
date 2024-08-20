@@ -1,8 +1,17 @@
-import React, { FC } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import React, { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { getRecord } from '@/api/common';
+
 import './styles.scss';
 const Home: FC = () => {
     const navigate = useNavigate();
+    const { mutateAsync: mutateUserInfo, data: record } =
+        useMutation(getRecord);
+    useEffect(() => {
+        mutateUserInfo();
+    }, [mutateUserInfo]);
+    console.log(record);
     return (
         <div className="my">
             <header className="header">

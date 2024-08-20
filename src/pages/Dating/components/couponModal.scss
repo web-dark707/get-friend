@@ -1,0 +1,55 @@
+.overlay-bg {
+    .modal-wrap {
+        width: 300px;
+        height: 350px;
+        margin: auto;
+        background: #fff;
+        border-radius: 4px;
+
+        header {
+            height: 38px;
+            padding: 0 10px;
+            color: #fff;
+            line-height: 38px;
+            background: #c95892;
+        }
+
+        .content {
+            height: 300px;
+            margin-top: 15px;
+            overflow: auto;
+
+            .order {
+                width: 260px;
+                height: 80px;
+                margin: auto;
+                margin-bottom: 10px;
+                padding: 10px;
+                color: #fff;
+                background: #f74e18;
+                border-radius: 10px;
+
+                .top {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+
+                    .money {
+                        margin-right: 10px;
+                        font-size: 18px;
+                    }
+
+                    .remark {
+                        display: flex;
+                        flex-flow: column;
+                    }
+
+                    button {
+                        position: absolute;
+                        right: 0;
+                    }
+                }
+            }
+        }
+    }
+}
