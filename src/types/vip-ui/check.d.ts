@@ -1,9 +1,9 @@
 export type CheckboxValue = string | number;
 
 export interface CheckboxProps {
-    checked: boolean;
+    checked?: boolean;
     value: CheckboxValue;
-    label: string;
+    label: ReactNode;
     onChange?: (value: CheckboxValue, bool: boolean) => void;
     /**
      * 自定义类名

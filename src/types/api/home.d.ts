@@ -1,5 +1,5 @@
 export interface DatingGirlsResult {
-    id: int64;
+    id: number;
     name: string;
     code;
     int32;
@@ -17,11 +17,12 @@ export interface DatingGirlsResult {
     intro: string;
     validTimeslots: string;
     serviceItemInfos: {
-        girlId: int64;
+        extraInfo: any;
+        girlId: string;
+        id: string;
         name: string;
         oriPrice: number;
         promotionPrice: number;
-        extraInfo: string;
     }[];
     pic1: string;
     pic2: string;

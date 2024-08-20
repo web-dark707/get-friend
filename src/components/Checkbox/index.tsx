@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { CheckboxProps } from '@/types/vip-ui/check';
 
 const Checkbox = (props: CheckboxProps) => {
-    const { value, checked, label, onChange, className } = props;
+    const { value, checked = false, label, onChange, className } = props;
     const handleChange = (e) => {
         const { checked } = e.target;
         onChange && onChange(value, checked);
@@ -13,7 +13,7 @@ const Checkbox = (props: CheckboxProps) => {
             <input
                 type="checkbox"
                 id={String(value)}
-                name={label}
+                name={String(value)}
                 checked={checked}
                 onChange={handleChange}
                 className="mr-2 h-4 w-4 text-primaryColor border-gray-300 rounded"
