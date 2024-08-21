@@ -21,7 +21,10 @@ const MedicalReportModal = (props: Props) => {
                 </div>
                 <div className="p-[12px]">
                     {data?.data.length !== 0 ? (
-                        <Empty />
+                        <Empty
+                            className="opacity-20 text-[#000]"
+                            description="暂无优惠卷"
+                        />
                     ) : (
                         <>
                             {data?.data.map((it) => (

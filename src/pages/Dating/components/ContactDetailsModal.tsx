@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input, Overlay } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
@@ -10,16 +10,16 @@ interface Props {
 }
 const ContactDetailsModal = ({ handleChange }: Props) => {
     const [form] = useForm();
+    const overlayRef = useRef(null);
     const { mutateAsync: mutateLastAddress, isLoading } =
         useMutation(getLastAddress);
 
     const onSubmit = (values) => {
-        console.log(values);
         handleChange(values);
+        overlayRef.current.close();
     };
     const handleUseLastAddress = async () => {
         const res = await mutateLastAddress();
-        console.log(res);
     };
     const handleConfirm = () => {
         form.submit();
@@ -27,6 +27,7 @@ const ContactDetailsModal = ({ handleChange }: Props) => {
 
     return (
         <Overlay
+            ref={overlayRef}
             trigger={
                 <Button className="w-[100px] button-gradient text-white font-bold absolute right-[12px] bottom-[12px]">
                     輸入聯絡方式

@@ -64,10 +64,13 @@ const Home: FC = () => {
     };
     // 搜索
     const handleSearch = (filters) => {
-        console.log(filters);
         mutateDatingGirls({
             filters,
         });
+    };
+
+    const handleStart = () => {
+        navigate('/dating/startDating');
     };
 
     useEffect(() => {
@@ -156,7 +159,6 @@ const Home: FC = () => {
                 <MedicalReportModal />
             </div>
             {/* --------------- */}
-
             <div className="bg-[#FD6298] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
                 基本訊息
             </div>
@@ -262,10 +264,7 @@ const Home: FC = () => {
             </div>
             {/* --------------- */}
             <div className="flex justify-end bg-[#333333] p-[12px]">
-                <Button
-                    width="w-[80px]"
-                    onClick={() => navigate('/dating/startDating')}
-                >
+                <Button width="w-[80px]" onClick={() => handleStart}>
                     開始約會
                 </Button>
             </div>

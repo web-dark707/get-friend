@@ -17,16 +17,18 @@ const SlotFilter = (props: Props) => {
     };
     return (
         <div className="flex justify-start content-center">
-            {filterList.map((it) => (
-                <Checkbox
-                    className="mr-[12px]"
-                    key={it}
-                    value={it}
-                    onChange={handleChecked}
-                    checked={active === it}
-                    label={it}
-                />
-            ))}
+            {filterList.length > 0
+                ? filterList.map((it) => (
+                      <Checkbox
+                          className="mr-[12px]"
+                          key={it}
+                          value={it}
+                          onChange={handleChecked}
+                          checked={active === it}
+                          label={it}
+                      />
+                  ))
+                : '暫無檔期'}
         </div>
     );
 };
