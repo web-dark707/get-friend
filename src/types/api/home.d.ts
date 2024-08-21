@@ -1,16 +1,11 @@
 export interface DatingGirlsResult {
     id: number;
     name: string;
-    code;
-    int32;
-    age;
-    int32;
-    height;
-    int32;
-    weight;
-    int32;
-    chest;
-    int32;
+    code: number;
+    age: number;
+    height: number;
+    weight: number;
+    chest: number;
     physicalExamTime: string;
     physicalExamReport: string;
     tags: string;
@@ -24,12 +19,7 @@ export interface DatingGirlsResult {
         oriPrice: number;
         promotionPrice: number;
     }[];
-    pic1: string;
-    pic2: string;
-    pic3: string;
-    pic4: string;
-    pic5: string;
-    pic6: string;
+    pics: string;
 }
 
 export interface DatingGirlsParams {
@@ -67,4 +57,35 @@ export interface LastAddressResult {
     tel: string;
     tg: string;
     address: string;
+}
+
+export interface PreConfirmDatingParams {
+    girlId: number; //女生ID;
+    couponId: number; // 優惠卷ID;
+    serviceItemIds: string[]; //服务项ID;
+    timeslot: string; //档期时间;
+    //联系地址
+    addressInfo: {
+        tel: string;
+        tg: string;
+        address: string;
+    };
+}
+export interface PreConfirmDatingResult {
+    datingId: number;
+    girlName: string;
+    serviceItems: string[];
+    timeslot: string;
+    addressInfo: {
+        tel: string;
+        tg: string;
+        address: string;
+    };
+    paymentInfo: {
+        paymentMethod: string;
+        address: string;
+        amount: number;
+        rate: number;
+        paymentPrivilege: string;
+    };
 }

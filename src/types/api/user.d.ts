@@ -1,7 +1,3 @@
-export interface UserLoginParams {
-    account: string;
-    password?: string;
-}
 export interface UserLoginResult {
     member_name: string;
     name: string;
@@ -52,73 +48,4 @@ export interface UserInfoResult {
     };
     vip_grade: string;
     xing_expired_time: number;
-}
-
-export interface UserBalance {
-    currency: string; //币种
-    balance: number; //总余额
-    frozen: number; //冻结
-    available: number; //可用
-}
-
-export interface CenterAuthorizer {
-    authorizer_name: string;
-    permission: string;
-    telephone: null | string[];
-}
-
-// 修改登录密码参数
-export interface UpdatePasswordParams {
-    new_pwd: string;
-    pwd: string;
-    old_pwd: string;
-}
-// 修改登录密码参数
-export interface UpdatePayPasswordParams {
-    pwd: string;
-    new_pwd: string;
-}
-// 用户占成参数
-export interface MemberCommissionParams {
-    currency: number; // 币种
-    start_type: number; // 传1
-    principal_type: string; // 本金类型C M
-    code_type: string; // 出码类型 A B
-}
-
-// 用户占成
-export interface MemberCommissionResult {
-    principal_type: string;
-    shares_rate: string; // 可用占成
-    param_name: string;
-}
-
-// 获取登录验证码
-export interface CodeParams {
-    member_code: string;
-    telephone: string;
-}
-
-// 短信开关请求
-export interface SmsSwitchParams {
-    switch: number;
-}
-
-export interface GoogleCodeParams {
-    is_open: 1 | 2;
-    opt_code: string;
-    opt_secret?: string;
-}
-
-export interface ShowGoogleCodeParams {
-    pwd: string;
-}
-export interface GoogleCodeResult {
-    url: string;
-    name: string;
-    secret: string;
-}
-
-export interface IsOpenGoogleParams {
-    member_code: string;
 }

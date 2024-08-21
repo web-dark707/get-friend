@@ -6,7 +6,7 @@ interface Props {
     visible: boolean;
     onCancel: () => void;
 }
-const MedicalReportModal = (props: Props) => {
+const CouponModal = (props: Props) => {
     const { visible, onCancel } = props;
     const { mutateAsync: mutateMyCoupons, data } = useMutation(getMyCoupons);
     useEffect(() => {
@@ -53,4 +53,4 @@ const MedicalReportModal = (props: Props) => {
     );
 };
 
-export default MedicalReportModal;
+export default CouponModal;
