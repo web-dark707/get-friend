@@ -3,16 +3,18 @@ import Checkbox from '@/components/Checkbox';
 
 interface Props {
     filterList: string[];
-    // onChange: (obj: { [key: string]: string[] }) => void;
+    onChange: (key, value) => void;
 }
 const SlotFilter = (props: Props) => {
-    const { filterList } = props;
+    const { filterList, onChange } = props;
     const [active, setActive] = useState();
     const handleChecked = (key, bool) => {
         if (bool) {
             setActive(key);
+            onChange('timeslot', key);
         } else if (key === active && !bool) {
             setActive(undefined);
+            onChange('timeslot', undefined);
         }
     };
     return (

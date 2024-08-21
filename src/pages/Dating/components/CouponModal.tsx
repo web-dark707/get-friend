@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import React from 'react';
 import { Button, Empty, Overlay } from '@/components/vip-ui';
-import { getMyCoupons } from '@/api/home';
+import { MyCouponsResult } from '@/types/api/home';
 interface Props {
     visible: boolean;
     onCancel: () => void;
+    onChange: (key, value) => void;
+    couponList: MyCouponsResult[];
 }
 const CouponModal = (props: Props) => {
-    const { visible, onCancel } = props;
-    const { mutateAsync: mutateMyCoupons, data } = useMutation(getMyCoupons);
-    useEffect(() => {
-        mutateMyCoupons();
-    }, [mutateMyCoupons]);
+    const { visible, onCancel, onChange, couponList } = props;
+
+    const handleClick = (id) => {
+        onChange('couponId', id);
+        onCancel();
+    };
 
     return (
         <Overlay visible={visible} onCancel={onCancel}>
@@ -20,14 +22,14 @@ const CouponModal = (props: Props) => {
                     優惠券
                 </div>
                 <div className="p-[12px]">
-                    {data?.data.length !== 0 ? (
+                    {couponList.length === 0 ? (
                         <Empty
                             className="opacity-20 text-[#000]"
                             description="暂无优惠卷"
                         />
                     ) : (
                         <>
-                            {data?.data.map((it) => (
+                            {couponList.map((it) => (
                                 <div
                                     key={it.id}
                                     className="bg-[#F74E18] rounded-[16px] px-[12px] py-[8px]"
@@ -38,7 +40,10 @@ const CouponModal = (props: Props) => {
                                             <div>{it.category}</div>
                                             <div>{it.useCondition}</div>
                                         </div>
-                                        <Button className="" width="w-[80px]">
+                                        <Button
+                                            width="w-[80px]"
+                                            onClick={() => handleClick(it.id)}
+                                        >
                                             使用
                                         </Button>
                                     </div>

@@ -6,7 +6,7 @@ import { isWithDotNumber } from '@/utils/validate';
 import { getLastAddress } from '@/api/home';
 import { LastAddressResult } from '@/types/api/home';
 interface Props {
-    handleChange: (values: LastAddressResult) => void;
+    handleChange: (key: string, values: LastAddressResult) => void;
 }
 const ContactDetailsModal = ({ handleChange }: Props) => {
     const [form] = useForm();
@@ -15,7 +15,7 @@ const ContactDetailsModal = ({ handleChange }: Props) => {
         useMutation(getLastAddress);
 
     const onSubmit = (values) => {
-        handleChange(values);
+        handleChange('addressInfo', values);
         overlayRef.current.close();
     };
     const handleUseLastAddress = async () => {

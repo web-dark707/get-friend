@@ -7,6 +7,7 @@ import React, {
 import { useMutation } from '@tanstack/react-query';
 import { getDict } from '@/api/home';
 import { useSetDict } from '@/store/common/hooks';
+import UserToken from '@/common/token';
 
 type WarpCommonProps = {};
 
@@ -22,7 +23,9 @@ export const WarpCommon = ({
     });
 
     useEffect(() => {
-        mutateDict();
+        if (UserToken.getToken()) {
+            mutateDict();
+        }
     }, [mutateDict]);
 
     return <Fragment>{children as ReactElement}</Fragment>;

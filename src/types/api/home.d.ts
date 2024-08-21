@@ -64,6 +64,7 @@ export interface PreConfirmDatingParams {
     couponId: number; // 優惠卷ID;
     serviceItemIds: string[]; //服务项ID;
     timeslot: string; //档期时间;
+    hour: string;
     //联系地址
     addressInfo: {
         tel: string;
