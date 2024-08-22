@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import Big from 'big.js';
 import { DatingGirlsResult, PreConfirmDatingParams } from '@/types/api/home';
-import { Button, Toast } from '@/components/vip-ui';
+import { Button, Picker, Toast } from '@/components/vip-ui';
 import { getMyCoupons, preConfirmDating } from '@/api/home';
 import { isEmpty } from '@/utils/tools';
 import { selectorDict } from '@/store/common/selectors';
@@ -18,7 +18,8 @@ interface Props {
 }
 const Details = ({ girlData }: Props) => {
     const navigate = useNavigate();
-    const { mainPayTip, usdtToPhpRate } = useRecoilValue(selectorDict);
+    const { mainPayTip, usdtToPhpRate, datingHours, defaultDatingHour } =
+        useRecoilValue(selectorDict);
     const [isShowCouponModal, setIsShowCouponModal] = useState(false);
     const [params, setParams] = useState<PreConfirmDatingParams>({
         girlId: girlData.id,
@@ -118,6 +119,25 @@ const Details = ({ girlData }: Props) => {
                     onChange={handleChangeParams}
                     filterList={girlData?.validTimeslots?.split(',') ?? []}
                 />
+                <div className="flex justify-end items-center">
+                    <span className="mr-[4px]">時間:</span>
+                    <Picker
+                        title="請選擇約會時間"
+                        placeholder="請選擇約會時間"
+                        pickerValue={defaultDatingHour}
+                        downIcon={
+                            <img
+                                className="w-[16px]"
+                                src={require('@/assets/images/icon/form/selectArrow.png')}
+                            />
+                        }
+                        triggerClass="border border-solid border-[#ccc] px-[12px]"
+                        items={datingHours
+                            .split(',')
+                            .map((it) => ({ value: it, label: it }))}
+                        onChange={(val) => handleChangeParams('hour', val)}
+                    />
+                </div>
             </div>
             {/* --------------- */}
             <div className="bg-[#521933] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">

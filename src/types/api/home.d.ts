@@ -44,6 +44,8 @@ export interface DictResult {
     usdtToPhpRate: number; //USDT 转换 PHP 汇率
     promotionStr: string; //活动文字内容
     mainPayTip: string;
+    datingHours: string;
+    defaultDatingHour: string;
 }
 
 export interface MyCouponsResult {

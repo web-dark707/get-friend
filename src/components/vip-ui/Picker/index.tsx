@@ -61,7 +61,7 @@ const PickerComponent = forwardRef(
         const defaultTriggerDom = () => (
             <div
                 className={classNames(
-                    'bg-[#F7EBC9] flex-row-center rounded-[6px] py-3px',
+                    'flex-row-center rounded-[6px] py-3px',
                     triggerClass,
                 )}
             >
