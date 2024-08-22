@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import Big from 'big.js';
 import { DatingGirlsResult, PreConfirmDatingParams } from '@/types/api/home';
 import { Button, Toast } from '@/components/vip-ui';
-import { handleClipboard } from '@/utils/clipboard';
 import { getMyCoupons, preConfirmDating } from '@/api/home';
 import { isEmpty } from '@/utils/tools';
+import { selectorDict } from '@/store/common/selectors';
 import BasicServicesFilter from './BasicServicesFilter';
 import SlotFilter from './SlotFilter';
 import CouponModal from './CouponModal';
@@ -16,6 +18,7 @@ interface Props {
 }
 const Details = ({ girlData }: Props) => {
     const navigate = useNavigate();
+    const { mainPayTip, usdtToPhpRate } = useRecoilValue(selectorDict);
     const [isShowCouponModal, setIsShowCouponModal] = useState(false);
     const [params, setParams] = useState<PreConfirmDatingParams>({
         girlId: girlData.id,
@@ -52,17 +55,17 @@ const Details = ({ girlData }: Props) => {
             }));
         }
     };
-    const handleStart = () => {
+    const handleStart = async () => {
         // 校验
         if (isEmpty(params.serviceItemIds)) {
-            Toast.error('请选择基本服务');
+            return Toast.error('请选择基本服务');
         } else if (isEmpty(params.timeslot)) {
-            Toast.error('请选择档期');
+            return Toast.error('请选择档期');
         } else if (isEmpty(params.addressInfo)) {
-            Toast.error('请填写地址');
+            return Toast.error('请填写地址');
         }
-        mutatePreConfirmDating(params);
-        // navigate('/dating/startDating');
+        const res = await mutatePreConfirmDating(params);
+        navigate('/dating/startDating', { state: res.data });
     };
 
     useEffect(() => {
@@ -172,12 +175,14 @@ const Details = ({ girlData }: Props) => {
                 聯絡方式
             </div>
             <div className="px-[12px] py-[8px] relative">
-                {params?.addressInfo && (
+                {params?.addressInfo ? (
                     <>
                         <div>手機:{params?.addressInfo.tel}</div>
                         <div>tg:{params?.addressInfo.tg}</div>
                         <div>地址:{params?.addressInfo.address}</div>
                     </>
+                ) : (
+                    '暂无联络方式'
                 )}
                 <ContactDetailsModal handleChange={handleChangeParams} />
             </div>
@@ -188,37 +193,19 @@ const Details = ({ girlData }: Props) => {
             <div className="px-[12px] py-[8px]">
                 <div className=" relative">
                     <div>USDT trc20 </div>
-                    <div>地址: TXPCXCn***Yb4YPwR6</div>
-                    <Button
-                        className=" absolute right-[12px] bottom-[0px]"
-                        width="w-[80px]"
-                        onClick={(e) =>
-                            handleClipboard(' TXPCXCn***Yb4YPwR6', e)
-                        }
-                    >
-                        複製地址
-                    </Button>
+                    <div>地址: 平台與您確認後顯示</div>
+                    <div>
+                        實際支付：
+                        {new Big(price).div(usdtToPhpRate).toNumber()} U
+                    </div>
+                    <div>即時匯率：{usdtToPhpRate}</div>
+                    <div></div>
                 </div>
-                <div className=" relative">
-                    <div>實際支付：140 U </div>
-                    <div>即時匯率：50.7</div>
-                    <Button
-                        className=" absolute right-[12px] bottom-[0px]"
-                        width="w-[80px]"
-                        onClick={(e) =>
-                            handleClipboard(' TXPCXCn***Yb4YPwR6', e)
-                        }
-                    >
-                        複製金額
-                    </Button>
-                </div>
+
                 <div className="text-error">
                     注意：此地址只接收trc20協議的USDT，充入其它幣種無法到賬，且無法找回，支付金額需等於上面所示實際支付金額，少充無法到賬，多充無法補回，由操作失誤導致的資金問題平台概不付責
                 </div>
-                <div>
-                    小提醒:
-                    您是尊貴的VIP會員，擁有先享後付特權，可以享受服務後再到訂單管理介面支付
-                </div>
+                <div>{mainPayTip}</div>
             </div>
             {/* --------------- */}
             <div className="flex justify-end bg-[#333333] p-[12px]">

@@ -43,6 +43,7 @@ export interface DictResult {
     };
     usdtToPhpRate: number; //USDT 转换 PHP 汇率
     promotionStr: string; //活动文字内容
+    mainPayTip: string;
 }
 
 export interface MyCouponsResult {
@@ -77,6 +78,7 @@ export interface PreConfirmDatingResult {
     girlName: string;
     serviceItems: string[];
     timeslot: string;
+    hour: string;
     addressInfo: {
         tel: string;
         tg: string;
