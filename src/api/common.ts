@@ -1,5 +1,5 @@
 import { deffHttp } from '@/utils/axios';
-import { UserInfo } from '@/types/api/common';
+import { UserInfo } from '@/types/api/user';
 enum Api {
     APP_COMMON_UPLOAD_PHOTO = '/api/pwa/app/uploadIdPhoto',
     USER_INFO = '/api/my/info',

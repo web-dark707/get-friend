@@ -49,3 +49,18 @@ export interface UserInfoResult {
     vip_grade: string;
     xing_expired_time: number;
 }
+
+export interface UserInfo {
+    code: string;
+    activationCode: string;
+    customerLevel: string;
+    username: string;
+    subActivationCode: Array<SubActivationCode>;
+}
+interface SubActivationCode {
+    code: string;
+    invitationCopyContent: string;
+    invitationWords: string;
+    upperOwner: string;
+    username: string;
+}
