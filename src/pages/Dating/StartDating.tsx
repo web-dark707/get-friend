@@ -98,7 +98,7 @@ const StartDating = () => {
                     注意：請誤惡作劇提單，發現無故提單狀況，一律取消會員資格，餘額不退{' '}
                 </div>
             </div>
-            <div className="flex justify-end bg-[#333333] p-[12px]">
+            <div className="flex justify-end p-[12px]">
                 <Button width="px-[16px]" onClick={handleConfirm}>
                     開始約會訊息確認無誤，開始約會
                 </Button>

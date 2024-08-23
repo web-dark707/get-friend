@@ -4,9 +4,9 @@ import './couponModal.scss';
 import { MyCouponsResult } from '@/types/api/home';
 interface Props {
     visible: boolean;
-    onCancel: () => void;
-    isShowBtn: boolean;
-    onChange: (key, value) => void;
+    onCancel?: () => void;
+    isShowBtn?: boolean;
+    onChange?: (key, value) => void;
     couponList: MyCouponsResult[];
 }
 const CouponModal = (props: Props) => {
@@ -18,8 +18,8 @@ const CouponModal = (props: Props) => {
         onChange,
     } = props;
     const handleClick = (id) => {
-        onChange('couponId', id);
-        onCancel();
+        onChange && onChange('couponId', id);
+        onCancel && onCancel();
     };
     return (
         <Overlay visible={visible} onCancel={onCancel}>

@@ -21,19 +21,19 @@ const TabBar: FC<TabBarProps> = () => {
     const tabBarList = useMemo<TabBarItem[]>(
         () => [
             {
-                key: 'dating',
-                link: '/dating',
-                label: '约会',
-                selectedIcon: require('@/assets/images/icon/tab/record1.png'),
-                unselectedIcon: require('@/assets/images/icon/tab/record0.png'),
-                onClick: () => {},
-            },
-            {
                 key: 'record',
                 link: '/record',
                 label: '约会记录',
-                selectedIcon: require('@/assets/images/icon/tab/home1.png'),
-                unselectedIcon: require('@/assets/images/icon/tab/home0.png'),
+                selectedIcon: require('@/assets/images/icon/tab/records1.png'),
+                unselectedIcon: require('@/assets/images/icon/tab/records0.png'),
+                onClick: () => {},
+            },
+            {
+                key: 'dating',
+                link: '/dating',
+                label: '约会',
+                selectedIcon: require('@/assets/images/icon/tab/dating1.png'),
+                unselectedIcon: require('@/assets/images/icon/tab/dating0.png'),
                 onClick: () => {},
             },
             {

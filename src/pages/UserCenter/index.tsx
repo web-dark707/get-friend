@@ -20,6 +20,7 @@ const Home: FC = () => {
                     visible={visible}
                     isShowBtn={false}
                     onCancel={() => setVisible(false)}
+                    couponList={[]}
                 />
             )}
             <header className="header">

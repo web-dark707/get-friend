@@ -181,6 +181,7 @@ const Details = ({ girlData }: Props) => {
                     <CouponModal
                         visible={isShowCouponModal}
                         onChange={handleChangeParams}
+                        isShowBtn
                         onCancel={() => setIsShowCouponModal(false)}
                         couponList={data?.data}
                     />
@@ -224,7 +225,7 @@ const Details = ({ girlData }: Props) => {
                 <div>{mainPayTip}</div>
             </div>
             {/* --------------- */}
-            <div className="flex justify-end bg-[#333333] p-[12px]">
+            <div className="flex justify-end p-[12px]">
                 <Button width="w-[80px]" onClick={handleStart}>
                     開始約會
                 </Button>
