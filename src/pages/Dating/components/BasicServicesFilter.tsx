@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { uniq } from 'lodash';
 import Checkbox from '@/components/Checkbox';
 
 interface Props {
@@ -10,18 +11,24 @@ interface Props {
         oriPrice: number;
         promotionPrice: number;
     }[];
-    // onChange: (obj: { [key: string]: string[] }) => void;
+    onChange: (key, value) => void;
 }
 const BasicServicesFilter = (props: Props) => {
-    const { filterList } = props;
-    const [active, setActive] = useState();
-    const handleChecked = (key, bool) => {
-        if (bool) {
-            setActive(key);
-        } else if (key === active && !bool) {
-            setActive(undefined);
-        }
-    };
+    const { filterList, onChange } = props;
+    const [checkedList, setCheckedList] = useState([]);
+    const handleChecked = useCallback(
+        (key, bool) => {
+            let temp = [];
+            if (bool) {
+                temp = uniq([...checkedList, key]);
+            } else {
+                temp = checkedList.filter((it) => it !== key);
+            }
+            setCheckedList(temp);
+            onChange('serviceItemIds', temp);
+        },
+        [checkedList, onChange],
+    );
     return (
         <div>
             {filterList.map((it) => (
@@ -30,7 +37,7 @@ const BasicServicesFilter = (props: Props) => {
                     key={it.id}
                     value={it.id}
                     onChange={handleChecked}
-                    checked={active === it.id}
+                    checked={checkedList.includes(it.id)}
                     label={
                         <div>
                             {it.name} 原價:<s>{it.oriPrice}P </s>活動價:

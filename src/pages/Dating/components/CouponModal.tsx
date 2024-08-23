@@ -1,26 +1,32 @@
-import React, { useEffect } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import React from 'react';
 import { Button, Overlay } from '@/components/vip-ui';
-import { getMyCoupons } from '@/api/home';
 import './couponModal.scss';
+import { MyCouponsResult } from '@/types/api/home';
 interface Props {
     visible: boolean;
     onCancel: () => void;
     isShowBtn: boolean;
+    onChange: (key, value) => void;
+    couponList: MyCouponsResult[];
 }
-const MedicalReportModal = (props: Props) => {
-    const { visible, onCancel, isShowBtn = false } = props;
-    const { mutateAsync: mutateMyCoupons, data } = useMutation(getMyCoupons);
-    useEffect(() => {
-        mutateMyCoupons();
-    }, [mutateMyCoupons]);
-
+const CouponModal = (props: Props) => {
+    const {
+        visible,
+        onCancel,
+        isShowBtn = false,
+        couponList,
+        onChange,
+    } = props;
+    const handleClick = (id) => {
+        onChange('couponId', id);
+        onCancel();
+    };
     return (
         <Overlay visible={visible} onCancel={onCancel}>
             <div className="modal-wrap">
                 <header>優惠券</header>
                 <div className="content">
-                    {data?.data.map((it) => (
+                    {couponList.map((it) => (
                         <div className="order" key={it.id}>
                             <div className="top">
                                 <span className="money">{it.money}P</span>
@@ -32,10 +38,13 @@ const MedicalReportModal = (props: Props) => {
                                 </p>
                                 {isShowBtn && (
                                     <Button
-                                        className=""
-                                        width="w-[60px] h-[30px]"
+                                        width="w-[80px]"
+                                        onClick={() => handleClick(it.id)}
+                                        disabled={it.status !== 'NORMAL'}
                                     >
-                                        使用
+                                        {it.status === 'NORMAL'
+                                            ? '使用'
+                                            : '无法使用'}
                                     </Button>
                                 )}
                             </div>
@@ -48,4 +57,4 @@ const MedicalReportModal = (props: Props) => {
     );
 };
 
-export default MedicalReportModal;
+export default CouponModal;

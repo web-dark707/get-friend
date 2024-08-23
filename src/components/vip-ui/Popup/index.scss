@@ -1,12 +1,6 @@
 .vip-ui-popup {
     overflow: hidden;
-    background: radial-gradient(
-            407.33% 497.56% at 49.87% -307.65%,
-            #eccc80 0%,
-            rgba(236, 204, 128, 0.14) 55.86%,
-            rgba(236, 204, 128, 0) 100%
-        ),
-        linear-gradient(180deg, #67615b -20.86%, #39383a 83.31%);
+    background: linear-gradient(to bottom right, #b8336a, #6d1b3c);
     border-radius: 16px 16px 0 0;
 
     .rmc-picker-popup-header {
@@ -16,7 +10,7 @@
 
         .rmc-picker-popup-header-left,
         .rmc-picker-popup-header-right {
-            color: $primary-color;
+            color: #fff;
             font-weight: 600;
             font-size: 16px;
             font-style: normal;
