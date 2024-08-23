@@ -29,7 +29,6 @@ const LoginPage: FC<LoginPageProps> = () => {
         };
         params.pwd = cryptoEncrypt(values.pwd, ACCOUNT_AES_KEY);
         const res = await mutateUserLogin(params);
-        console.log(res);
 
         if (res.code) {
             Toast.error(res.message);

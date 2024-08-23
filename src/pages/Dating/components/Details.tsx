@@ -73,10 +73,6 @@ const Details = ({ girlData }: Props) => {
         mutateMyCoupons();
     }, [mutateMyCoupons]);
 
-    useEffect(() => {
-        console.log(params);
-    }, [params]);
-
     return (
         <div>
             <div className="bg-[#FD6298] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
@@ -89,7 +85,7 @@ const Details = ({ girlData }: Props) => {
             </div>
             <div className="flex justify-between items-center px-[12px] py-[8px]">
                 <div>體檢時間:{girlData?.physicalExamTime}</div>
-                <MedicalReportModal />
+                <MedicalReportModal url={girlData?.physicalExamReport} />
             </div>
             {/* --------------- */}
             <div className="bg-[#FD6298] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
@@ -194,15 +190,15 @@ const Details = ({ girlData }: Props) => {
             <div className="bg-[#FD6298] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
                 聯絡方式
             </div>
-            <div className="px-[12px] py-[8px] relative">
+            <div className="px-[12px] py-[8px] relative flex justify-between">
                 {params?.addressInfo ? (
-                    <>
+                    <div>
                         <div>手機:{params?.addressInfo.tel}</div>
                         <div>tg:{params?.addressInfo.tg}</div>
                         <div>地址:{params?.addressInfo.address}</div>
-                    </>
+                    </div>
                 ) : (
-                    '暂无联络方式'
+                    <span>暂无联络方式</span>
                 )}
                 <ContactDetailsModal handleChange={handleChangeParams} />
             </div>

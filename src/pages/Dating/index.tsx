@@ -76,13 +76,13 @@ const Home: FC = () => {
     }, [mutateDatingGirls]);
 
     return (
-        <div className="w-full">
+        <div className="w-full h-full">
             <Header
                 isShowDetails={isShowDetails}
                 girlData={girlData}
                 onSelected={handleSearch}
             />
-            <div className="relative w-full h-[calc(100vh-50px)] overflow-hidden">
+            <div className="relative w-full h-[calc(100%-50px)] overflow-hidden">
                 <Swiper
                     ref={swiperRef}
                     effect={'cards'}
@@ -94,7 +94,7 @@ const Home: FC = () => {
                     loop
                 >
                     {girlData?.pics.split(',').map((it, i) => (
-                        <SwiperSlide key={i}>
+                        <SwiperSlide className="w-full h-full" key={i}>
                             <img className="w-full h-full" src={it} />
                         </SwiperSlide>
                     ))}
@@ -115,7 +115,7 @@ const Home: FC = () => {
                         </div>
                     </div>
                 )}
-                <div className="w-full swiper-bottom-bg absolute bottom-[50px] left-0 z-9 py-[20px]">
+                <div className="w-full swiper-bottom-bg absolute bottom-0 left-0 z-9 py-[20px]">
                     {/* 底部信息 */}
                     <div className=" text-[#fff]">
                         <div className="">

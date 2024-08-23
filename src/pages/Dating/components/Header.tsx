@@ -13,9 +13,7 @@ interface Props {
 
 const Header = (props: Props) => {
     const { onSelected, isShowDetails, girlData } = props;
-    const {
-        filterCondition: { conditionItems },
-    } = useRecoilValue(selectorDict);
+    const { filterCondition } = useRecoilValue(selectorDict);
     const [visible, setVisible] = useState(false);
     const [isAllChecked, setIsAllChecked] = useState(false);
     const [checkedMap, setCheckedMap] = useState({});
@@ -28,8 +26,8 @@ const Header = (props: Props) => {
     };
     const handleAllSelected = () => {
         const temp = {};
-        for (let i = 0; i < conditionItems?.length; i++) {
-            const element = conditionItems[i];
+        for (let i = 0; i < filterCondition?.conditionItems?.length; i++) {
+            const element = filterCondition?.conditionItems[i];
             temp[element.value] = element.checkboxItems
                 .map((it) => {
                     if (it.canSelect) return it.value;
@@ -42,8 +40,8 @@ const Header = (props: Props) => {
 
     const handleCancelAllSelected = () => {
         const temp = {};
-        for (let i = 0; i < conditionItems?.length; i++) {
-            const element = conditionItems[i];
+        for (let i = 0; i < filterCondition?.conditionItems?.length; i++) {
+            const element = filterCondition?.conditionItems[i];
             temp[element.value] = element.checkboxItems
                 .map((it) => {
                     if (it.checked) {
@@ -58,8 +56,8 @@ const Header = (props: Props) => {
     // 初始化选中
     useEffect(() => {
         const temp = {};
-        for (let i = 0; i < conditionItems?.length; i++) {
-            const element = conditionItems[i];
+        for (let i = 0; i < filterCondition?.conditionItems?.length; i++) {
+            const element = filterCondition?.conditionItems[i];
             temp[element.value] = element.checkboxItems
                 .map((it) => {
                     if (it.checked) {
@@ -69,7 +67,7 @@ const Header = (props: Props) => {
                 .filter((it) => it);
         }
         setCheckedMap(temp);
-    }, [conditionItems]);
+    }, [filterCondition?.conditionItems]);
     return (
         <div className="w-full h-[50px] bg-primaryColor">
             {isShowDetails ? (
@@ -79,7 +77,15 @@ const Header = (props: Props) => {
                 </div>
             ) : (
                 <>
-                    <div onClick={() => setVisible(true)}>搜索</div>
+                    <div
+                        className="h-full flex justify-end items-center px-[16px]"
+                        onClick={() => setVisible(true)}
+                    >
+                        <img
+                            className="w-[24px]"
+                            src={require('@/assets/images/icon/form/search.png')}
+                        />
+                    </div>
                     <Overlay
                         visible={visible}
                         onCancel={() => setVisible(false)}
@@ -91,7 +97,9 @@ const Header = (props: Props) => {
                             <div>
                                 <FilterBox
                                     checkedMap={checkedMap}
-                                    filtersData={conditionItems}
+                                    filtersData={
+                                        filterCondition?.conditionItems ?? []
+                                    }
                                     onChange={handleChange}
                                 />
                             </div>

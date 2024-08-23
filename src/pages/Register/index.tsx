@@ -27,7 +27,6 @@ const RegisterPage: FC<RegisterPageProps> = () => {
         };
         params.pwd = cryptoEncrypt(values.pwd, ACCOUNT_AES_KEY);
         const res = await mutateRegister(params);
-        console.log(res);
 
         if (res.code) {
             Toast.error(res.message);

@@ -54,6 +54,7 @@ export interface MyCouponsResult {
     useCondition: string;
     money: number;
     expireTime: string;
+    status: string;
 }
 
 export interface LastAddressResult {

@@ -43,8 +43,11 @@ const CouponModal = (props: Props) => {
                                         <Button
                                             width="w-[80px]"
                                             onClick={() => handleClick(it.id)}
+                                            disabled={it.status !== 'NORMAL'}
                                         >
-                                            使用
+                                            {it.status === 'NORMAL'
+                                                ? '使用'
+                                                : '无法使用'}
                                         </Button>
                                     </div>
                                     <div>有效期限: {it.expireTime}</div>
