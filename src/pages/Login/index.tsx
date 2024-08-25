@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import UserToken from '@/common/token';
@@ -18,10 +18,7 @@ const LoginPage: FC<LoginPageProps> = () => {
     const { t } = useTranslation();
     const [loginDisabled, setLoginDisabled] = useState(true);
     const [form] = useForm();
-    const location = useLocation();
-
     const { mutateAsync: mutateUserLogin, isLoading } = useMutation(login);
-
     const fetchUserLogin = async (values) => {
         const params: LoginParams = {
             username: values.username,

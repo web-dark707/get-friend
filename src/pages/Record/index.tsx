@@ -59,7 +59,9 @@ const Home: FC = () => {
                         <li
                             className="item"
                             key={item.id}
-                            onClick={() => navigate('/recordDetail')}
+                            onClick={() =>
+                                navigate(`/recordDetail?id=${item.id}`)
+                            }
                         >
                             <p>
                                 編號:{item.id}

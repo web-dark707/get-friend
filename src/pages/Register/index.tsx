@@ -13,7 +13,7 @@ type RegisterPageProps = {};
 
 const RegisterPage: FC<RegisterPageProps> = () => {
     const navigate = useNavigate();
-    const code = getQueryString('code'); // 邀请码
+    const activationCode = getQueryString('activationCode'); // 邀请码
     const [loginDisabled, setLoginDisabled] = useState(true);
     const [form] = useForm();
     const location = useLocation();
@@ -177,7 +177,7 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                                 message: '請輸入啟用設定',
                             },
                         ]}
-                        initialValue={code}
+                        initialValue={activationCode}
                     >
                         <Input
                             inputClass="placeholder-primaryColor"
