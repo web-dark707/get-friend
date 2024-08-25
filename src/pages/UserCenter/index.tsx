@@ -2,17 +2,21 @@ import React, { FC, useEffect, useState } from 'react';
 import './styles.scss';
 import { useMutation } from '@tanstack/react-query';
 import { getUserInfo } from '@/api/user';
+import { getMyCoupons } from '@/api/home';
 import { handleClipboard } from '@/utils/clipboard';
 import CouponModal from '../Dating/components/CouponModal';
 
 const Home: FC = () => {
     const [visible, setVisible] = useState(false);
+
+    const { mutateAsync: mutateMyCoupons, data } = useMutation(getMyCoupons);
+
     const { mutateAsync: mutateUserInfo, data: userInfo } =
         useMutation(getUserInfo);
     useEffect(() => {
         mutateUserInfo();
-    }, [mutateUserInfo]);
-    console.log(userInfo);
+        mutateMyCoupons();
+    }, [mutateMyCoupons, mutateUserInfo]);
     return (
         <div className="my">
             {visible && (
@@ -20,7 +24,7 @@ const Home: FC = () => {
                     visible={visible}
                     isShowBtn={false}
                     onCancel={() => setVisible(false)}
-                    couponList={[]}
+                    couponList={data?.data}
                 />
             )}
             <header className="header">
