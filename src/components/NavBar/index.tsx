@@ -28,7 +28,7 @@ const Header: FC<HeaderProps> = ({
     return type === 'nav' ? (
         <div
             className={classNames(
-                'flex-between-center h-48px pr-[20px] py-14px relative',
+                'flex-between-center h-48px pr-[20px] py-14px relative bg-[#C95793] text-[#fff]',
                 className,
             )}
         >

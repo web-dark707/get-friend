@@ -1,45 +1,90 @@
-import { useMutation } from '@tanstack/react-query';
 import React, { FC, useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import { getRecord } from '@/api/common';
-
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import Datalist from '@/components/DataList';
+import { getRecord } from '@/api/record';
 import './styles.scss';
+import { formatLabel } from '@/common/format';
+import {
+    disputeStatus,
+    orderStatus,
+    paymentStatus,
+} from '@/common/options/record';
+import NavBar from '@/components/NavBar';
+import { Picker } from '@/components/vip-ui';
+
 const Home: FC = () => {
     const navigate = useNavigate();
-    const { mutateAsync: mutateUserInfo, data: record } =
-        useMutation(getRecord);
+    const {
+        mutateAsync: mutateRecord,
+        data: record,
+        isLoading,
+    } = useMutation(getRecord);
+
+    const handleChange = (val) => {
+        mutateRecord({ status: val === 'all' ? undefined : val });
+    };
+    const orderStatusItems = [
+        { value: 'all', label: '所有' },
+        ...orderStatus,
+    ].map((it) => ({
+        ...it,
+        children: it.label,
+    }));
+
     useEffect(() => {
-        mutateUserInfo();
-    }, [mutateUserInfo]);
-    console.log(record);
+        mutateRecord({ status: undefined });
+    }, [mutateRecord]);
+
     return (
         <div className="my">
-            <header className="header">
-                <div className="left-wrap">
-                    <span>約會記錄</span>
-                </div>
-                <div className="right-wrap">所有</div>
-            </header>
+            <NavBar
+                title="約會記錄"
+                rightContent={
+                    <Picker
+                        items={orderStatusItems}
+                        onChange={handleChange}
+                        triggerClass="right-wrap"
+                        pickerValue={'all'}
+                    />
+                }
+            />
+            <Datalist
+                isLoading={isLoading}
+                noData={record?.data?.length === 0}
+            ></Datalist>
             <ul className="orders">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => {
+                {record?.data.map((item) => {
                     return (
                         <li
                             className="item"
-                            key={item}
+                            key={item.id}
                             onClick={() => navigate('/recordDetail')}
                         >
                             <p>
-                                編號:103354405779327385
-                                <span className="status-1">投诉处理中</span>
+                                編號:{item.id}
+                                <span className="status-1">
+                                    {formatLabel(orderStatus, item.status)}
+                                </span>
                             </p>
                             <p className="bold">
-                                日期:09-07
-                                <span className="status-2">可付款</span>
+                                日期:{item.timeslot}
+                                <span className="status-2">
+                                    {formatLabel(
+                                        paymentStatus,
+                                        item.paymentStatus,
+                                    )}
+                                </span>
                             </p>
-                            <p className="bold">姓名:Bella 19</p>
+                            <p className="bold">姓名:{item.girlName}</p>
                             <p className="bold">
-                                价格:150U
-                                <span className="status-3">已结束</span>
+                                价格:{item.usdtPrice}U
+                                <span className="status-3">
+                                    {formatLabel(
+                                        disputeStatus,
+                                        item.disputeStatus,
+                                    )}
+                                </span>
                             </p>
                         </li>
                     );

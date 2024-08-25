@@ -26,7 +26,7 @@ const Details = ({ girlData }: Props) => {
         serviceItemIds: [],
         couponId: undefined,
         timeslot: undefined,
-        hour: undefined, //联系地址
+        hour: defaultDatingHour, //联系地址
         addressInfo: null,
     });
     const { mutateAsync: mutateMyCoupons, data } = useMutation(getMyCoupons);
@@ -129,7 +129,7 @@ const Details = ({ girlData }: Props) => {
                         }
                         triggerClass="border border-solid border-[#ccc] px-[12px]"
                         items={datingHours
-                            .split(',')
+                            ?.split(',')
                             .map((it) => ({ value: it, label: it }))}
                         onChange={(val) => handleChangeParams('hour', val)}
                     />

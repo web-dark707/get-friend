@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import './styles.scss';
 import { useMutation } from '@tanstack/react-query';
-import { getUserInfo } from '@/api/common';
+import { getUserInfo } from '@/api/user';
 import { handleClipboard } from '@/utils/clipboard';
 import CouponModal from '../Dating/components/CouponModal';
 

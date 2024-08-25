@@ -1,14 +1,17 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
+import { useRecoilValue } from 'recoil';
 import { Button } from '@/components/vip-ui';
 import { PreConfirmDatingResult } from '@/types/api/home';
 import { confirmDating } from '@/api/home';
 import { handleClipboard } from '@/utils/clipboard';
 import NavBar from '@/components/NavBar';
+import { selectorDict } from '@/store/common/selectors';
 
 const StartDating = () => {
     const location = useLocation();
+    const { depositMoney } = useRecoilValue(selectorDict);
     const { state } = location as { state: PreConfirmDatingResult };
     const { mutateAsync: mutateConfirmDating } = useMutation(confirmDating);
     const navigate = useNavigate();
@@ -57,10 +60,13 @@ const StartDating = () => {
                 支付方式
             </div>
             <div className="px-[12px] py-[8px]">
-                <div className=" relative">
+                <div className="relative">
                     <div>{state.paymentInfo?.paymentMethod}</div>
-                    <div>
-                        地址: {state.paymentInfo.address}
+                    <div className="whitespace-pre mt-[8px]">地址:</div>
+                    <div className="flex justify-between items-center">
+                        <span className="bg-[#888888] px-[8px] py-[4px] rounded-[8px] text-[#fff]">
+                            {state.paymentInfo.address}
+                        </span>
                         <Button
                             className=""
                             width="w-[80px]"
@@ -71,9 +77,8 @@ const StartDating = () => {
                             複製地址
                         </Button>
                     </div>
-                    <div>
-                        實際支付：
-                        {state.paymentInfo.amount} U
+                    <div className="flex justify-between items-center mt-[8px]">
+                        <span>實際支付：{state.paymentInfo.amount} U</span>
                         <Button
                             className=""
                             width="w-[80px]"
@@ -88,6 +93,9 @@ const StartDating = () => {
                         </Button>
                     </div>
                     <div>即時匯率：{state.paymentInfo.rate}</div>
+                    <div className="text-[18px] font-bold text-error">
+                        定金：{depositMoney}U
+                    </div>
                     {state.paymentInfo?.paymentPrivilege && (
                         <div>
                             支付特權：{state.paymentInfo.paymentPrivilege}
@@ -95,7 +103,10 @@ const StartDating = () => {
                     )}
                 </div>
                 <div className="text-error">
-                    注意：請誤惡作劇提單，發現無故提單狀況，一律取消會員資格，餘額不退{' '}
+                    註：為避免惡意提單，請提單後於10分鐘內支付10U訂金鎖定女生約會檔期，女生收到訂金後會進行檔期確認，若檔期衝突，將返還定金。若女生檔期確認後爽約，將賠償共20U給會員。若確認檔期後會員爽約，定金不退。請依10U訂金支付，少於或多於此金額將無法確認到賬，資金無法退還。定金的退還將以優惠券形式發放。
+                </div>
+                <div className="text-error mt-[8px]">
+                    注意：請誤惡作劇提單，發現無故提單狀況，一律取消會員資格，餘額不退
                 </div>
             </div>
             <div className="flex justify-end p-[12px]">

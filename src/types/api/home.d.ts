@@ -46,6 +46,7 @@ export interface DictResult {
     mainPayTip: string;
     datingHours: string;
     defaultDatingHour: string;
+    depositMoney: string;
 }
 
 export interface MyCouponsResult {
