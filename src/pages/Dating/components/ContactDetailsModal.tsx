@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input, Overlay } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
@@ -6,34 +6,38 @@ import { isWithDotNumber } from '@/utils/validate';
 import { getLastAddress } from '@/api/home';
 import { LastAddressResult } from '@/types/api/home';
 interface Props {
+    visible: boolean;
+    onCancel: () => void;
+    addressInfo: { tel: string; tg: string; address: string } | null;
     handleChange: (key: string, values: LastAddressResult) => void;
 }
-const ContactDetailsModal = ({ handleChange }: Props) => {
+const ContactDetailsModal = ({
+    handleChange,
+    addressInfo,
+    onCancel,
+    visible,
+}: Props) => {
     const [form] = useForm();
-    const overlayRef = useRef(null);
+    const [initialValues, setInitialValues] = useState(addressInfo);
     const { mutateAsync: mutateLastAddress, isLoading } =
         useMutation(getLastAddress);
 
     const onSubmit = (values) => {
         handleChange('addressInfo', values);
-        overlayRef.current.close();
+        onCancel();
     };
     const handleUseLastAddress = async () => {
         const res = await mutateLastAddress();
+        if (res.data) {
+            setInitialValues(res.data);
+        }
     };
     const handleConfirm = () => {
         form.submit();
     };
 
     return (
-        <Overlay
-            ref={overlayRef}
-            trigger={
-                <Button className="w-[100px] button-gradient text-white font-bold">
-                    輸入聯絡方式
-                </Button>
-            }
-        >
+        <Overlay visible={visible} onCancel={onCancel}>
             <div className="w-[88%] bg-[#2c1e2b] rounded-[10px] shadow-lg mx-auto text-[#e0e0e0]">
                 <div className="bg-[#b8336a] text-white text-[18px] font-bold py-[8px] rounded-t-[10px] w-full text-center">
                     輸入聯絡方式

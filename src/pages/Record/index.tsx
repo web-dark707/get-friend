@@ -5,11 +5,7 @@ import Datalist from '@/components/DataList';
 import { getRecord } from '@/api/record';
 import './styles.scss';
 import { formatLabel } from '@/common/format';
-import {
-    disputeStatus,
-    orderStatus,
-    paymentStatus,
-} from '@/common/options/record';
+import { disputeStatus, orderStatus } from '@/common/options/record';
 import NavBar from '@/components/NavBar';
 import { Picker } from '@/components/vip-ui';
 
@@ -69,15 +65,7 @@ const Home: FC = () => {
                                     {formatLabel(orderStatus, item.status)}
                                 </span>
                             </p>
-                            <p className="bold">
-                                日期:{item.timeslot}
-                                <span className="status-2">
-                                    {formatLabel(
-                                        paymentStatus,
-                                        item.paymentStatus,
-                                    )}
-                                </span>
-                            </p>
+                            <p className="bold">日期:{item.timeslot}</p>
                             <p className="bold">姓名:{item.girlName}</p>
                             <p className="bold">
                                 价格:{item.usdtPrice}U

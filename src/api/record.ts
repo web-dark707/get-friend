@@ -1,4 +1,4 @@
-import { RecordResult } from '@/types/api/record';
+import { RecordDisputeLogResult, RecordResult } from '@/types/api/record';
 import { deffHttp } from '@/utils/axios';
 enum Api {
     RECORD_LIST = '/api/dating-record/search',
@@ -29,7 +29,7 @@ export const recordDispute = (params: {
     );
 
 export const recordDisputeLog = (params: { datingRecordId: string }) =>
-    deffHttp.post<any>(
-        { url: Api.DATING_RECORD_DISPUTE, data: params },
+    deffHttp.get<RecordDisputeLogResult[]>(
+        { url: Api.DATING_RECORD_DISPUTE_LOG, params },
         { withToken: true },
     );

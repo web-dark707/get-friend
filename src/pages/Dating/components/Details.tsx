@@ -21,6 +21,8 @@ const Details = ({ girlData }: Props) => {
     const { mainPayTip, usdtToPhpRate, datingHours, defaultDatingHour } =
         useRecoilValue(selectorDict);
     const [isShowCouponModal, setIsShowCouponModal] = useState(false);
+    const [isContactDetailsModal, setIsContactDetailsModal] = useState(false);
+
     const [params, setParams] = useState<PreConfirmDatingParams>({
         girlId: girlData.id,
         serviceItemIds: [],
@@ -201,7 +203,20 @@ const Details = ({ girlData }: Props) => {
                 ) : (
                     <span>暂无联络方式</span>
                 )}
-                <ContactDetailsModal handleChange={handleChangeParams} />
+                <Button
+                    onClick={() => setIsContactDetailsModal(true)}
+                    className="w-[100px] button-gradient text-white font-bold"
+                >
+                    輸入聯絡方式
+                </Button>
+                {isContactDetailsModal && (
+                    <ContactDetailsModal
+                        visible={isContactDetailsModal}
+                        onCancel={() => setIsContactDetailsModal(false)}
+                        handleChange={handleChangeParams}
+                        addressInfo={params?.addressInfo}
+                    />
+                )}
             </div>
             {/* --------------- */}
             <div className="bg-[#521933] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">

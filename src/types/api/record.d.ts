@@ -37,3 +37,15 @@ export interface RecordResult {
     depositMoneyUsdt: number;
     receiveDepositTime: number;
 }
+
+export interface RecordDisputeLogResult {
+    content: string;
+    createdBy: string;
+    createdTime: number;
+    datingRecordId: string;
+    disputeOwner: string;
+    id: string;
+    status: string;
+    updatedBy: string;
+    updatedTime: number;
+}

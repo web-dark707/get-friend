@@ -301,8 +301,19 @@ const Home: FC = () => {
                         </div>
                         <div className="remark">
                             <p className="bold">投诉内容</p>
-                            <p>投诉时间: 2024-09-10 12:44:12</p>
-                            <p>态度不好，未满三小时</p>
+                            {disputeLog?.data.map((it) => (
+                                <>
+                                    <p>
+                                        投诉时间:
+                                        {dayjs(it.createdTime).format(
+                                            'YYYY-MM-DD HH:mm:ss',
+                                        )}
+                                    </p>
+                                    <p className="text-[#F70052]">
+                                        {it.content}
+                                    </p>
+                                </>
+                            ))}
                             <p className="bold">处理结果</p>
                             <p>回复时间: 2024-09-10 12:44:12</p>
                             <p>经调查属实，补偿相应金额1000P优惠券到会员账户</p>
