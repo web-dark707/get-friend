@@ -180,9 +180,6 @@ module.exports = {
                 headers: {
                     Cookie: '',
                 },
-                pathRewrite: {
-                    '^/api': '',
-                },
             },
         },
     },

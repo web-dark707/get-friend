@@ -1,16 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 import './styles.scss';
+import { useRecoilValue } from 'recoil';
 import { useMutation } from '@tanstack/react-query';
 import { getUserInfo } from '@/api/user';
+import { selectorDict } from '@/store/common/selectors';
 import { getMyCoupons } from '@/api/home';
+import { Button } from '@/components/vip-ui';
 import { handleClipboard } from '@/utils/clipboard';
 import CouponModal from '../Dating/components/CouponModal';
 
 const Home: FC = () => {
     const [visible, setVisible] = useState(false);
-
+    const { csBot } = useRecoilValue(selectorDict);
     const { mutateAsync: mutateMyCoupons, data } = useMutation(getMyCoupons);
-
     const { mutateAsync: mutateUserInfo, data: userInfo } =
         useMutation(getUserInfo);
     useEffect(() => {
@@ -31,13 +33,16 @@ const Home: FC = () => {
                 <span>我的</span>
                 <img src={require('@/assets/images/home/my-logo.jpg')} />
             </header>
-            <div className="asset">
+            <div className="asset relative">
                 <p className="title">帳號資訊</p>
                 <div className="detail">
                     <p>登入帳號: {userInfo?.data.username}</p>
                     <p>啟用設定: {userInfo?.data.activationCode}</p>
                     <p>會員等級: {userInfo?.data.customerLevel}</p>
                 </div>
+                <Button className="w-[60px]  absolute right-[16px] top-[50px]">
+                    <a href={csBot}>客服</a>
+                </Button>
             </div>
             <div className="boon">
                 <span>會員福利</span>

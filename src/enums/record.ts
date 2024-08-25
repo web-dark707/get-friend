@@ -6,7 +6,7 @@ export enum StatusType {
     WAIT_PLATFORM_ACK = 'WAIT_PLATFORM_ACK',
     FINISH = 'FINISH',
     WAIT_PAY = 'WAIT_PAY',
-    NO_TIMESLOT = 'WAIT_PAY',
+    NO_TIMESLOT = 'NO_TIMESLOT',
 }
 
 export enum PaymentType {

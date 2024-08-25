@@ -41,6 +41,7 @@ export interface DictResult {
             value: string;
         }[];
     };
+    csBot: string;
     usdtToPhpRate: number; //USDT 转换 PHP 汇率
     promotionStr: string; //活动文字内容
     mainPayTip: string;

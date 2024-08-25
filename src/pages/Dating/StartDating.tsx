@@ -60,11 +60,11 @@ const StartDating = () => {
                 支付方式
             </div>
             <div className="px-[12px] py-[8px]">
-                <div className="relative">
+                <div>
                     <div>{state.paymentInfo?.paymentMethod}</div>
                     <div className="whitespace-pre mt-[8px]">地址:</div>
                     <div className="flex justify-between items-center">
-                        <span className="bg-[#888888] px-[8px] py-[4px] rounded-[8px] text-[#fff]">
+                        <span className="bg-[#444] px-[8px] py-[4px] rounded-[8px] text-[#fff]">
                             {state.paymentInfo.address}
                         </span>
                         <Button

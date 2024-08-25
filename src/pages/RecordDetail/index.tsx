@@ -1,31 +1,252 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router';
+import { useRecoilValue } from 'recoil';
+import dayjs from 'dayjs';
+import Big from 'big.js';
 import { getQueryString } from '@/utils/tools';
-import './styles.scss';
-import { getRecordDetail } from '@/api/record';
+import { getRecordDetail, recordDisputeLog } from '@/api/record';
 import Datalist from '@/components/DataList';
 import NavBar from '@/components/NavBar';
-import { formatLabel } from '@/common/format';
-import { orderStatus } from '@/common/options/record';
+import { Button } from '@/components/vip-ui';
+import { handleClipboard } from '@/utils/clipboard';
+import { selectorDict } from '@/store/common/selectors';
+import { StatusType } from '@/enums/record';
+import ComplainModal from './components/ComplainModal';
+import './styles.scss';
 
 const Home: FC = () => {
-    const navigate = useNavigate();
+    const { depositMoney } = useRecoilValue(selectorDict);
     const id = getQueryString('id');
-    const [visible, setVisible] = useState(false);
     const {
         mutateAsync: mutateRecordDetail,
         data,
         isLoading,
     } = useMutation(getRecordDetail);
+    const { mutateAsync: mutateRecordDisputeLog, data: disputeLog } =
+        useMutation(recordDisputeLog);
+
+    const renderDetail = () => {
+        switch (data?.data.status) {
+            case StatusType.WAIT_RECEIVE_DEPOSIT_MONEY:
+                return (
+                    <>
+                        <p>USDT trc20</p>
+                        <div className="whitespace-pre flex justify-between items-center">
+                            <span>地址:</span>
+                            <Button
+                                width="w-[80px]"
+                                onClick={(e) =>
+                                    handleClipboard(data?.data.usdtAddress, e)
+                                }
+                            >
+                                複製地址
+                            </Button>
+                        </div>
+                        <div className="bg-[#444] py-[4px] rounded-[8px] text-[#fff] text-center">
+                            {data?.data.usdtAddress}
+                        </div>
+                        <p className="mt-[8px]">
+                            實際支付：{data?.data.usdtPrice}&nbsp;U
+                        </p>
+                        <p>即時匯率: {data?.data.usdtToPhpRate}</p>
+                        <p>支付狀態：請10分鐘內支付訂金鎖定檔期</p>
+                        <div className="flex justify-between items-center">
+                            <div className="text-[18px] font-bold text-error">
+                                定金：{depositMoney}U
+                            </div>
+                            <Button
+                                width="w-[100px]"
+                                onClick={(e) =>
+                                    handleClipboard(String(depositMoney), e)
+                                }
+                            >
+                                複製訂金金額
+                            </Button>
+                        </div>
+                    </>
+                );
+            case StatusType.WAIT_PLATFORM_ACK:
+                return (
+                    <>
+                        <p>USDT trc20</p>
+                        <p>地址: {data?.data.usdtAddress}</p>
+                        <p className="mt-[8px]">
+                            實際支付：{data?.data.usdtPrice}&nbsp;U
+                        </p>
+                        <p>
+                            尾款支付：
+                            {new Big(data?.data.usdtPrice)
+                                .minus(data?.data.depositMoneyUsdt)
+                                .toNumber()}
+                            &nbsp;U
+                        </p>
+                        <p>即時匯率: {data?.data.usdtToPhpRate}</p>
+                        <p>支付狀態：已支付訂金10U，待鎖定檔期</p>
+                        <p>
+                            訂金到款時間:
+                            {dayjs(data?.data.receiveDepositTime).format(
+                                'YYYY-DD-MM HH:hh:mm',
+                            )}
+                        </p>
+                    </>
+                );
+            case StatusType.WAIT_PAY:
+                return (
+                    <>
+                        <p>USDT trc20</p>
+                        <div className="whitespace-pre flex justify-between items-center">
+                            <span>地址:</span>
+                            <Button
+                                width="w-[80px]"
+                                onClick={(e) =>
+                                    handleClipboard(data?.data.usdtAddress, e)
+                                }
+                            >
+                                複製地址
+                            </Button>
+                        </div>
+                        <div className="bg-[#444] py-[4px] rounded-[8px] text-[#fff] text-center">
+                            {data?.data.usdtAddress}
+                        </div>
+                        <p className="mt-[8px]">
+                            實際支付：{data?.data.usdtPrice}&nbsp;U
+                        </p>
+                        <p>
+                            尾款支付：
+                            {new Big(data?.data.usdtPrice)
+                                .minus(data?.data.depositMoneyUsdt)
+                                .toNumber()}
+                            &nbsp;U
+                        </p>
+                        <p>即時匯率: {data?.data.usdtToPhpRate}</p>
+                        <p>
+                            支付狀態：已支付訂金{data?.data.depositMoneyUsdt}
+                            &nbsp;U，待付尾款
+                        </p>
+                        <p>
+                            訂金到款時間:
+                            {dayjs(data?.data.receiveDepositTime).format(
+                                'YYYY-DD-MM HH:hh:mm',
+                            )}
+                        </p>
+                        <div className="flex justify-end">
+                            <Button
+                                width="w-[100px]"
+                                onClick={(e) =>
+                                    handleClipboard(
+                                        new Big(data?.data.usdtPrice)
+                                            .minus(data?.data.depositMoneyUsdt)
+                                            .toString(),
+                                        e,
+                                    )
+                                }
+                            >
+                                複製尾款金額
+                            </Button>
+                        </div>
+                    </>
+                );
+            case StatusType.FINISH:
+                return (
+                    <>
+                        <p>USDT trc20</p>
+                        <div className="whitespace-pre flex justify-between items-center">
+                            <span>地址:</span>
+                            <Button
+                                width="w-[80px]"
+                                onClick={(e) =>
+                                    handleClipboard(data?.data.usdtAddress, e)
+                                }
+                            >
+                                複製地址
+                            </Button>
+                        </div>
+                        <div className="bg-[#444] py-[4px] rounded-[8px] text-[#fff] text-center">
+                            {data?.data.usdtAddress}
+                        </div>
+                        <p className="mt-[8px]">
+                            實際支付：{data?.data.usdtPrice}&nbsp;U
+                        </p>
+                        <p>
+                            尾款支付：
+                            {new Big(data?.data.usdtPrice)
+                                .minus(data?.data.depositMoneyUsdt)
+                                .toNumber()}
+                            &nbsp;U
+                        </p>
+                        <p>即時匯率: {data?.data.usdtToPhpRate}</p>
+                        <p>
+                            支付狀態：已支付訂金{data?.data.depositMoneyUsdt}
+                            &nbsp;U，尾款
+                            {new Big(data?.data.usdtPrice)
+                                .minus(data?.data.depositMoneyUsdt)
+                                .toNumber()}
+                            &nbsp;U
+                        </p>
+                        <p>
+                            訂金到款時間:
+                            {dayjs(data?.data.receiveDepositTime).format(
+                                'YYYY-DD-MM HH:hh:mm',
+                            )}
+                        </p>
+                        <p>
+                            尾款到款時間:
+                            {dayjs(data?.data.paidTime).format(
+                                'YYYY-DD-MM HH:hh:mm',
+                            )}
+                        </p>
+                    </>
+                );
+            case StatusType.NO_TIMESLOT:
+                return (
+                    <>
+                        <p>USDT trc20</p>
+                        <p>地址: {data?.data.usdtAddress}</p>
+                        <p className="mt-[8px]">
+                            實際支付：{data?.data.usdtPrice}&nbsp;U
+                        </p>
+                        <p>
+                            尾款支付：
+                            {new Big(data?.data.usdtPrice)
+                                .minus(data?.data.depositMoneyUsdt)
+                                .toNumber()}
+                            &nbsp;U
+                        </p>
+                        <p>即時匯率: {data?.data.usdtToPhpRate}</p>
+                        <p>
+                            支付狀態：已支付訂金{data?.data.depositMoneyUsdt}
+                            &nbsp;U, 檔期衝突
+                        </p>
+                        <p>
+                            訂金到款時間:
+                            {dayjs(data?.data.receiveDepositTime).format(
+                                'YYYY-DD-MM HH:hh:mm',
+                            )}
+                        </p>
+                        <div className="text-error mt-[16px]">
+                            {data?.data.depositMoneyUsdt}
+                            &nbsp;U 訂金已返還為待值優惠券，請查收
+                        </div>
+                    </>
+                );
+            default:
+                return <></>;
+        }
+    };
 
     useEffect(() => {
         mutateRecordDetail({ datingId: id });
     }, [id, mutateRecordDetail]);
 
+    useEffect(() => {
+        mutateRecordDisputeLog({
+            datingRecordId: id,
+        });
+    }, [mutateRecordDisputeLog, id]);
+
     return (
         <Datalist isLoading={isLoading} noData={!data?.data}>
-            <div className="my">
+            <div className="my min-h-[100vh] relative pb-[80px]">
                 <NavBar title="約會記錄詳情" />
                 <div className="bg-[#521933] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
                     約會內容
@@ -53,47 +274,42 @@ const Home: FC = () => {
                 <div className="asset">
                     <p className="title">支付訊息</p>
                     <div className="detail">
-                        <p>優惠價:{data?.data.realPayPrice}P</p>
-                        <p>優惠券:1000P</p>
-                        <p>應付款項: 7000P</p>
+                        <p>優惠價:{data?.data.totalPromotionPrice}P</p>
+                        {data?.data.discountPrice && (
+                            <p>優惠券:{data?.data.discountPrice}P</p>
+                        )}
+                        <p>應付款項: {data?.data.realPayPrice}P</p>
                     </div>
                 </div>
                 <div className="asset-4">
-                    <p className="title">支付方式</p>
+                    <p className="title mb-[8px]">支付方式</p>
                     <div className="detail">
-                        <p>USDT trc20</p>
-                        <p>位址:{data?.data.usdtAddress}</p>
-                        <p>實際支付: {data?.data.usdtPrice} U</p>
-                        <p>即時匯率: {data?.data.usdtToPhpRate}</p>
-                        <p>
-                            支付狀態:
-                            {formatLabel(orderStatus, data?.data.status)}
-                        </p>
-                        <p>到款時間: 2024-09-12 12:44:23</p>
-                        <p>支付特權: 先享後付</p>
-                        <article>
-                            注意：此地址只接收trc20協議的USDT，充入其它幣種無法到賬，且無法找回，支付金額需等於上面所示實際支付金額，少充無法到賬，多充無法補回，由操作失誤導致的資金問題平台概不付責
-                        </article>
+                        {renderDetail()}
+                        {![StatusType.NO_TIMESLOT].includes(
+                            data?.data.status,
+                        ) && (
+                            <article className="mt-[8px]">
+                                注意：此地址只接收trc20協議的USDT，充入其它幣種無法到賬，且無法找回，支付金額需等於上面所示實際支付金額，少充無法到賬，多充無法補回，由操作失誤導致的資金問題平台概不付責
+                            </article>
+                        )}
                     </div>
                 </div>
-                <div className="boon">
-                    <span></span>
-                    <span
-                        className="show-more"
-                        onClick={() => setVisible(true)}
-                    >
-                        我要投訴
-                    </span>
-                </div>
-                <div className="remark">
-                    <p className="bold">投诉内容</p>
-                    <p>投诉时间: 2024-09-10 12:44:12</p>
-                    <p>态度不好，未满三小时</p>
-                    <p className="bold">处理结果</p>
-                    <p>回复时间: 2024-09-10 12:44:12</p>
-                    <p>经调查属实，补偿相应金额1000P优惠券到会员账户</p>
-                </div>
-                <div className="footer">
+                {data?.data.status === StatusType.FINISH && (
+                    <>
+                        <div className="boon">
+                            <ComplainModal datingRecordId={data?.data.id} />
+                        </div>
+                        <div className="remark">
+                            <p className="bold">投诉内容</p>
+                            <p>投诉时间: 2024-09-10 12:44:12</p>
+                            <p>态度不好，未满三小时</p>
+                            <p className="bold">处理结果</p>
+                            <p>回复时间: 2024-09-10 12:44:12</p>
+                            <p>经调查属实，补偿相应金额1000P优惠券到会员账户</p>
+                        </div>
+                    </>
+                )}
+                <div className="footer w-full absolute bottom-0 left-0">
                     <img src={require('@/assets/images/home/my-logo.jpg')} />
                 </div>
             </div>

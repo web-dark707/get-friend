@@ -35,4 +35,5 @@ export interface RecordResult {
     }[];
     canPay: boolean;
     depositMoneyUsdt: number;
+    receiveDepositTime: number;
 }
