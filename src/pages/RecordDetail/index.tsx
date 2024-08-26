@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
 import dayjs from 'dayjs';
 import Big from 'big.js';
+import classNames from 'classnames';
 import { getQueryString } from '@/utils/tools';
 import { getRecordDetail, recordDisputeLog } from '@/api/record';
 import Datalist from '@/components/DataList';
@@ -300,23 +301,31 @@ const Home: FC = () => {
                             <ComplainModal datingRecordId={data?.data.id} />
                         </div>
                         <div className="remark">
-                            <p className="bold">投诉内容</p>
-                            {disputeLog?.data.map((it) => (
-                                <>
-                                    <p>
-                                        投诉时间:
+                            <div className="flex justify-between">
+                                <p className="bold">投诉内容</p>
+                                <p className="bold">处理结果</p>
+                            </div>
+                            {disputeLog?.data.reverse().map((it) => (
+                                <div key={it.id}>
+                                    <p className="text-center text-[#c2c2c2]">
+                                        {it.disputeOwner !== 'PLATFORM'
+                                            ? '投诉时间: '
+                                            : '回复时间: '}
                                         {dayjs(it.createdTime).format(
                                             'YYYY-MM-DD HH:mm:ss',
                                         )}
                                     </p>
-                                    <p className="text-[#F70052]">
+                                    <p
+                                        className={classNames(
+                                            it.disputeOwner !== 'PLATFORM'
+                                                ? 'text-right'
+                                                : '',
+                                        )}
+                                    >
                                         {it.content}
                                     </p>
-                                </>
+                                </div>
                             ))}
-                            <p className="bold">处理结果</p>
-                            <p>回复时间: 2024-09-10 12:44:12</p>
-                            <p>经调查属实，补偿相应金额1000P优惠券到会员账户</p>
                         </div>
                     </>
                 )}

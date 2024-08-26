@@ -38,6 +38,12 @@ export function useInputLogic(
     const shouldPreventEvent = useRef(false);
     const wrapRef = useRef<HTMLDivElement | null>(null);
 
+    useEffect(() => {
+        if (value !== undefined) {
+            setInputValue(value);
+        }
+    }, [value]);
+
     // 自动聚焦
     useEffect(() => {
         if (autoFocus) {
@@ -94,7 +100,6 @@ export function useInputLogic(
                 return;
             }
             setIsFocusing(true);
-
             onFocus && onFocus(e);
         });
     }

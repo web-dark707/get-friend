@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input, Overlay } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
@@ -18,7 +18,6 @@ const ContactDetailsModal = ({
     visible,
 }: Props) => {
     const [form] = useForm();
-    const [initialValues, setInitialValues] = useState(addressInfo);
     const { mutateAsync: mutateLastAddress, isLoading } =
         useMutation(getLastAddress);
 
@@ -29,7 +28,7 @@ const ContactDetailsModal = ({
     const handleUseLastAddress = async () => {
         const res = await mutateLastAddress();
         if (res.data) {
-            setInitialValues(res.data);
+            form.setFieldsValue(res.data);
         }
     };
     const handleConfirm = () => {
@@ -47,6 +46,7 @@ const ContactDetailsModal = ({
                         className="mt-[20px] rounded-[8px]"
                         form={form}
                         onSubmit={onSubmit}
+                        initialValues={addressInfo}
                     >
                         <Form.Item
                             field="tel"
