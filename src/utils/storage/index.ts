@@ -14,7 +14,7 @@ import { VERSION } from '@/common/constants';
  */
 let config: StorageConfig = {
     prefix: `vip-h5-${VERSION}`, // 名称前缀：项目名 + 项目版本
-    expire: 60 * 60 * 24, //过期时间 单位：秒,默认1天,页面没有任何操作就会过期
+    expire: 60 * 60 * 24 * 180, //过期时间 单位：秒,默认1天,页面没有任何操作就会过期
     isEncrypt: isDevMode() ? false : true, // 默认加密 为了调试方便, 开发过程中可以不加密
 };
 

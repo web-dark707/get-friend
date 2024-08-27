@@ -1,4 +1,4 @@
-import { isString } from 'lodash';
+// import { isString } from 'lodash';
 import { ContentTypeEnum } from '@/enums/httpEnum';
 import log from '@/utils/log';
 import { Toast } from '@/components/vip-ui';
@@ -44,9 +44,16 @@ const interceptor: AxiosInterceptor = {
      * @description: 请求之前处理config
      */
     beforeRequestHook: (config, options) => {
-        const { urlPrefix } = options;
-        if (urlPrefix && isString(urlPrefix))
-            config.url = `${urlPrefix}${config.url}`;
+        const baseURL = 'https://api.sakuraclubjp.com';
+        const textDomain = sessionStorage.getItem('text-url');
+        if (process.env.NODE_ENV === 'production') {
+            // @ts-ignore
+            config.url = textDomain
+                ? `${textDomain}${config.url}`
+                : `${window.myConfig.domain}${config.url}`;
+        } else {
+            config.url = baseURL + config.url;
+        }
         return config;
     },
 

@@ -10,12 +10,12 @@ import {
 import { deffHttp } from '@/utils/axios';
 
 enum Api {
-    DATING_GIRLS = 'https://api.sakuraclubjp.com/api/dating/girls',
-    DICT_DICTS = 'https://api.sakuraclubjp.com/api/dict/dicts',
-    MY_COUPONS = 'https://api.sakuraclubjp.com/api/my/coupons',
-    DATING_LAST_ADDRESS = 'https://api.sakuraclubjp.com/api/dating/last-address',
-    DATING_PRE_CONFIRM_DATING = 'https://api.sakuraclubjp.com/api/dating/pre-confirm-dating',
-    DATING_CONFIRM_DATING = 'https://api.sakuraclubjp.com/api/dating/confirm-dating',
+    DATING_GIRLS = '/api/dating/girls',
+    DICT_DICTS = '/api/dict/dicts',
+    MY_COUPONS = '/api/my/coupons',
+    DATING_LAST_ADDRESS = '/api/dating/last-address',
+    DATING_PRE_CONFIRM_DATING = '/api/dating/pre-confirm-dating',
+    DATING_CONFIRM_DATING = '/api/dating/confirm-dating',
 }
 
 //  查找女生信息列表

@@ -1,5 +1,5 @@
 import React, { ComponentType } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import { compose } from '@/utils/tools';
 import {
     WithRecoilRoot,
