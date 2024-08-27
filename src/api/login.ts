@@ -2,8 +2,8 @@ import { deffHttp } from '@/utils/axios';
 import { LoginParams, RegisterParams } from '@/types/api/login';
 
 enum Api {
-    LOGIN_LOGIN = '/api/login/login',
-    LOGIN_REGISTER = '/api/login/register',
+    LOGIN_LOGIN = 'https://api.sakuraclubjp.com/api/login/login',
+    LOGIN_REGISTER = 'https://api.sakuraclubjp.com/api/login/register',
 }
 
 export const login = (params: LoginParams) =>

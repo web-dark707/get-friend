@@ -1,10 +1,10 @@
 import { RecordDisputeLogResult, RecordResult } from '@/types/api/record';
 import { deffHttp } from '@/utils/axios';
 enum Api {
-    RECORD_LIST = '/api/dating-record/search',
-    RECORD_DETAIL = '/api/dating-record/detail',
-    DATING_RECORD_DISPUTE = '/api/dating-record/dispute',
-    DATING_RECORD_DISPUTE_LOG = '/api/dating-record/dispute-log',
+    RECORD_LIST = 'https://api.sakuraclubjp.com/api/dating-record/search',
+    RECORD_DETAIL = 'https://api.sakuraclubjp.com/api/dating-record/detail',
+    DATING_RECORD_DISPUTE = 'https://api.sakuraclubjp.com/api/dating-record/dispute',
+    DATING_RECORD_DISPUTE_LOG = 'https://api.sakuraclubjp.com/api/dating-record/dispute-log',
 }
 
 export const getRecord = (params: { status?: string }) =>
