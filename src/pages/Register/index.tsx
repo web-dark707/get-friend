@@ -4,8 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import UserToken from '@/common/token';
 import { Input, Form, Button, Toast } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
-import { cryptoEncrypt, getQueryString } from '@/utils/tools';
-import { ACCOUNT_AES_KEY } from '@/common/constants';
+import { getQueryString } from '@/utils/tools';
 import { register } from '@/api/login';
 import { RegisterParams } from '@/types/api/login';
 
@@ -22,10 +21,9 @@ const RegisterPage: FC<RegisterPageProps> = () => {
     const fetchUserLogin = async (values) => {
         const params: RegisterParams = {
             username: values.username,
-            pwd: undefined,
+            pwd: values.pwd,
             activationCode: values.activationCode,
         };
-        params.pwd = cryptoEncrypt(values.pwd, ACCOUNT_AES_KEY);
         const res = await mutateRegister(params);
 
         if (res.code) {

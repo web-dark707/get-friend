@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 import UserToken from '@/common/token';
 import { Input, Form, Button, Toast } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
-import { cryptoEncrypt } from '@/utils/tools';
-import { ACCOUNT_AES_KEY } from '@/common/constants';
 import { getStorage, setStorage } from '@/utils/storage';
 import { login } from '@/api/login';
 import { LoginParams } from '@/types/api/login';
@@ -22,9 +20,8 @@ const LoginPage: FC<LoginPageProps> = () => {
     const fetchUserLogin = async (values) => {
         const params: LoginParams = {
             username: values.username,
-            pwd: undefined,
+            pwd: values.pwd,
         };
-        params.pwd = cryptoEncrypt(values.pwd, ACCOUNT_AES_KEY);
         const res = await mutateUserLogin(params);
 
         if (res.code) {
