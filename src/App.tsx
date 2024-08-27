@@ -13,7 +13,7 @@ import RenderRouter from './router';
 function App() {
     const RouteComponent = () => {
         return (
-            <Router>
+            <Router basename="/">
                 <WarpCommon>
                     <RenderRouter></RenderRouter>
                 </WarpCommon>

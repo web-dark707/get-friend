@@ -93,9 +93,12 @@ const Home: FC = () => {
                     className="w-full h-full"
                     loop
                 >
-                    {girlData?.pics.split(',').map((it, i) => (
-                        <SwiperSlide className="w-full h-full" key={i}>
-                            <img className="w-full h-full" src={it} />
+                    {girlData?.pics.split(',').map((it) => (
+                        <SwiperSlide className="w-full h-full" key={it}>
+                            <img
+                                className="w-full h-full"
+                                src={'https://img.sakuraclubjp.com/' + it}
+                            />
                         </SwiperSlide>
                     ))}
                 </Swiper>
