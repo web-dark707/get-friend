@@ -67,20 +67,31 @@ const Header = (props: Props) => {
                 .filter((it) => it);
         }
         setCheckedMap(temp);
-    }, [filterCondition?.conditionItems]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <div className="w-full h-[50px] bg-primaryColor">
             {isShowDetails ? (
-                <div>
-                    <span>{girlData.name}</span>
-                    <span>{girlData.age}</span>
+                <div className="flex justify-between items-center px-[16px]">
+                    <div className="text-[18px] font-bold text-[#fff]">
+                        <span>{girlData.name}</span>
+                        <span>{girlData.age}</span>
+                    </div>
+                    <img
+                        className="h-[46px]"
+                        src={require('@/assets/images/home/my-logo.jpg')}
+                    />
                 </div>
             ) : (
                 <>
                     <div
-                        className="h-full flex justify-end items-center px-[16px]"
+                        className="h-full flex justify-between items-center px-[16px]"
                         onClick={() => setVisible(true)}
                     >
+                        <img
+                            className="h-[46px]"
+                            src={require('@/assets/images/home/my-logo.jpg')}
+                        />
                         <img
                             className="w-[24px]"
                             src={require('@/assets/images/icon/form/search.png')}

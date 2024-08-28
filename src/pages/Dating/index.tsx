@@ -4,6 +4,7 @@ import { Pagination, EffectCards } from 'swiper';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/vip-ui';
 import { getDatingGirls } from '@/api/home';
+import { isEmpty } from '@/utils/tools';
 import { DatingGirlsResult } from '@/types/api/home';
 import Header from './components/Header';
 import 'swiper/css/pagination';
@@ -15,14 +16,15 @@ const Dating: FC = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isShowDetails, setIsShowDetails] = useState(false);
 
-    const { mutateAsync: mutateDatingGirls, data: girlList } = useMutation(
-        getDatingGirls,
-        {
-            onSuccess: (res) => {
-                setGirlData(res.data[activeIndex]);
-            },
+    const {
+        mutateAsync: mutateDatingGirls,
+        data: girlList,
+        isLoading,
+    } = useMutation(getDatingGirls, {
+        onSuccess: (res) => {
+            setGirlData(res.data[activeIndex]);
         },
-    );
+    });
 
     const handleNext = useCallback(() => {
         setActiveIndex((prevIndex) => {
@@ -118,33 +120,45 @@ const Dating: FC = () => {
                         </div>
                     </div>
                 )}
-                <div className="w-full swiper-bottom-bg absolute bottom-0 left-0 z-9 py-[20px]">
+                <div className="w-full text-[#fff] bg-[#000] absolute bottom-0 left-0 z-9 py-[12px] px-[8px]">
                     {/* 底部信息 */}
-                    <div className=" text-[#fff]">
+                    {!isLoading && (
                         <div className="">
-                            <span>{girlData?.name}</span>
-                            <span>{girlData?.age}</span>
-                            <span>{girlData?.validTimeslots && '有档期'}</span>
-                        </div>
-                        <div className="flex">
-                            <div className="flex mt-[12px] flex-1">
-                                {girlData?.tags?.split(',').map((it, i) => (
-                                    <div
-                                        className="mx-[4px] px-[8px] py-[4px] border-1 border-[#787778] border-solid rounded-[8px] flex-shrink-0"
-                                        key={i}
-                                    >
-                                        {it}
-                                    </div>
-                                ))}
+                            <div className="text-[20px]">
+                                <span>{girlData?.name}&nbsp;</span>
+                                <span>{girlData?.age}&nbsp;</span>
+                                <span className="text-[14px]">
+                                    {girlData?.validTimeslots && '有档期'}
+                                </span>
+                                <span className="text-[14px] ml-[12px]">
+                                    点击图片显示下一张
+                                </span>
                             </div>
-                            <Button
-                                className="w-[60px] rounded-[8px] h-[34px]"
-                                onClick={handelShowDetails}
-                            >
-                                {isShowDetails ? '返回' : '详情'}
-                            </Button>
+                            <div className="flex">
+                                <div className="flex mt-[12px] flex-1">
+                                    {girlData?.tags?.split(',').map((it, i) => (
+                                        <div
+                                            className="mx-[4px] px-[8px] py-[4px] border-1 border-[#787778] border-solid rounded-[8px] flex-shrink-0"
+                                            key={i}
+                                        >
+                                            {it}
+                                        </div>
+                                    ))}
+                                </div>
+                                <Button
+                                    loading={isLoading}
+                                    className="w-[60px] rounded-[8px] h-[34px]"
+                                    onClick={handelShowDetails}
+                                >
+                                    {isShowDetails
+                                        ? '返回'
+                                        : isEmpty(girlData?.validTimeslots)
+                                        ? '详情'
+                                        : '约会'}
+                                </Button>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
             {/* 详情 */}

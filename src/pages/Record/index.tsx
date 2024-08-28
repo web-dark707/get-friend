@@ -1,13 +1,15 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import Datalist from '@/components/DataList';
 import { getRecord } from '@/api/record';
-import './styles.scss';
 import { formatLabel } from '@/common/format';
-import { disputeStatus, orderStatus } from '@/common/options/record';
+import { disputeStatus } from '@/common/options/record';
 import NavBar from '@/components/NavBar';
 import { Picker } from '@/components/vip-ui';
+import { selectorDict } from '@/store/common/selectors';
+import './styles.scss';
 
 const Home: FC = () => {
     const navigate = useNavigate();
@@ -16,17 +18,28 @@ const Home: FC = () => {
         data: record,
         isLoading,
     } = useMutation(getRecord);
+    const { orderStatus } = useRecoilValue(selectorDict);
 
     const handleChange = (val) => {
         mutateRecord({ status: val === 'all' ? undefined : val });
     };
-    const orderStatusItems = [
-        { value: 'all', label: '所有' },
-        ...orderStatus,
-    ].map((it) => ({
-        ...it,
-        children: it.label,
-    }));
+
+    const orderStatusList = useMemo(
+        () =>
+            Object.keys(orderStatus).map((key) => ({
+                value: key,
+                label: orderStatus[key],
+            })),
+        [orderStatus],
+    );
+    const orderStatusItems = useMemo(
+        () =>
+            [{ value: 'all', label: '所有' }, ...orderStatusList].map((it) => ({
+                ...it,
+                children: it.label,
+            })),
+        [orderStatusList],
+    );
 
     useEffect(() => {
         mutateRecord({ status: undefined });
@@ -62,7 +75,7 @@ const Home: FC = () => {
                             <p>
                                 編號:{item.id}
                                 <span className="status-1">
-                                    {formatLabel(orderStatus, item.status)}
+                                    {formatLabel(orderStatusList, item.status)}
                                 </span>
                             </p>
                             <p className="bold">日期:{item.timeslot}</p>

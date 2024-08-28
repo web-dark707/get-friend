@@ -48,6 +48,9 @@ export interface DictResult {
     datingHours: string;
     defaultDatingHour: string;
     depositMoney: string;
+    orderStatus: {
+        [key: string]: string;
+    };
 }
 
 export interface MyCouponsResult {

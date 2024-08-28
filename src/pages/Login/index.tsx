@@ -54,7 +54,7 @@ const LoginPage: FC<LoginPageProps> = () => {
             <Form
                 form={form}
                 onSubmit={onSubmit}
-                className="flex justify-between text-[16px] text-[#fff] min-h-[180px] mt-[38px] mx-[12px]"
+                className="flex justify-between text-[16px] text-[#fff] min-h-[150px] mt-[38px] mx-[12px]"
                 onValuesChange={() => {
                     form.getFieldsError().then((res) => {
                         setLoginDisabled(res.hasError);
