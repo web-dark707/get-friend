@@ -15,7 +15,7 @@ export const useGetDict = () => {
 
     return async () => {
         const res = await mutateDict();
-        if (res.code === 10000) {
+        if (res.data) {
             setDict(res.data);
         }
     };

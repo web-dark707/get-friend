@@ -38,11 +38,11 @@ const Details = ({ girlData }: Props) => {
     const price = useMemo(
         () =>
             girlData?.serviceItemInfos
-                .filter((it) => params.serviceItemIds.includes(it.id))
-                .map((it) => it.promotionPrice)
-                .reduce((prev, next) => {
+                ?.filter((it) => params.serviceItemIds.includes(it.id))
+                ?.map((it) => it.promotionPrice)
+                ?.reduce((prev, next) => {
                     return prev + next;
-                }, 0),
+                }, 0) ?? 0,
         [girlData?.serviceItemInfos, params.serviceItemIds],
     );
     const handleChangeParams = (key: string, value: any) => {

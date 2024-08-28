@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import UserToken from '@/common/token';
 import { Input, Form, Button, Toast } from '@/components/vip-ui';
 import { useForm } from '@/components/vip-ui/Form';
-import { getStorage, setStorage } from '@/utils/storage';
 import { login } from '@/api/login';
 import { LoginParams } from '@/types/api/login';
 
@@ -52,24 +51,25 @@ const LoginPage: FC<LoginPageProps> = () => {
                 src={require('@/assets/images/home/login.jpg')}
                 className="h-180px w-180px rounded-[48px]"
             />
-            <div className="w-350px rounded-16px mt-32px bg-[#BF2A81]">
-                <Form
-                    form={form}
-                    onSubmit={onSubmit}
-                    className="bg-[#BF2A81] h-full rounded-16px  p-24px"
-                    onValuesChange={() => {
-                        form.getFieldsError().then((res) => {
-                            setLoginDisabled(res.hasError);
-                        });
-                    }}
-                >
+            <Form
+                form={form}
+                onSubmit={onSubmit}
+                className="flex justify-between text-[16px] text-[#fff] min-h-[180px] mt-[38px] mx-[12px]"
+                onValuesChange={() => {
+                    form.getFieldsError().then((res) => {
+                        setLoginDisabled(res.hasError);
+                    });
+                }}
+            >
+                <div className="bg-[#EA82B4] text-[18px] font-bold w-[90px] px-[8px] flex flex-col justify-around items-center mr-[8px] rounded-xl flex-shrink-0">
+                    <div>帳號</div>
+                    <div>密碼</div>
+                </div>
+                <div className="bg-[#BF2A81] flex-1 flex flex-col justify-around items-center rounded-xl px-[8px] py-[12px]">
                     {/* -------------------------------------------户口号--------------------------------------------- */}
                     <Form.Item
-                        label="帳號"
                         field="username"
-                        className="mb-16px"
-                        initialValue={getStorage('username')}
-                        labelClassName="w-50px mr-16px text-right flex-shrink-0 leading-[30px]"
+                        className="w-full"
                         rules={[
                             {
                                 required: true,
@@ -78,23 +78,13 @@ const LoginPage: FC<LoginPageProps> = () => {
                         ]}
                     >
                         <Input
-                            inputClass="placeholder-primaryColor"
                             placeholder={'請輸入帳號'}
-                            className="flex-between-center px-[10px] rounded-8px h-42px "
-                            prefixDom={
-                                <img
-                                    src={require('@/assets/images/icon/form/user.png')}
-                                    className="w-22px h-22px"
-                                />
-                            }
-                            onClear={() => {
-                                setStorage('username', '');
-                            }}
+                            inputClass="placeholder-[#bbb]"
+                            className="h-[40px] text-[#222] border-1 border-solid border-[#c2c2c2] bg-[#fff] rounded-md mb-[8px]"
                         />
                     </Form.Item>
                     <Form.Item
-                        label="密碼"
-                        labelClassName="w-50px mr-16px text-right flex-shrink-0 leading-[30px]"
+                        className="w-full"
                         rules={[
                             {
                                 required: true,
@@ -102,34 +92,27 @@ const LoginPage: FC<LoginPageProps> = () => {
                             },
                         ]}
                         field="pwd"
-                        className="mb-35px"
                     >
                         {/* -------------------------------------------密码--------------------------------------------- */}
                         <Input
-                            inputClass="placeholder-primaryColor"
                             type="password"
                             placeholder={'請輸入密碼'}
-                            className="flex-between-center px-[10px] rounded-8px h-42px "
-                            prefixDom={
-                                <img
-                                    src={require('@/assets/images/icon/form/lock.png')}
-                                    className="w-22px h-22px"
-                                />
-                            }
+                            inputClass="placeholder-[#bbb]"
+                            className="h-[40px] text-[#222] border-1 border-solid border-[#c2c2c2] bg-[#fff] rounded-md mb-[8px]"
                         />
                     </Form.Item>
-                    <Button
-                        onClick={() => form.submit()}
-                        disabled={loginDisabled}
-                        loading={isLoading}
-                        className="w-full flex-row-center"
-                    >
-                        登入
-                    </Button>
-                </Form>
-            </div>
+                </div>
+            </Form>
+            <Button
+                onClick={() => form.submit()}
+                disabled={loginDisabled}
+                loading={isLoading}
+                className="w-[340px] mx-auto h-[40px] text-[18px]  mt-[20px] border-1 border-solid border-[#fff]"
+            >
+                登入
+            </Button>
             <div
-                className="text-center mt-8px text-[#fff]"
+                className="text-center mt-[16px] text-[#fff]"
                 onClick={() => navigate('/register')}
             >
                 去注册

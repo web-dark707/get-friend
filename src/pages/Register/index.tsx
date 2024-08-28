@@ -58,23 +58,27 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                 src={require('@/assets/images/home/login.jpg')}
                 className="h-180px w-180px rounded-[48px]"
             />
-            <div className="w-350px bg-[#BF2A81] rounded-16px mt-32px">
-                <Form
-                    form={form}
-                    onSubmit={onSubmit}
-                    className="w-full  p-24px"
-                    onValuesChange={() => {
-                        form.getFieldsError().then((res) => {
-                            setLoginDisabled(res.hasError);
-                        });
-                    }}
-                >
+            <Form
+                form={form}
+                onSubmit={onSubmit}
+                className="flex justify-between text-[16px] text-[#fff] min-h-[180px] mt-[38px] mx-[12px]"
+                onValuesChange={() => {
+                    form.getFieldsError().then((res) => {
+                        setLoginDisabled(res.hasError);
+                    });
+                }}
+            >
+                <div className="bg-[#EA82B4] text-[18px] font-bold w-[90px] px-[8px] flex flex-col justify-around items-center mr-[8px] rounded-xl flex-shrink-0">
+                    <div>帳號</div>
+                    <div>密碼</div>
+                    <div>重複密碼</div>
+                    <div>啟用設定</div>
+                </div>
+                <div className="bg-[#BF2A81] flex-1 flex flex-col justify-around items-center rounded-xl px-[8px] py-[12px]">
                     {/* -------------------------------------------户口号--------------------------------------------- */}
                     <Form.Item
-                        label="帳號"
                         field="username"
-                        className="mb-16px"
-                        labelClassName="w-50px mr-16px text-right flex-shrink-0 leading-[30px]"
+                        className="w-full"
                         rules={[
                             {
                                 required: true,
@@ -83,20 +87,14 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                         ]}
                     >
                         <Input
-                            inputClass="placeholder-primaryColor"
                             placeholder={'請輸入帳號'}
-                            className="flex-between-center px-[10px] rounded-8px h-42px "
-                            prefixDom={
-                                <img
-                                    src={require('@/assets/images/icon/form/user.png')}
-                                    className="w-22px h-22px"
-                                />
-                            }
+                            inputClass="placeholder-[#bbb]"
+                            className="h-[40px] text-[#222] border-1 border-solid border-[#c2c2c2] bg-[#fff] rounded-md mb-[8px]"
                         />
                     </Form.Item>
                     <Form.Item
-                        label="密碼"
-                        labelClassName="w-50px mr-16px text-right flex-shrink-0 leading-[30px]"
+                        className="w-full"
+                        field="pwd"
                         rules={[
                             {
                                 required: true,
@@ -111,26 +109,18 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                                 },
                             },
                         ]}
-                        field="pwd"
-                        className="mb-16px"
                     >
                         {/* -------------------------------------------密码--------------------------------------------- */}
                         <Input
-                            inputClass="placeholder-primaryColor"
                             type="password"
                             placeholder={'請輸入密碼'}
-                            className="flex-between-center px-[10px] rounded-8px h-42px "
-                            prefixDom={
-                                <img
-                                    src={require('@/assets/images/icon/form/lock.png')}
-                                    className="w-22px h-22px"
-                                />
-                            }
+                            inputClass="placeholder-[#bbb]"
+                            className="h-[40px] text-[#222] border-1 border-solid border-[#c2c2c2] bg-[#fff] rounded-md mb-[8px]"
                         />
                     </Form.Item>
                     <Form.Item
-                        label="重複密碼"
-                        labelClassName="w-50px mr-16px text-right flex-shrink-0 leading-[30px]"
+                        field="repeat-pwd"
+                        className="w-full"
                         rules={[
                             {
                                 required: true,
@@ -147,28 +137,18 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                                 },
                             },
                         ]}
-                        field="repeat-pwd"
-                        className="mb-16px"
                     >
                         {/* -------------------------------------------密码--------------------------------------------- */}
                         <Input
-                            inputClass="placeholder-primaryColor"
                             type="password"
                             placeholder={'請輸入重複密碼'}
-                            className="flex-between-center px-[10px] rounded-8px h-42px "
-                            prefixDom={
-                                <img
-                                    src={require('@/assets/images/icon/form/lock.png')}
-                                    className="w-22px h-22px"
-                                />
-                            }
+                            inputClass="placeholder-[#bbb]"
+                            className="h-[40px] text-[#222] border-1 border-solid border-[#c2c2c2] bg-[#fff] rounded-md mb-[8px]"
                         />
                     </Form.Item>
                     <Form.Item
-                        label="啟用設定"
                         field="activationCode"
-                        className="mb-16px"
-                        labelClassName="w-50px mr-16px text-right flex-shrink-0 leading-[30px]"
+                        className="w-full"
                         rules={[
                             {
                                 required: true,
@@ -178,27 +158,21 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                         initialValue={activationCode}
                     >
                         <Input
-                            inputClass="placeholder-primaryColor"
                             placeholder={'請輸入啟用設定'}
-                            className="flex-between-center px-[10px] rounded-8px h-42px "
-                            prefixDom={
-                                <img
-                                    src={require('@/assets/images/icon/form/user.png')}
-                                    className="w-22px h-22px"
-                                />
-                            }
+                            inputClass="placeholder-[#bbb]"
+                            className="h-[40px] text-[#222] border-1 border-solid border-[#c2c2c2] bg-[#fff] rounded-md mb-[8px]"
                         />
                     </Form.Item>
-                    <Button
-                        onClick={() => form.submit()}
-                        disabled={loginDisabled}
-                        loading={isLoading}
-                        className="w-full flex-row-center"
-                    >
-                        註冊
-                    </Button>
-                </Form>
-            </div>
+                </div>
+            </Form>
+            <Button
+                onClick={() => form.submit()}
+                disabled={loginDisabled}
+                loading={isLoading}
+                className="w-[340px] mx-auto h-[40px] text-[18px]  mt-[20px] border-1 border-solid border-[#fff]"
+            >
+                註冊
+            </Button>
             <div className="text-center w-full pb-[20px] mt-[40px]">
                 <img
                     className="w-[200px] mx-auto"
