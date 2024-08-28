@@ -32,6 +32,7 @@ const Dating: FC = () => {
             setGirlData(girlList?.data[index]);
             return index;
         });
+        swiperRef.current.swiper.slideTo(0);
     }, [girlList?.data]);
 
     const handlePrev = useCallback(() => {
@@ -41,6 +42,7 @@ const Dating: FC = () => {
             setGirlData(girlList?.data[index]);
             return index;
         });
+        swiperRef.current.swiper.slideTo(0);
     }, [girlList?.data]);
 
     const handleClick = () => {
@@ -120,9 +122,9 @@ const Dating: FC = () => {
                         </div>
                     </div>
                 )}
-                <div className="w-full text-[#fff] bg-[#000] absolute bottom-0 left-0 z-9 py-[12px] px-[8px]">
-                    {/* 底部信息 */}
-                    {!isLoading && (
+                {/* 底部信息 */}
+                {!isLoading && (
+                    <div className="w-full text-[#fff] bg-[#000] absolute bottom-0 left-0 z-9 py-[12px] px-[8px]">
                         <div className="">
                             <div className="text-[20px]">
                                 <span>{girlData?.name}&nbsp;</span>
@@ -134,8 +136,8 @@ const Dating: FC = () => {
                                     点击图片显示下一张
                                 </span>
                             </div>
-                            <div className="flex">
-                                <div className="flex mt-[12px] flex-1">
+                            <div className="flex items-center">
+                                <div className="flex mt-[12px] flex-1 flex flex-wrap">
                                     {girlData?.tags?.split(',').map((it, i) => (
                                         <div
                                             className="mx-[4px] px-[8px] py-[4px] border-1 border-[#787778] border-solid rounded-[8px] flex-shrink-0"
@@ -147,7 +149,7 @@ const Dating: FC = () => {
                                 </div>
                                 <Button
                                     loading={isLoading}
-                                    className="w-[60px] rounded-[8px] h-[34px]"
+                                    className="w-[70px] rounded-[8px] h-[34px] flex-shrink-0"
                                     onClick={handelShowDetails}
                                 >
                                     {isShowDetails
@@ -158,8 +160,8 @@ const Dating: FC = () => {
                                 </Button>
                             </div>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
             {/* 详情 */}
             {isShowDetails && <Details girlData={girlData} />}
