@@ -49,7 +49,7 @@ const RegisterPage: FC<RegisterPageProps> = () => {
     }, []);
 
     return (
-        <div className="w-full flex-col-center-start h-full bg-[#C95793]">
+        <div className="w-full flex-col-center-start min-h-full bg-[#C95793]">
             <h2 className="mt-50px text-[26px] text-[#E7B6D0]">
                 桜花私人俱楽部
             </h2>
@@ -198,6 +198,16 @@ const RegisterPage: FC<RegisterPageProps> = () => {
                         註冊
                     </Button>
                 </Form>
+            </div>
+            <div className="text-center w-full pb-[20px] mt-[40px]">
+                <img
+                    className="w-[200px] mx-auto"
+                    src={require('@/assets/images/home/my-logo.jpg')}
+                />
+                <div className="text-[#fff]">
+                    日本サンインフォメーションテクノロジー株式会社
+                </div>
+                <div className="text-[#fff]">@COPYRIGHT 2018-2021</div>
             </div>
         </div>
     );
