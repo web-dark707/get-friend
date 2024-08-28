@@ -9,7 +9,7 @@ import Header from './components/Header';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-cards';
 import Details from './components/Details';
-const Home: FC = () => {
+const Dating: FC = () => {
     const [girlData, setGirlData] = useState<DatingGirlsResult>();
     const swiperRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -153,4 +153,4 @@ const Home: FC = () => {
     );
 };
 
-export default Home;
+export default Dating;

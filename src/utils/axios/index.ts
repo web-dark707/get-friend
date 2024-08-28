@@ -50,7 +50,7 @@ const interceptor: AxiosInterceptor = {
             // @ts-ignore
             config.url = textDomain
                 ? `${textDomain}${config.url}`
-                : `${window.myConfig.domain}${config.url}`;
+                : `${(window as any).myConfig.domain}${config.url}`;
         } else {
             config.url = baseURL + config.url;
         }

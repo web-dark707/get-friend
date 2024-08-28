@@ -1,5 +1,5 @@
 import React, { ComponentType } from 'react';
-import { HashRouter as Router } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { compose } from '@/utils/tools';
 import {
     WithRecoilRoot,
@@ -13,11 +13,11 @@ import RenderRouter from './router';
 function App() {
     const RouteComponent = () => {
         return (
-            <Router basename="/">
+            <HashRouter>
                 <WarpCommon>
                     <RenderRouter></RenderRouter>
                 </WarpCommon>
-            </Router>
+            </HashRouter>
         );
     };
 

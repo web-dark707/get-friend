@@ -6,11 +6,7 @@ const PrivateRoute = (props: any) => {
     const token = UserToken.getToken();
 
     return token ? (
-        location.pathname === '/' ? (
-            <Navigate to={{ pathname: '/dating' }} replace />
-        ) : (
-            props.element
-        )
+        props.element
     ) : (
         <Navigate
             to={{ pathname: '/login' }}
