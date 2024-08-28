@@ -13,11 +13,12 @@ export const getRecord = (params: { status?: string }) =>
         { withToken: true },
     );
 
-export const getRecordDetail = (params: { datingId: string }) =>
-    deffHttp.get<RecordResult>(
+export const getRecordDetail = (params: any) => {
+    return deffHttp.get<RecordResult>(
         { url: Api.RECORD_DETAIL, params },
         { withToken: true },
     );
+};
 // 提交投诉
 export const recordDispute = (params: {
     datingRecordId: string;

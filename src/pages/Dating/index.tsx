@@ -6,6 +6,7 @@ import { Button } from '@/components/vip-ui';
 import { getDatingGirls } from '@/api/home';
 import { isEmpty } from '@/utils/tools';
 import { DatingGirlsResult } from '@/types/api/home';
+import { useSetHasOpen } from '@/store/common/hooks';
 import Header from './components/Header';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-cards';
@@ -15,7 +16,7 @@ const Dating: FC = () => {
     const swiperRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isShowDetails, setIsShowDetails] = useState(false);
-
+    const setHasOpen = useSetHasOpen();
     const {
         mutateAsync: mutateDatingGirls,
         data: girlList,
@@ -65,12 +66,7 @@ const Dating: FC = () => {
 
     const handelShowDetails = () => {
         setIsShowDetails(!isShowDetails);
-        setTimeout(() => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-            });
-        }, 0);
+        setHasOpen(!isShowDetails);
     };
 
     useEffect(() => {

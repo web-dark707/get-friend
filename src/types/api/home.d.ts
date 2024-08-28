@@ -56,6 +56,8 @@ export interface DictResult {
 export interface MyCouponsResult {
     id: number;
     category: string;
+    categoryDesc: string;
+    conditionDesc: string;
     useCondition: string;
     money: number;
     expireTime: string;

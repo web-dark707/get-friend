@@ -341,9 +341,11 @@ export function nextTick(func: () => void, delay = 20) {
  */
 
 export const getQueryString = (name: string) => {
-    const url = new URL(window.location.href);
-    const params = new URLSearchParams(url.search);
-    return params.get(name);
+    const url = window.location.href;
+    const urlStr = url.split('?')[1];
+    const urlSearchParams = new URLSearchParams(urlStr);
+    const result = Object.fromEntries(urlSearchParams.entries());
+    return result[name];
 };
 /**
  * @description 判断是否为空

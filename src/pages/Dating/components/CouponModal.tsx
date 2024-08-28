@@ -31,9 +31,11 @@ const CouponModal = (props: Props) => {
                             <div className="top">
                                 <span className="money">{it.money}P</span>
                                 <p className="remark">
-                                    <span className="r-1">{it.category}</span>
+                                    <span className="r-1">
+                                        {it.categoryDesc}
+                                    </span>
                                     <span className="r-2">
-                                        {it.useCondition}
+                                        {it.conditionDesc}
                                     </span>
                                 </p>
                                 {isShowBtn && (

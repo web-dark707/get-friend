@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 import dayjs from 'dayjs';
 import Big from 'big.js';
 import classNames from 'classnames';
+import { useNavigate } from 'react-router';
 import { getQueryString } from '@/utils/tools';
 import { getRecordDetail, recordDisputeLog } from '@/api/record';
 import Datalist from '@/components/DataList';
@@ -17,6 +18,7 @@ import './styles.scss';
 
 const Home: FC = () => {
     const { depositMoney } = useRecoilValue(selectorDict);
+    const navigate = useNavigate();
     const id = getQueryString('id');
     const {
         mutateAsync: mutateRecordDetail,
@@ -248,7 +250,12 @@ const Home: FC = () => {
     return (
         <Datalist isLoading={isLoading} noData={!data?.data}>
             <div className="my min-h-[100vh] relative pb-[80px]">
-                <NavBar title="約會記錄詳情" />
+                <NavBar
+                    title="約會記錄詳情"
+                    onLeftClick={() => {
+                        navigate(`/record`);
+                    }}
+                />
                 <div className="bg-[#521933] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
                     約會內容
                 </div>

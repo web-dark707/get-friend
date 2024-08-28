@@ -17,10 +17,8 @@ const StartDating = () => {
     const navigate = useNavigate();
 
     const handleConfirm = () => {
-        mutateConfirmDating({ datingId: state.datingId }).then(() => {
-            navigate('/dating', {
-                replace: true,
-            });
+        mutateConfirmDating({ datingId: state.datingId }).then((res: any) => {
+            navigate(`/recordDetail?id=${res.data.id}`);
         });
     };
 

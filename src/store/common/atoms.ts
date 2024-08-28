@@ -28,3 +28,8 @@ export const iframeState = atom<IframeStateType>({
         url: '',
     },
 });
+
+export const hasOpenState = atom<any>({
+    key: 'hasOpen',
+    default: (getStorage('hasOpen') || false) as any,
+});

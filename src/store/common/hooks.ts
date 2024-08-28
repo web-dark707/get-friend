@@ -1,6 +1,6 @@
 import { useSetRecoilState } from 'recoil';
 import { setStorage } from '@/utils/storage';
-import { dictState, iframeState } from './atoms';
+import { dictState, hasOpenState, iframeState } from './atoms';
 import { DictStateType, IframeStateType } from './types';
 
 export const useSetDict = () => {
@@ -8,6 +8,13 @@ export const useSetDict = () => {
     return (state: DictStateType) => {
         setValue(state);
         setStorage('dict', state);
+    };
+};
+export const useSetHasOpen = () => {
+    const setValue = useSetRecoilState(hasOpenState);
+    return (state: any) => {
+        setValue(state);
+        setStorage('hasOpen', state);
     };
 };
 
