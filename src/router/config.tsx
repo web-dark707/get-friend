@@ -41,7 +41,10 @@ export const WrapperRouteComponent: FC<WrapperRouteProps> = ({
     const hasOpen = useRecoilValue(selectorHasOpen);
     useEffect(() => {
         const contents = document.querySelector('.contents-wrap');
-        contents.scrollTo(0, 300);
+        contents.scrollTo({
+            top: 200,
+            behavior: 'smooth',
+        });
     }, [hasOpen]);
     return (
         <HelmetProvider>

@@ -74,7 +74,7 @@ const Header = (props: Props) => {
             {isShowDetails ? (
                 <div className="flex justify-between items-center px-[16px]">
                     <div className="text-[18px] font-bold text-[#fff]">
-                        <span>{girlData.name}</span>
+                        <span>{girlData.name}</span>&nbsp;
                         <span>{girlData.age}</span>
                     </div>
                     <img
