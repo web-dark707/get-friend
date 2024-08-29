@@ -31,11 +31,7 @@ const RegisterPage: FC<RegisterPageProps> = () => {
         } else {
             Toast.success('注册成功');
             UserToken.setToken(res.data);
-            if (location.state?.pathname) {
-                navigate(location.state?.pathname + location.state?.search);
-            } else {
-                navigate('/', { replace: true });
-            }
+            navigate('/', { replace: true });
         }
     };
 

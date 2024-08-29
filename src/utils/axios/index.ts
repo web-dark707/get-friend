@@ -1,4 +1,3 @@
-// import { isString } from 'lodash';
 import { ContentTypeEnum } from '@/enums/httpEnum';
 import log from '@/utils/log';
 import { Toast } from '@/components/vip-ui';
@@ -94,14 +93,11 @@ const interceptor: AxiosInterceptor = {
     responseInterceptorsCatch: (error: any) => {
         // log.error('响应拦截错误', error);
         const { response } = error || {};
-        console.log(response);
-
         if (response?.data?.message) {
             Toast.error(response?.data?.message);
         }
         if (response?.data?.code === 'JWT_INVALID') {
             UserToken.clearToken();
-            window.location.href = '/login';
         }
         return Promise.reject(error);
     },
