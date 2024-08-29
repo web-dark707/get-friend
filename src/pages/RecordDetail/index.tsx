@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
 import dayjs from 'dayjs';
@@ -11,12 +11,13 @@ import NavBar from '@/components/NavBar';
 import { Button } from '@/components/vip-ui';
 import { handleClipboard } from '@/utils/clipboard';
 import { selectorDict } from '@/store/common/selectors';
+import { formatLabel } from '@/common/format';
 import { StatusType } from '@/enums/record';
 import ComplainModal from './components/ComplainModal';
 import './styles.scss';
 
 const Home: FC = () => {
-    const { depositMoney } = useRecoilValue(selectorDict);
+    const { depositMoney, orderStatus } = useRecoilValue(selectorDict);
     const navigate = useNavigate();
     const id = getQueryString('id');
     const {
@@ -26,6 +27,15 @@ const Home: FC = () => {
     } = useMutation(getRecordDetail);
     const { mutateAsync: mutateRecordDisputeLog, data: disputeLog } =
         useMutation(recordDisputeLog);
+
+    const orderStatusList = useMemo(
+        () =>
+            Object.keys(orderStatus).map((key) => ({
+                value: key,
+                label: orderStatus[key],
+            })),
+        [orderStatus],
+    );
 
     const renderDetail = () => {
         switch (data?.data.status) {
@@ -49,13 +59,13 @@ const Home: FC = () => {
                         </div>
 
                         <p className="mt-[8px]">
-                            實際支付：{data?.data.usdtPrice}&nbsp;U
+                            實際支付:&nbsp;{data?.data.usdtPrice}&nbsp;U
                         </p>
-                        <p>即時匯率: {data?.data.usdtToPhpRate}</p>
-                        <p>支付狀態：請10分鐘內支付訂金鎖定檔期</p>
+                        <p>即時匯率:&nbsp;{data?.data.usdtToPhpRate}</p>
+                        <p>支付狀態:&nbsp;請10分鐘內支付訂金鎖定檔期</p>
                         <div className="flex justify-between items-center">
                             <div className="text-[18px] font-bold text-error">
-                                定金：{depositMoney}U
+                                定金:&nbsp;{depositMoney}&nbsp;U
                             </div>
                             <Button
                                 width="w-[100px]"
@@ -77,19 +87,19 @@ const Home: FC = () => {
                             {processUSDTAddress(data?.data.usdtAddress)}
                         </p>
                         <p className="mt-[8px]">
-                            實際支付：{data?.data.usdtPrice}&nbsp;U
+                            實際支付:&nbsp;{data?.data.usdtPrice}&nbsp;U
                         </p>
                         <p>
-                            尾款支付：
+                            尾款支付:&nbsp;
                             {new Big(data?.data.usdtPrice)
                                 .minus(data?.data.depositMoneyUsdt)
                                 .toNumber()}
                             &nbsp;U
                         </p>
-                        <p>即時匯率: {data?.data.usdtToPhpRate}</p>
-                        <p>支付狀態：已支付訂金10U，待鎖定檔期</p>
+                        <p>即時匯率:&nbsp;{data?.data.usdtToPhpRate}</p>
+                        <p>支付狀態:&nbsp;已支付訂金10U，待鎖定檔期</p>
                         <p>
-                            訂金到款時間:
+                            訂金到款時間:&nbsp;
                             {data?.data.receiveDepositTime}
                         </p>
                     </>
@@ -113,18 +123,19 @@ const Home: FC = () => {
                             </Button>
                         </div>
                         <p className="mt-[8px]">
-                            實際支付：{data?.data.usdtPrice}&nbsp;U
+                            實際支付:&nbsp;{data?.data.usdtPrice}&nbsp;U
                         </p>
                         <p>
-                            尾款支付：
+                            尾款支付:&nbsp;
                             {new Big(data?.data.usdtPrice)
                                 .minus(data?.data.depositMoneyUsdt)
                                 .toNumber()}
                             &nbsp;U
                         </p>
-                        <p>即時匯率: {data?.data.usdtToPhpRate}</p>
+                        <p>即時匯率:&nbsp;{data?.data.usdtToPhpRate}</p>
                         <p>
-                            支付狀態：已支付訂金{data?.data.depositMoneyUsdt}
+                            支付狀態:&nbsp;已支付訂金
+                            {data?.data.depositMoneyUsdt}
                             &nbsp;U，待付尾款
                         </p>
                         <p>
@@ -167,30 +178,31 @@ const Home: FC = () => {
                             </Button>
                         </div>
                         <p className="mt-[8px]">
-                            實際支付：{data?.data.usdtPrice}&nbsp;U
+                            實際支付:&nbsp;{data?.data.usdtPrice}&nbsp;U
                         </p>
                         <p>
-                            尾款支付：
+                            尾款支付:&nbsp;
                             {new Big(data?.data.usdtPrice)
                                 .minus(data?.data.depositMoneyUsdt)
                                 .toNumber()}
                             &nbsp;U
                         </p>
-                        <p>即時匯率: {data?.data.usdtToPhpRate}</p>
+                        <p>即時匯率:&nbsp;{data?.data.usdtToPhpRate}</p>
                         <p>
-                            支付狀態：已支付訂金{data?.data.depositMoneyUsdt}
-                            &nbsp;U，尾款
+                            支付狀態：已支付訂金&nbsp;
+                            {data?.data.depositMoneyUsdt}
+                            &nbsp;U，尾款&nbsp;
                             {new Big(data?.data.usdtPrice)
                                 .minus(data?.data.depositMoneyUsdt)
                                 .toNumber()}
                             &nbsp;U
                         </p>
                         <p>
-                            訂金到款時間:
+                            訂金到款時間:&nbsp;
                             {data?.data.receiveDepositTime}
                         </p>
                         <p>
-                            尾款到款時間:
+                            尾款到款時間:&nbsp;
                             {data?.data.paidTime}
                         </p>
                     </>
@@ -255,38 +267,55 @@ const Home: FC = () => {
                     onLeftClick={() => {
                         navigate(`/record`);
                     }}
+                    rightContent={
+                        <div className="text-[18px] font-bold">
+                            {formatLabel(orderStatusList, data?.data.status)}
+                        </div>
+                    }
                 />
-                <div className="bg-[#521933] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
-                    約會內容
+                <div className="bg-[#FD6098] h-[30px] font-bold  px-[12px] text-[#fff] flex justify-between items-center">
+                    <span className="text-[16px]">約會內容</span>
+                    {disputeLog?.data.filter(
+                        (it) => it.disputeOwner !== 'PLATFORM',
+                    ).length > 0 && (
+                        <span className="text-[18px] text-[#8C0076]">
+                            投訴處理中
+                        </span>
+                    )}
                 </div>
                 <div className="px-[12px] py-[8px] relative">
-                    <div>女生：{data?.data.girlName}</div>
+                    <div>女生:&nbsp;{data?.data.girlName}</div>
                     <div>
-                        基本服務：
+                        基本服務:&nbsp;
                         {data?.data?.serviceItems.map((it, i) => (
                             <span key={i}>{it.name}</span>
                         ))}
                     </div>
                     <div>
-                        日期：{data?.data.timeslot} 時間:{data?.data?.hour}
+                        日期:&nbsp;{data?.data.timeslot}&nbsp;時間:&nbsp;
+                        {data?.data?.hour}
                     </div>
                 </div>
-                <div className="bg-[#FD6298] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
+                <div className="bg-[#511A33] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
                     聯絡方式
                 </div>
                 <div className="px-[12px] py-[8px] relative">
-                    <div>手機:{data?.data?.tel}</div>
-                    <div>tg:{data?.data?.tg}</div>
-                    <div>地址:{data?.data?.address}</div>
+                    <div>手機:&nbsp;{data?.data?.tel}</div>
+                    <div>tg:&nbsp;{data?.data?.tg}</div>
+                    <div>地址:&nbsp;{data?.data?.address}</div>
                 </div>
                 <div className="asset">
                     <p className="title">支付訊息</p>
                     <div className="detail">
-                        <p>優惠價:{data?.data.totalPromotionPrice}P</p>
+                        <p>
+                            優惠價:&nbsp;{data?.data.totalPromotionPrice}&nbsp;P
+                        </p>
                         {data?.data.discountPrice && (
-                            <p>優惠券:{data?.data.discountPrice}P</p>
+                            <p>
+                                優惠券:&nbsp;{data?.data.discountPrice}&nbsp;P
+                            </p>
                         )}
-                        <p>應付款項: {data?.data.realPayPrice}P</p>
+                        <p>應付款項:&nbsp;{data?.data.realPayPrice}&nbsp;P</p>
                     </div>
                 </div>
                 <div className="asset-4">
@@ -311,13 +340,15 @@ const Home: FC = () => {
                             />
                         </div>
                         <div className="remark">
-                            <p className="bold">投诉内容</p>
+                            <p className="text-[16px] font-bold mb-[8px]">
+                                投诉内容
+                            </p>
                             {disputeLog?.data
                                 .filter((it) => it.disputeOwner !== 'PLATFORM')
                                 .map((it) => (
                                     <div key={it.id}>
                                         <p>
-                                            投诉时间:
+                                            投诉时间:&nbsp;
                                             {dayjs(it.createdTime).format(
                                                 'YYYY-MM-DD HH:mm:ss',
                                             )}
@@ -327,7 +358,9 @@ const Home: FC = () => {
                                 ))}
                         </div>
                         <div className="remark">
-                            <p className="bold">处理结果</p>
+                            <p className="text-[16px] font-bold mb-[8px]">
+                                处理结果
+                            </p>
                             {disputeLog?.data.filter(
                                 (it) => it.disputeOwner === 'PLATFORM',
                             ).length === 0
@@ -340,7 +373,7 @@ const Home: FC = () => {
                                       .map((it) => (
                                           <div key={it.id}>
                                               <p>
-                                                  回复时间:
+                                                  回复时间:&nbsp;
                                                   {dayjs(it.createdTime).format(
                                                       'YYYY-MM-DD HH:mm:ss',
                                                   )}

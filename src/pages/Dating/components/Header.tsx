@@ -9,11 +9,10 @@ interface Props {
     onSelected: (obj: { [key: string]: string[] }) => void;
     isShowDetails: boolean;
     girlData: DatingGirlsResult;
-    setFilters: (obj: { [key: string]: string[] }) => void;
 }
 
 const Header = (props: Props) => {
-    const { onSelected, isShowDetails, girlData, setFilters } = props;
+    const { onSelected, isShowDetails, girlData } = props;
     const { filterCondition } = useRecoilValue(selectorDict);
     const [visible, setVisible] = useState(false);
     const [isAllChecked, setIsAllChecked] = useState(false);
@@ -23,7 +22,6 @@ const Header = (props: Props) => {
     };
     const handleSearch = () => {
         onSelected(checkedMap);
-        setFilters(checkedMap);
         setVisible(false);
     };
     const handleAllSelected = () => {

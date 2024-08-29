@@ -36,9 +36,9 @@ const Home: FC = () => {
             <div className="asset relative">
                 <p className="title">帳號資訊</p>
                 <div className="detail">
-                    <p>登入帳號: {userInfo?.data.username}</p>
-                    <p>啟用設定: {userInfo?.data.activationCode}</p>
-                    <p>會員等級: {userInfo?.data.customerLevel}</p>
+                    <p>登入帳號:&nbsp;{userInfo?.data.username}</p>
+                    <p>啟用設定:&nbsp;{userInfo?.data.activationCode}</p>
+                    <p>會員等級:&nbsp;{userInfo?.data.customerLevel}</p>
                 </div>
                 <Button className="w-[60px]  absolute right-[16px] top-[50px]">
                     <a href={csBot}>客服</a>

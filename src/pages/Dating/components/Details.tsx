@@ -92,7 +92,7 @@ const Details = ({ girlData }: Props) => {
                 體檢報告
             </div>
             <div className="flex justify-between items-center px-[12px] py-[8px]">
-                <div>體檢時間:{girlData?.physicalExamTime}</div>
+                <div>體檢時間:&nbsp;{girlData?.physicalExamTime}</div>
                 <MedicalReportModal url={girlData?.physicalExamReport} />
             </div>
             {/* --------------- */}
@@ -100,9 +100,9 @@ const Details = ({ girlData }: Props) => {
                 基本訊息
             </div>
             <div className="px-[12px] py-[8px]">
-                <div>身高: {girlData?.height} cm</div>
-                <div>體重: {girlData?.weight} kg</div>
-                <div>胸圍: {girlData?.chest}</div>
+                <div>身高:&nbsp;{girlData?.height} cm</div>
+                <div>體重:&nbsp;{girlData?.weight} kg</div>
+                <div>胸圍:&nbsp;{girlData?.chest}</div>
             </div>
             {/* --------------- */}
             <div className="bg-[#521933] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
@@ -124,7 +124,7 @@ const Details = ({ girlData }: Props) => {
                     filterList={girlData?.validTimeslots?.split(',') ?? []}
                 />
                 <div className="flex justify-end items-center">
-                    <span className="mr-[4px]">時間:</span>
+                    <span className="mr-[4px]">時間:&nbsp;</span>
                     <Picker
                         title="請選擇約會時間"
                         placeholder="請選擇約會時間"
@@ -149,23 +149,25 @@ const Details = ({ girlData }: Props) => {
             </div>
             <div className="px-[12px] py-[8px] relative">
                 <div>
-                    基本服務：
-                    {girlData?.serviceItemInfos
-                        .filter((it) => params.serviceItemIds.includes(it.id))
-                        .map((it) => (
-                            <div key={it.id}>{it.name}</div>
-                        ))}
+                    基本服務:&nbsp;
+                    {params.serviceItemIds.length !== 0
+                        ? girlData?.serviceItemInfos
+                              .filter((it) =>
+                                  params.serviceItemIds.includes(it.id),
+                              )
+                              .map((it) => <div key={it.id}>{it.name}</div>)
+                        : '暂无'}
                 </div>
                 {params?.timeslot && <div>日期:{params?.timeslot}</div>}
-                <div>售價:{price}P</div>
+                <div>售價:&nbsp;{price}P</div>
                 {params.couponId && (
                     <>
                         <div>
-                            優惠券:
+                            優惠券:&nbsp;
                             {couponPrice}
                         </div>
                         <div>
-                            優惠後價格:
+                            優惠後價格:&nbsp;
                             {price -
                                 data?.data.find(
                                     (it) => it.id === params.couponId,
@@ -175,7 +177,7 @@ const Details = ({ girlData }: Props) => {
                     </>
                 )}
                 <Button
-                    className="absolute right-[12px] bottom-[12px]"
+                    className="absolute right-[12px] bottom-[6px]"
                     width="w-[80px]"
                     onClick={() => setIsShowCouponModal(true)}
                 >
@@ -198,9 +200,9 @@ const Details = ({ girlData }: Props) => {
             <div className="px-[12px] py-[8px] relative flex justify-between">
                 {params?.addressInfo ? (
                     <div>
-                        <div>手機:{params?.addressInfo.tel}</div>
-                        <div>tg:{params?.addressInfo.tg}</div>
-                        <div>地址:{params?.addressInfo.address}</div>
+                        <div>手機:&nbsp;{params?.addressInfo.tel}</div>
+                        <div>tg:&nbsp;{params?.addressInfo.tg}</div>
+                        <div>地址:&nbsp;{params?.addressInfo.address}</div>
                     </div>
                 ) : (
                     <span>暂无联络方式</span>
@@ -227,16 +229,16 @@ const Details = ({ girlData }: Props) => {
             <div className="px-[12px] py-[8px]">
                 <div className=" relative">
                     <div>USDT trc20 </div>
-                    <div>地址: 平台與您確認後顯示</div>
+                    <div>地址:&nbsp;平台與您確認後顯示</div>
                     <div>
-                        實際支付：
+                        實際支付:&nbsp;
                         {new Big(price)
                             .minus(couponPrice)
                             .div(usdtToPhpRate)
                             .toNumber()}
                         &nbsp;U
                     </div>
-                    <div>即時匯率：{usdtToPhpRate}</div>
+                    <div>即時匯率:&nbsp;{usdtToPhpRate}</div>
                     <div></div>
                 </div>
 
@@ -255,11 +257,11 @@ const Details = ({ girlData }: Props) => {
             <div className="bg-[#521933] h-[30px] text-[16px] font-bold leading-[30px] pl-[12px] text-[#fff]">
                 免責聲明
             </div>
-            <div className="px-[12px] py-[8px] relative">
+            <div className="px-[12px] py-[8px] text-[#333333] pb-[60px]">
                 <div>
                     本平台為私人俱樂部會員提供商務約會陪侍聊天仲介服務。平台對提供服務的女生進行背景調查，健康調查等工作，確保女生身分背景真實性與素質質量，若對約會過程不滿意，可以向平台發起投訴。所有約會陪侍聊天過程中的具體服務由女生自願提供，會員自願接受，與平台無關。約會過程中發生一切法律問題與平台無關，屬於會員與女生之間的自願行為，若對此有異議請誤點擊開始約會按鈕並關閉本頁，若點擊開始約會按鈕則表示理解並接受此聲明
                 </div>
-                <div>
+                <div className="mt-[8px]">
                     このプラットフォームは、プライベートクラブ会員向けにビジネスデート、エスコート、チャット仲介サービスを提供します。プラットフォームは、サービスを提供する女の子の身元調査と健康診断を実施し、女の子の身元と背景の信頼性と品質を保証します。デートのプロセスに満足できない場合は、プラットフォームに苦情を申し立てることができます。デートやエスコートチャットのプロセスにおけるすべての特定のサービスは、女の子が自発的に提供し、メンバーが自発的に受け入れるものであり、プラットフォームとは何の関係もありません。デートの過程で発生するすべての法的問題は、プラットフォームとは何の関係もありません。これに異議がある場合は、間違ってデートを開始ボタンをクリックしてこのページを閉じてください。
                     「デートを開始」ボタンをクリックすると、この声明を理解し、同意したことになります
                 </div>

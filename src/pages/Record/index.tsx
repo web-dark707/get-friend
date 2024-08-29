@@ -74,15 +74,15 @@ const Home: FC = () => {
                             }
                         >
                             <p>
-                                編號:{item.id}
+                                編號:&nbsp;{item.id}
                                 <span className="status-1">
                                     {formatLabel(orderStatusList, item.status)}
                                 </span>
                             </p>
-                            <p className="bold">日期:{item.timeslot}</p>
-                            <p className="bold">姓名:{item.girlName}</p>
+                            <p className="bold">日期:&nbsp;{item.timeslot}</p>
+                            <p className="bold">姓名:&nbsp;{item.girlName}</p>
                             <p className="bold">
-                                价格:{item.usdtPrice}U
+                                价格:&nbsp;{item.usdtPrice}U
                                 <span className="status-3">
                                     {formatLabel(
                                         disputeStatus,

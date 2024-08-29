@@ -40,7 +40,8 @@ const BasicServicesFilter = (props: Props) => {
                     checked={checkedList.includes(it.id)}
                     label={
                         <div>
-                            {it.name} 原價:<s>{it.oriPrice}P </s>活動價:
+                            {it.name} 原價:&nbsp;<s>{it.oriPrice}P </s>
+                            活動價:&nbsp;
                             {it.promotionPrice}P
                         </div>
                     }

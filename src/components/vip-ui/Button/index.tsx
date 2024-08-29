@@ -46,7 +46,7 @@ const Button = forwardRef(
                 style={style}
                 className={classNames(
                     disabled && `${background} opacity-50`,
-                    'flex-row-center text-[14px] text-[#fff] h-[34px] rounded-[8px] font-bold',
+                    'flex-row-center text-[14px] text-[#fff] h-[44px] rounded-[2px] font-bold',
                     width,
                     background,
                     className,

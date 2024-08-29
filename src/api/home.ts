@@ -16,12 +16,19 @@ enum Api {
     DATING_LAST_ADDRESS = '/api/dating/last-address',
     DATING_PRE_CONFIRM_DATING = '/api/dating/pre-confirm-dating',
     DATING_CONFIRM_DATING = '/api/dating/confirm-dating',
+    DATING_GIRL = '/api/dating/girl',
 }
 
 //  查找女生信息列表
 export const getDatingGirls = (params: DatingGirlsParams) =>
     deffHttp.post<DatingGirlsResult[]>(
         { url: Api.DATING_GIRLS, data: params },
+        { withToken: true },
+    );
+//  查找女生信息列表
+export const getDatingGirl = (params: { girlId: number }) =>
+    deffHttp.get<DatingGirlsResult>(
+        { url: Api.DATING_GIRL, params },
         { withToken: true },
     );
 // 获取字典配置

@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, EffectCards } from 'swiper';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/components/vip-ui';
-import { getDatingGirls } from '@/api/home';
+import { getDatingGirl, getDatingGirls } from '@/api/home';
 import { isEmpty } from '@/utils/tools';
 import { DatingGirlsResult } from '@/types/api/home';
 import { useSetHasOpen } from '@/store/common/hooks';
@@ -16,7 +16,6 @@ const Dating: FC = () => {
     const swiperRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isShowDetails, setIsShowDetails] = useState(false);
-    const [filters, setFilters] = useState({});
     const setHasOpen = useSetHasOpen();
     const {
         mutateAsync: mutateDatingGirls,
@@ -25,6 +24,13 @@ const Dating: FC = () => {
     } = useMutation(getDatingGirls, {
         onSuccess: (res) => {
             setGirlData(res.data[activeIndex]);
+        },
+    });
+    const { mutateAsync: mutateDatingGirl } = useMutation(getDatingGirl, {
+        onSuccess: (res) => {
+            if (res.data) {
+                setGirlData(res.data);
+            }
         },
     });
     // 搜索
@@ -38,18 +44,17 @@ const Dating: FC = () => {
     );
 
     const handleNext = useCallback(() => {
-        handleSearch(filters);
-
+        mutateDatingGirl({ girlId: girlData.id });
         setActiveIndex((prevIndex) => {
             const index = (prevIndex + 1) % girlList?.data.length;
             setGirlData(girlList?.data[index]);
             return index;
         });
         swiperRef.current.swiper.slideTo(0);
-    }, [filters, girlList?.data, handleSearch]);
+    }, [girlData?.id, girlList?.data, mutateDatingGirl]);
 
     const handlePrev = useCallback(() => {
-        handleSearch(filters);
+        mutateDatingGirl({ girlId: girlData.id });
         setActiveIndex((prevIndex) => {
             const index =
                 prevIndex === 0 ? girlList?.data.length - 1 : prevIndex - 1;
@@ -57,7 +62,7 @@ const Dating: FC = () => {
             return index;
         });
         swiperRef.current.swiper.slideTo(0);
-    }, [filters, girlList?.data, handleSearch]);
+    }, [girlData?.id, girlList?.data, mutateDatingGirl]);
 
     const handleClick = () => {
         // 点击时切换到下一个图片集
@@ -88,7 +93,6 @@ const Dating: FC = () => {
                 isShowDetails={isShowDetails}
                 girlData={girlData}
                 onSelected={handleSearch}
-                setFilters={setFilters}
             />
             <div className="relative w-full h-[calc(100%-50px)] overflow-hidden">
                 <Swiper
@@ -110,7 +114,7 @@ const Dating: FC = () => {
                         </SwiperSlide>
                     ))}
                 </Swiper>
-                {!isShowDetails && (
+                {!isShowDetails && !isLoading && (
                     <div className="w-full flex justify-between text-[#fff] px-[12px] absolute bottom-[180px] left-0 z-9">
                         <div
                             onClick={handlePrev}

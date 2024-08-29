@@ -128,7 +128,7 @@ const ContactDetailsModal = ({
                     </Form>
                     <div className="flex justify-end">
                         <Button
-                            className="w-[100px]"
+                            className="w-[130px]"
                             onClick={handleUseLastAddress}
                             loading={isLoading}
                         >
