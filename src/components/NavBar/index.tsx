@@ -9,6 +9,7 @@ type HeaderProps = {
     type?: 'nav' | 'cell';
     onLeftClick?: () => void;
     className?: string;
+    isShowBackIcon?: boolean;
 };
 
 const Header: FC<HeaderProps> = ({
@@ -17,6 +18,7 @@ const Header: FC<HeaderProps> = ({
     type = 'nav',
     onLeftClick,
     className,
+    isShowBackIcon = true,
 }) => {
     const navigate = useNavigate();
     const handelClick = () => {
@@ -32,11 +34,14 @@ const Header: FC<HeaderProps> = ({
                 className,
             )}
         >
-            <div className="pl-16px" onClick={handelClick}>
-                <img
-                    className="w-24px h-24px"
-                    src={require('@/assets/images/icon/other/back.png')}
-                />
+            <div className="pl-16px">
+                {isShowBackIcon && (
+                    <img
+                        onClick={handelClick}
+                        className="w-24px h-24px"
+                        src={require('@/assets/images/icon/other/back.png')}
+                    />
+                )}
             </div>
             <div className="text-18px primary-text-gradient font-bold absolute left-1/2 transform -translate-x-1/2 text-center">
                 {title}

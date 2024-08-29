@@ -372,3 +372,18 @@ export const removeDefaultBehavior = (event) => {
     // 阻止事件冒泡
     if (event.stopPropagation) event.stopPropagation();
 };
+
+export function processUSDTAddress(address) {
+    // 正则表达式检查是否包含汉字
+    const containsChinese = /[\u4e00-\u9fa5]/.test(address);
+
+    if (containsChinese) {
+        // 如果包含汉字，原封不动地返回
+        return address;
+    } else {
+        // 如果不包含汉字，假设是USDT地址，处理为前8位和后8位中间用****
+        const prefix = address.slice(0, 8);
+        const suffix = address.slice(-8);
+        return `${prefix}****${suffix}`;
+    }
+}

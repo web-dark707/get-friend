@@ -25,7 +25,7 @@ export default defineConfig({
                 baseColor: '#000',
                 primaryColor: '#E5A6AF',
                 success: '#4CAF50',
-                error: '#FF5A5A',
+                error: '#D9001B',
             },
             borderColor: {
                 baseColor: '#FFFFFF',

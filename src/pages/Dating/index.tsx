@@ -16,6 +16,7 @@ const Dating: FC = () => {
     const swiperRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isShowDetails, setIsShowDetails] = useState(false);
+    const [filters, setFilters] = useState({});
     const setHasOpen = useSetHasOpen();
     const {
         mutateAsync: mutateDatingGirls,
@@ -26,17 +27,29 @@ const Dating: FC = () => {
             setGirlData(res.data[activeIndex]);
         },
     });
+    // 搜索
+    const handleSearch = useCallback(
+        (filters) => {
+            mutateDatingGirls({
+                filters,
+            });
+        },
+        [mutateDatingGirls],
+    );
 
     const handleNext = useCallback(() => {
+        handleSearch(filters);
+
         setActiveIndex((prevIndex) => {
             const index = (prevIndex + 1) % girlList?.data.length;
             setGirlData(girlList?.data[index]);
             return index;
         });
         swiperRef.current.swiper.slideTo(0);
-    }, [girlList?.data]);
+    }, [filters, girlList?.data, handleSearch]);
 
     const handlePrev = useCallback(() => {
+        handleSearch(filters);
         setActiveIndex((prevIndex) => {
             const index =
                 prevIndex === 0 ? girlList?.data.length - 1 : prevIndex - 1;
@@ -44,7 +57,7 @@ const Dating: FC = () => {
             return index;
         });
         swiperRef.current.swiper.slideTo(0);
-    }, [girlList?.data]);
+    }, [filters, girlList?.data, handleSearch]);
 
     const handleClick = () => {
         // 点击时切换到下一个图片集
@@ -56,12 +69,6 @@ const Dating: FC = () => {
                 swiper.slideNext(); // Go to the next slide
             }
         }
-    };
-    // 搜索
-    const handleSearch = (filters) => {
-        mutateDatingGirls({
-            filters,
-        });
     };
 
     const handelShowDetails = () => {
@@ -81,6 +88,7 @@ const Dating: FC = () => {
                 isShowDetails={isShowDetails}
                 girlData={girlData}
                 onSelected={handleSearch}
+                setFilters={setFilters}
             />
             <div className="relative w-full h-[calc(100%-50px)] overflow-hidden">
                 <Swiper
@@ -119,7 +127,7 @@ const Dating: FC = () => {
                     </div>
                 )}
                 {/* 底部信息 */}
-                {!isLoading && (
+                {!isEmpty(girlData) && (
                     <div className="w-full text-[#fff] bg-[#000] absolute bottom-0 left-0 z-9 py-[12px] px-[8px]">
                         <div className="">
                             <div className="text-[20px]">

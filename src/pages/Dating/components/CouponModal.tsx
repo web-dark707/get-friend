@@ -46,7 +46,7 @@ const CouponModal = (props: Props) => {
                                     >
                                         {it.status === 'NORMAL'
                                             ? '使用'
-                                            : '无法使用'}
+                                            : '已使用'}
                                     </Button>
                                 )}
                             </div>

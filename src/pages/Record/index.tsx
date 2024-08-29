@@ -48,6 +48,7 @@ const Home: FC = () => {
     return (
         <div className="my">
             <NavBar
+                isShowBackIcon={false}
                 title="約會記錄"
                 rightContent={
                     <Picker

@@ -5,8 +5,9 @@ import { useForm } from '@/components/vip-ui/Form';
 import { recordDispute } from '@/api/record';
 interface Props {
     datingRecordId: string;
+    reloadData: () => void;
 }
-const ComplainModal = ({ datingRecordId }: Props) => {
+const ComplainModal = ({ datingRecordId, reloadData }: Props) => {
     const [form] = useForm();
     const overlayRef = useRef(null);
     const { mutateAsync: mutateRecordDispute, isLoading } =
@@ -17,6 +18,7 @@ const ComplainModal = ({ datingRecordId }: Props) => {
             datingRecordId,
             content: values?.content as string,
         }).then(() => {
+            reloadData();
             overlayRef.current.close();
             Toast.error('提交成功');
         });

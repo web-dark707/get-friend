@@ -8,6 +8,7 @@ import { localeState } from '@/store/common/atoms';
 import { API_URL } from '@/common/constants';
 import NavBar from '@/components/NavBar';
 import TabBar from '@/components/TabBar';
+import { usePollingVerify } from '@/common/polling_ws';
 import { Loading } from '@/components/vip-ui';
 import { selectorHasOpen } from '@/store/common/selectors';
 import PrivateRoute from './privateRoute';
@@ -33,6 +34,7 @@ export const WrapperRouteComponent: FC<WrapperRouteProps> = ({
     pageBg = 'page-bg',
     ...props
 }) => {
+    usePollingVerify();
     const locale = useRecoilValue(localeState);
     const myref = useRef(null);
     const WitchRoute = auth ? PrivateRoute : PublicRoute;

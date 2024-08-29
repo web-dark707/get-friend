@@ -45,6 +45,12 @@ const Details = ({ girlData }: Props) => {
                 }, 0) ?? 0,
         [girlData?.serviceItemInfos, params.serviceItemIds],
     );
+
+    const couponPrice = useMemo(
+        () => data?.data.find((it) => it.id === params.couponId)?.money ?? 0,
+        [data?.data, params.couponId],
+    );
+
     const handleChangeParams = (key: string, value: any) => {
         if (value && typeof value === 'object' && !Array.isArray(value)) {
             setParams((prev) => ({
@@ -156,11 +162,7 @@ const Details = ({ girlData }: Props) => {
                     <>
                         <div>
                             優惠券:
-                            {
-                                data?.data.find(
-                                    (it) => it.id === params.couponId,
-                                ).money
-                            }
+                            {couponPrice}
                         </div>
                         <div>
                             優惠後價格:
@@ -228,7 +230,11 @@ const Details = ({ girlData }: Props) => {
                     <div>地址: 平台與您確認後顯示</div>
                     <div>
                         實際支付：
-                        {new Big(price).div(usdtToPhpRate).toNumber()} U
+                        {new Big(price)
+                            .minus(couponPrice)
+                            .div(usdtToPhpRate)
+                            .toNumber()}
+                        &nbsp;U
                     </div>
                     <div>即時匯率：{usdtToPhpRate}</div>
                     <div></div>

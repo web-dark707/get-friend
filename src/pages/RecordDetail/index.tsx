@@ -1,11 +1,10 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
 import dayjs from 'dayjs';
 import Big from 'big.js';
-import classNames from 'classnames';
 import { useNavigate } from 'react-router';
-import { getQueryString } from '@/utils/tools';
+import { getQueryString, processUSDTAddress } from '@/utils/tools';
 import { getRecordDetail, recordDisputeLog } from '@/api/record';
 import Datalist from '@/components/DataList';
 import NavBar from '@/components/NavBar';
@@ -35,7 +34,10 @@ const Home: FC = () => {
                     <>
                         <p>USDT trc20</p>
                         <div className="whitespace-pre flex justify-between items-center">
-                            <span>地址:</span>
+                            <span>
+                                地址:&nbsp;
+                                {processUSDTAddress(data?.data.usdtAddress)}
+                            </span>
                             <Button
                                 width="w-[80px]"
                                 onClick={(e) =>
@@ -45,9 +47,7 @@ const Home: FC = () => {
                                 複製地址
                             </Button>
                         </div>
-                        <div className="bg-[#444] py-[4px] rounded-[8px] text-[#fff] text-center">
-                            {data?.data.usdtAddress}
-                        </div>
+
                         <p className="mt-[8px]">
                             實際支付：{data?.data.usdtPrice}&nbsp;U
                         </p>
@@ -72,7 +72,10 @@ const Home: FC = () => {
                 return (
                     <>
                         <p>USDT trc20</p>
-                        <p>地址: {data?.data.usdtAddress}</p>
+                        <p>
+                            地址:&nbsp;
+                            {processUSDTAddress(data?.data.usdtAddress)}
+                        </p>
                         <p className="mt-[8px]">
                             實際支付：{data?.data.usdtPrice}&nbsp;U
                         </p>
@@ -87,9 +90,7 @@ const Home: FC = () => {
                         <p>支付狀態：已支付訂金10U，待鎖定檔期</p>
                         <p>
                             訂金到款時間:
-                            {dayjs(data?.data.receiveDepositTime).format(
-                                'YYYY-DD-MM HH:hh:mm',
-                            )}
+                            {data?.data.receiveDepositTime}
                         </p>
                     </>
                 );
@@ -98,7 +99,10 @@ const Home: FC = () => {
                     <>
                         <p>USDT trc20</p>
                         <div className="whitespace-pre flex justify-between items-center">
-                            <span>地址:</span>
+                            <span>
+                                地址:&nbsp;
+                                {processUSDTAddress(data?.data.usdtAddress)}
+                            </span>
                             <Button
                                 width="w-[80px]"
                                 onClick={(e) =>
@@ -107,9 +111,6 @@ const Home: FC = () => {
                             >
                                 複製地址
                             </Button>
-                        </div>
-                        <div className="bg-[#444] py-[4px] rounded-[8px] text-[#fff] text-center">
-                            {data?.data.usdtAddress}
                         </div>
                         <p className="mt-[8px]">
                             實際支付：{data?.data.usdtPrice}&nbsp;U
@@ -128,9 +129,7 @@ const Home: FC = () => {
                         </p>
                         <p>
                             訂金到款時間:
-                            {dayjs(data?.data.receiveDepositTime).format(
-                                'YYYY-DD-MM HH:hh:mm',
-                            )}
+                            {data?.data.receiveDepositTime}
                         </p>
                         <div className="flex justify-end">
                             <Button
@@ -154,7 +153,10 @@ const Home: FC = () => {
                     <>
                         <p>USDT trc20</p>
                         <div className="whitespace-pre flex justify-between items-center">
-                            <span>地址:</span>
+                            <span>
+                                地址:&nbsp;
+                                {processUSDTAddress(data?.data.usdtAddress)}
+                            </span>
                             <Button
                                 width="w-[80px]"
                                 onClick={(e) =>
@@ -163,9 +165,6 @@ const Home: FC = () => {
                             >
                                 複製地址
                             </Button>
-                        </div>
-                        <div className="bg-[#444] py-[4px] rounded-[8px] text-[#fff] text-center">
-                            {data?.data.usdtAddress}
                         </div>
                         <p className="mt-[8px]">
                             實際支付：{data?.data.usdtPrice}&nbsp;U
@@ -188,15 +187,11 @@ const Home: FC = () => {
                         </p>
                         <p>
                             訂金到款時間:
-                            {dayjs(data?.data.receiveDepositTime).format(
-                                'YYYY-DD-MM HH:hh:mm',
-                            )}
+                            {data?.data.receiveDepositTime}
                         </p>
                         <p>
                             尾款到款時間:
-                            {dayjs(data?.data.paidTime).format(
-                                'YYYY-DD-MM HH:hh:mm',
-                            )}
+                            {data?.data.paidTime}
                         </p>
                     </>
                 );
@@ -204,7 +199,10 @@ const Home: FC = () => {
                 return (
                     <>
                         <p>USDT trc20</p>
-                        <p>地址: {data?.data.usdtAddress}</p>
+                        <p>
+                            地址:&nbsp;
+                            {processUSDTAddress(data?.data.usdtAddress)}
+                        </p>
                         <p className="mt-[8px]">
                             實際支付：{data?.data.usdtPrice}&nbsp;U
                         </p>
@@ -222,9 +220,7 @@ const Home: FC = () => {
                         </p>
                         <p>
                             訂金到款時間:
-                            {dayjs(data?.data.receiveDepositTime).format(
-                                'YYYY-DD-MM HH:hh:mm',
-                            )}
+                            {data?.data.receiveDepositTime}
                         </p>
                         <div className="text-error mt-[16px]">
                             {data?.data.depositMoneyUsdt}
@@ -237,15 +233,19 @@ const Home: FC = () => {
         }
     };
 
+    const getRecordDisputeLog = useCallback(() => {
+        mutateRecordDisputeLog({
+            datingRecordId: id,
+        });
+    }, [id, mutateRecordDisputeLog]);
+
     useEffect(() => {
         mutateRecordDetail({ datingId: id });
     }, [id, mutateRecordDetail]);
 
     useEffect(() => {
-        mutateRecordDisputeLog({
-            datingRecordId: id,
-        });
-    }, [mutateRecordDisputeLog, id]);
+        getRecordDisputeLog();
+    }, [getRecordDisputeLog]);
 
     return (
         <Datalist isLoading={isLoading} noData={!data?.data}>
@@ -305,34 +305,49 @@ const Home: FC = () => {
                 {data?.data.status === StatusType.FINISH && (
                     <>
                         <div className="boon">
-                            <ComplainModal datingRecordId={data?.data.id} />
+                            <ComplainModal
+                                datingRecordId={data?.data.id}
+                                reloadData={() => getRecordDisputeLog()}
+                            />
                         </div>
                         <div className="remark">
-                            <div className="flex justify-between">
-                                <p className="bold">投诉内容</p>
-                                <p className="bold">处理结果</p>
-                            </div>
-                            {disputeLog?.data.reverse().map((it) => (
-                                <div key={it.id}>
-                                    <p className="text-center text-[#c2c2c2]">
-                                        {it.disputeOwner !== 'PLATFORM'
-                                            ? '投诉时间: '
-                                            : '回复时间: '}
-                                        {dayjs(it.createdTime).format(
-                                            'YYYY-MM-DD HH:mm:ss',
-                                        )}
-                                    </p>
-                                    <p
-                                        className={classNames(
-                                            it.disputeOwner !== 'PLATFORM'
-                                                ? 'text-right'
-                                                : '',
-                                        )}
-                                    >
-                                        {it.content}
-                                    </p>
-                                </div>
-                            ))}
+                            <p className="bold">投诉内容</p>
+                            {disputeLog?.data
+                                .filter((it) => it.disputeOwner !== 'PLATFORM')
+                                .map((it) => (
+                                    <div key={it.id}>
+                                        <p>
+                                            投诉时间:
+                                            {dayjs(it.createdTime).format(
+                                                'YYYY-MM-DD HH:mm:ss',
+                                            )}
+                                        </p>
+                                        <p>{it.content}</p>
+                                    </div>
+                                ))}
+                        </div>
+                        <div className="remark">
+                            <p className="bold">处理结果</p>
+                            {disputeLog?.data.filter(
+                                (it) => it.disputeOwner === 'PLATFORM',
+                            ).length === 0
+                                ? '暂无'
+                                : disputeLog?.data
+                                      .filter(
+                                          (it) =>
+                                              it.disputeOwner === 'PLATFORM',
+                                      )
+                                      .map((it) => (
+                                          <div key={it.id}>
+                                              <p>
+                                                  回复时间:
+                                                  {dayjs(it.createdTime).format(
+                                                      'YYYY-MM-DD HH:mm:ss',
+                                                  )}
+                                              </p>
+                                              <p>{it.content}</p>
+                                          </div>
+                                      ))}
                         </div>
                     </>
                 )}

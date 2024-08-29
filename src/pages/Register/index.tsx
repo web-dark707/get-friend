@@ -12,7 +12,7 @@ type RegisterPageProps = {};
 
 const RegisterPage: FC<RegisterPageProps> = () => {
     const navigate = useNavigate();
-    const activationCode = getQueryString('activationCode'); // 邀请码
+    const activationCode = getQueryString('code'); // 邀请码
     const [loginDisabled, setLoginDisabled] = useState(true);
     const [form] = useForm();
     const location = useLocation();
