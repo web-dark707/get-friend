@@ -1,15 +1,14 @@
-import React, { FC, Suspense, useEffect, useRef } from 'react';
+import React, { FC, Suspense, useRef } from 'react';
 import { RouteProps } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import classNames from 'classnames';
-import { localeState } from '@/store/common/atoms';
-import { API_URL } from '@/common/constants';
 import NavBar from '@/components/NavBar';
 import TabBar from '@/components/TabBar';
+import { localeState } from '@/store/common/atoms';
+import { API_URL } from '@/common/constants';
 import { Loading } from '@/components/vip-ui';
-import { selectorHasOpen } from '@/store/common/selectors';
 import PrivateRoute from './privateRoute';
 export type WrapperRouteProps = RouteProps & {
     auth?: boolean; // 是否需要登录
@@ -38,14 +37,7 @@ export const WrapperRouteComponent: FC<WrapperRouteProps> = ({
     const WitchRoute = auth ? PrivateRoute : PublicRoute;
     // 顶部导航返回不显示的页面
     const callPathList = ['/userCenter', '/record'];
-    const hasOpen = useRecoilValue(selectorHasOpen);
-    useEffect(() => {
-        const contents = document.querySelector('.contents-wrap');
-        contents.scrollTo({
-            top: 200,
-            behavior: 'smooth',
-        });
-    }, [hasOpen]);
+
     return (
         <HelmetProvider>
             <Helmet>

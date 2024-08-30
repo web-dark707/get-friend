@@ -6,7 +6,6 @@ import { Button } from '@/components/vip-ui';
 import { getDatingGirl, getDatingGirls } from '@/api/home';
 import { isEmpty } from '@/utils/tools';
 import { DatingGirlsResult } from '@/types/api/home';
-import { useSetHasOpen } from '@/store/common/hooks';
 import Header from './components/Header';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-cards';
@@ -16,7 +15,8 @@ const Dating: FC = () => {
     const swiperRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isShowDetails, setIsShowDetails] = useState(false);
-    const setHasOpen = useSetHasOpen();
+    const [isScroll, setIsScroll] = useState(false);
+
     const {
         mutateAsync: mutateDatingGirls,
         data: girlList,
@@ -26,13 +26,14 @@ const Dating: FC = () => {
             setGirlData(res.data[activeIndex]);
         },
     });
-    const { mutateAsync: mutateDatingGirl } = useMutation(getDatingGirl, {
-        onSuccess: (res) => {
-            if (res.data) {
-                setGirlData(res.data);
-            }
-        },
-    });
+    const { mutateAsync: mutateDatingGirl, isLoading: girlLoading } =
+        useMutation(getDatingGirl, {
+            onSuccess: (res) => {
+                if (res.data) {
+                    setGirlData(res.data);
+                }
+            },
+        });
     // 搜索
     const handleSearch = useCallback(
         (filters) => {
@@ -44,25 +45,25 @@ const Dating: FC = () => {
     );
 
     const handleNext = useCallback(() => {
-        mutateDatingGirl({ girlId: girlData.id });
         setActiveIndex((prevIndex) => {
             const index = (prevIndex + 1) % girlList?.data.length;
+            mutateDatingGirl({ girlId: girlList?.data[index].id });
             setGirlData(girlList?.data[index]);
             return index;
         });
         swiperRef.current.swiper.slideTo(0);
-    }, [girlData?.id, girlList?.data, mutateDatingGirl]);
+    }, [girlList?.data, mutateDatingGirl]);
 
     const handlePrev = useCallback(() => {
-        mutateDatingGirl({ girlId: girlData.id });
         setActiveIndex((prevIndex) => {
             const index =
                 prevIndex === 0 ? girlList?.data.length - 1 : prevIndex - 1;
+            mutateDatingGirl({ girlId: girlList?.data[index].id });
             setGirlData(girlList?.data[index]);
             return index;
         });
         swiperRef.current.swiper.slideTo(0);
-    }, [girlData?.id, girlList?.data, mutateDatingGirl]);
+    }, [girlList?.data, mutateDatingGirl]);
 
     const handleClick = () => {
         // 点击时切换到下一个图片集
@@ -77,9 +78,32 @@ const Dating: FC = () => {
     };
 
     const handelShowDetails = () => {
-        setIsShowDetails(!isShowDetails);
-        setHasOpen(!isShowDetails);
+        if (isShowDetails) {
+            setTimeout(() => {
+                setIsShowDetails(!isShowDetails);
+            }, 1000);
+        } else {
+            setIsShowDetails(!isShowDetails);
+        }
+        setIsScroll(!isScroll);
     };
+
+    useEffect(() => {
+        const contents = document.querySelector('.contents-wrap');
+        if (isScroll) {
+            setTimeout(() => {
+                contents.scrollTo({
+                    top: 200,
+                    behavior: 'smooth',
+                });
+            }, 0);
+        } else {
+            contents.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        }
+    }, [isScroll]);
 
     useEffect(() => {
         mutateDatingGirls({
@@ -96,6 +120,7 @@ const Dating: FC = () => {
             />
             <div className="relative w-full h-[calc(100%-50px)] overflow-hidden">
                 <Swiper
+                    key={girlData?.id}
                     ref={swiperRef}
                     effect={'cards'}
                     grabCursor={true}
@@ -116,18 +141,22 @@ const Dating: FC = () => {
                 </Swiper>
                 {!isShowDetails && !isLoading && (
                     <div className="w-full flex justify-between text-[#fff] px-[12px] absolute bottom-[180px] left-0 z-9">
-                        <div
+                        <Button
+                            loading={girlLoading}
                             onClick={handlePrev}
-                            className="border-1 border-solid border-[#fff] px-[12px] py-[8px] bg-[rgba(328,56,79,0.2)] rounded-[16px]"
+                            className="w-[80px] border-1 border-solid border-[#fff] py-[8px]"
+                            background="bg-[rgba(328,56,79,0.3)]"
                         >
                             上一位
-                        </div>
-                        <div
+                        </Button>
+                        <Button
+                            loading={girlLoading}
                             onClick={handleNext}
-                            className="border-1 border-solid border-[#fff] px-[12px] py-[8px] bg-[rgba(328,56,79,0.2)] rounded-[16px]"
+                            className="w-[80px] border-1 border-solid border-[#fff] py-[8px]"
+                            background="bg-[rgba(328,56,79,0.3)]"
                         >
                             下一位
-                        </div>
+                        </Button>
                     </div>
                 )}
                 {/* 底部信息 */}

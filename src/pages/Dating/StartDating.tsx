@@ -87,7 +87,7 @@ const StartDating = () => {
                 className="mx-auto h-[60px] text-[18px]"
                 onClick={handleConfirm}
             >
-                開始約會訊息確認無誤，開始約會
+                訊息確認無誤，支付訂金開始約會
             </Button>
         </div>
     );
