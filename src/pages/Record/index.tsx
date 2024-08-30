@@ -79,7 +79,10 @@ const Home: FC = () => {
                                     {formatLabel(orderStatusList, item.status)}
                                 </span>
                             </p>
-                            <p className="bold">日期:&nbsp;{item.timeslot}</p>
+                            <p className="bold">
+                                日期:&nbsp;{item.timeslot}&nbsp;時間:&nbsp;
+                                {item.hour}
+                            </p>
                             <p className="bold">姓名:&nbsp;{item.girlName}</p>
                             <p className="bold">
                                 价格:&nbsp;{item.usdtPrice}U

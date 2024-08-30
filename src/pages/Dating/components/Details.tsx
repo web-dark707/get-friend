@@ -158,7 +158,18 @@ const Details = ({ girlData }: Props) => {
                               .map((it) => <div key={it.id}>{it.name}</div>)
                         : '暂无'}
                 </div>
-                {params?.timeslot && <div>日期:{params?.timeslot}</div>}
+                <div>
+                    {params?.timeslot && (
+                        <span>日期:&nbsp;{params?.timeslot}&nbsp;</span>
+                    )}
+                    {params?.hour && (
+                        <span>
+                            時間:&nbsp;
+                            {params?.hour}
+                        </span>
+                    )}
+                </div>
+
                 <div>售價:&nbsp;{price}P</div>
                 {params.couponId && (
                     <>
