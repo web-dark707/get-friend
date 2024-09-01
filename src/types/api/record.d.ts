@@ -11,6 +11,7 @@ export interface RecordResult {
     createdTime: string;
     status: StatusType;
     disputeStatus: string;
+    disputeStatusDesc: string;
     tel: string;
     tg: string;
     address: string;

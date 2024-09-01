@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import Datalist from '@/components/DataList';
 import { getRecord } from '@/api/record';
 import { formatLabel } from '@/common/format';
-import { disputeStatus } from '@/common/options/record';
 import NavBar from '@/components/NavBar';
 import { Picker } from '@/components/vip-ui';
 import { selectorDict } from '@/store/common/selectors';
@@ -87,10 +86,7 @@ const Home: FC = () => {
                             <p className="bold">
                                 价格:&nbsp;{item.usdtPrice}U
                                 <span className="status-3">
-                                    {formatLabel(
-                                        disputeStatus,
-                                        item.disputeStatus,
-                                    )}
+                                    {item.disputeStatusDesc}
                                 </span>
                             </p>
                         </li>

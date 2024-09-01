@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { uniq } from 'lodash';
 import Checkbox from '@/components/Checkbox';
 
 interface Props {
@@ -13,22 +12,20 @@ interface Props {
     }[];
     onChange: (key, value) => void;
 }
+
 const BasicServicesFilter = (props: Props) => {
     const { filterList, onChange } = props;
-    const [checkedList, setCheckedList] = useState([]);
+    const [checkedList, setCheckedList] = useState<string[]>([]);
+
     const handleChecked = useCallback(
-        (key, bool) => {
-            let temp = [];
-            if (bool) {
-                temp = uniq([...checkedList, key]);
-            } else {
-                temp = checkedList.filter((it) => it !== key);
-            }
+        (key: string, bool: boolean) => {
+            const temp = bool ? [key] : [];
             setCheckedList(temp);
             onChange('serviceItemIds', temp);
         },
-        [checkedList, onChange],
+        [onChange],
     );
+
     return (
         <div>
             {filterList.map((it) => (
