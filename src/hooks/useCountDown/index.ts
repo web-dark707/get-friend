@@ -16,6 +16,7 @@ export interface FormattedRes {
     minutes: number;
     seconds: number;
     milliseconds: number;
+    remainingSeconds: number;
 }
 
 const calcLeft = (t?: TDate) => {
@@ -36,6 +37,7 @@ const parseMs = (milliseconds: number): FormattedRes => {
         minutes: dayjs(milliseconds).minute(),
         seconds: dayjs(milliseconds).second(),
         milliseconds: dayjs(milliseconds).millisecond(),
+        remainingSeconds: Math.floor(milliseconds / 1000),
     };
 };
 

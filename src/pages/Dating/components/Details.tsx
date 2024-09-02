@@ -18,8 +18,13 @@ interface Props {
 }
 const Details = ({ girlData }: Props) => {
     const navigate = useNavigate();
-    const { mainPayTip, usdtToPhpRate, datingHours, defaultDatingHour } =
-        useRecoilValue(selectorDict);
+    const {
+        mainPayTip,
+        usdtToPhpRate,
+        datingHours,
+        defaultDatingHour,
+        mainPayProcessDesc,
+    } = useRecoilValue(selectorDict);
     const [isShowCouponModal, setIsShowCouponModal] = useState(false);
     const [isContactDetailsModal, setIsContactDetailsModal] = useState(false);
 
@@ -250,13 +255,9 @@ const Details = ({ girlData }: Props) => {
                         &nbsp;U
                     </div>
                     <div>即時匯率:&nbsp;{usdtToPhpRate}</div>
-                    <div></div>
                 </div>
-
-                <div className="text-error">
-                    注意：此地址只接收trc20協議的USDT，充入其它幣種無法到賬，且無法找回，支付金額需等於上面所示實際支付金額，少充無法到賬，多充無法補回，由操作失誤導致的資金問題平台概不付責
-                </div>
-                <div>{mainPayTip}</div>
+                <div className="text-error mt-[8px]">{mainPayProcessDesc}</div>
+                <div className="mt-[8px]">{mainPayTip}</div>
             </div>
             {/* --------------- */}
             <div className="flex justify-end p-[12px]">

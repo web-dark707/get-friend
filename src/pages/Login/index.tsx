@@ -32,7 +32,7 @@ const LoginPage: FC<LoginPageProps> = () => {
         }
     };
 
-    const onSubmit = (values: any, result: any) => {
+    const onSubmit = (values: any) => {
         fetchUserLogin(values);
     };
 
@@ -115,7 +115,7 @@ const LoginPage: FC<LoginPageProps> = () => {
                 className="text-center mt-[16px] text-[#fff]"
                 onClick={() => navigate('/register')}
             >
-                去注册
+                去註冊
             </div>
             <div className="text-center w-full pb-[20px] mt-[40px]">
                 <img

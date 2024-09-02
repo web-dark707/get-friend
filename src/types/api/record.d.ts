@@ -20,6 +20,8 @@ export interface RecordResult {
     realPayPrice: number;
     usdtPrice: number;
     usdtToPhpRate: number;
+    receiveDepositExpireTime: string;
+    paymentStatusDesc: string;
     usdtAddress: string;
     paidTime: string;
     paymentStatus: string;
@@ -37,6 +39,7 @@ export interface RecordResult {
     canPay: boolean;
     depositMoneyUsdt: number;
     receiveDepositTime: number;
+    finalPayMoneyUsdt: number;
 }
 
 export interface RecordDisputeLogResult {

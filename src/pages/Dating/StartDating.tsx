@@ -10,7 +10,8 @@ import { selectorDict } from '@/store/common/selectors';
 
 const StartDating = () => {
     const location = useLocation();
-    const { depositMoney } = useRecoilValue(selectorDict);
+    const { depositMoney, mainDepositPayProcessDesc } =
+        useRecoilValue(selectorDict);
     const { state } = location as { state: PreConfirmDatingResult };
     const { mutateAsync: mutateConfirmDating } = useMutation(confirmDating);
     const navigate = useNavigate();
@@ -75,9 +76,7 @@ const StartDating = () => {
                         定金:&nbsp;{depositMoney}&nbsp;U
                     </div>
                 </div>
-                <div className="text-error">
-                    註：為避免惡意提單，請提單後於10分鐘內支付10U訂金鎖定女生約會檔期，女生收到訂金後會進行檔期確認，若檔期衝突，將返還定金。若女生檔期確認後爽約，將賠償共20U給會員。若確認檔期後會員爽約，定金不退。請依10U訂金支付，少於或多於此金額將無法確認到賬，資金無法退還。定金的退還將以優惠券形式發放。
-                </div>
+                <div className="text-error">{mainDepositPayProcessDesc}</div>
                 <div className="text-error mt-[8px]">
                     注意：請誤惡作劇提單，發現無故提單狀況，一律取消會員資格，餘額不退
                 </div>

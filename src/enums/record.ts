@@ -7,6 +7,7 @@ export enum StatusType {
     FINISH = 'FINISH',
     WAIT_PAY = 'WAIT_PAY',
     NO_TIMESLOT = 'NO_TIMESLOT',
+    WAIT_RECEIVE_DEPOSIT_MONEY_TIMEOUT = 'WAIT_RECEIVE_DEPOSIT_MONEY_TIMEOUT',
 }
 
 export enum PaymentType {

@@ -51,6 +51,8 @@ export interface DictResult {
     orderStatus: {
         [key: string]: string;
     };
+    mainPayProcessDesc: string;
+    mainDepositPayProcessDesc: string;
 }
 
 export interface MyCouponsResult {

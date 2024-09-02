@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
 import dayjs from 'dayjs';
@@ -13,6 +13,7 @@ import { handleClipboard } from '@/utils/clipboard';
 import { selectorDict } from '@/store/common/selectors';
 import { formatLabel } from '@/common/format';
 import { StatusType } from '@/enums/record';
+import useCountDown from '@/hooks/useCountDown';
 import ComplainModal from './components/ComplainModal';
 import './styles.scss';
 
@@ -20,11 +21,23 @@ const Home: FC = () => {
     const { depositMoney, orderStatus } = useRecoilValue(selectorDict);
     const navigate = useNavigate();
     const id = getQueryString('id');
+    const [time, setTime] = useState(0); // 倒计时
+
+    const { remainingSeconds } = useCountDown({
+        targetDate: time,
+        onEnd: () => {
+            setTime(0);
+        },
+    });
     const {
         mutateAsync: mutateRecordDetail,
         data,
         isLoading,
-    } = useMutation(getRecordDetail);
+    } = useMutation(getRecordDetail, {
+        onSuccess: (res) => {
+            setTime(dayjs(res.data.receiveDepositExpireTime).valueOf());
+        },
+    });
     const { mutateAsync: mutateRecordDisputeLog, data: disputeLog } =
         useMutation(recordDisputeLog);
 
@@ -62,9 +75,14 @@ const Home: FC = () => {
                             實際支付:&nbsp;{data?.data.usdtPrice}&nbsp;U
                         </p>
                         <p>即時匯率:&nbsp;{data?.data.usdtToPhpRate}</p>
-                        <p>支付狀態:&nbsp;請10分鐘內支付訂金鎖定檔期</p>
+                        <p>支付狀態:&nbsp;{data?.data.paymentStatusDesc}</p>
+                        <div className="text-[18px] font-bold text-error mt-[10px]">
+                            {remainingSeconds !== 0
+                                ? `支付倒數計時: ${remainingSeconds} 秒`
+                                : '已过期,请重新提单支付'}
+                        </div>
                         <div className="flex justify-between items-center">
-                            <div className="text-[18px] font-bold text-error">
+                            <div className="text-[20px] font-bold text-error">
                                 定金:&nbsp;{depositMoney}&nbsp;U
                             </div>
                             <Button
@@ -90,14 +108,10 @@ const Home: FC = () => {
                             實際支付:&nbsp;{data?.data.usdtPrice}&nbsp;U
                         </p>
                         <p>
-                            尾款支付:&nbsp;
-                            {new Big(data?.data.usdtPrice)
-                                .minus(data?.data.depositMoneyUsdt)
-                                .toNumber()}
-                            &nbsp;U
+                            尾款支付:&nbsp;{data?.data.finalPayMoneyUsdt}&nbsp;U
                         </p>
                         <p>即時匯率:&nbsp;{data?.data.usdtToPhpRate}</p>
-                        <p>支付狀態:&nbsp;已支付訂金10U，待鎖定檔期</p>
+                        <p>支付狀態:&nbsp;{data?.data.paymentStatusDesc}</p>
                         <p>
                             訂金到款時間:&nbsp;
                             {data?.data.receiveDepositTime}
@@ -126,18 +140,10 @@ const Home: FC = () => {
                             實際支付:&nbsp;{data?.data.usdtPrice}&nbsp;U
                         </p>
                         <p>
-                            尾款支付:&nbsp;
-                            {new Big(data?.data.usdtPrice)
-                                .minus(data?.data.depositMoneyUsdt)
-                                .toNumber()}
-                            &nbsp;U
+                            尾款支付:&nbsp;{data?.data.finalPayMoneyUsdt}&nbsp;U
                         </p>
                         <p>即時匯率:&nbsp;{data?.data.usdtToPhpRate}</p>
-                        <p>
-                            支付狀態:&nbsp;已支付訂金
-                            {data?.data.depositMoneyUsdt}
-                            &nbsp;U，待付尾款
-                        </p>
+                        <p>支付狀態:&nbsp;{data?.data.paymentStatusDesc}</p>
                         <p>
                             訂金到款時間:
                             {data?.data.receiveDepositTime}
@@ -181,11 +187,7 @@ const Home: FC = () => {
                             實際支付:&nbsp;{data?.data.usdtPrice}&nbsp;U
                         </p>
                         <p>
-                            尾款支付:&nbsp;
-                            {new Big(data?.data.usdtPrice)
-                                .minus(data?.data.depositMoneyUsdt)
-                                .toNumber()}
-                            &nbsp;U
+                            尾款支付:&nbsp;{data?.data.finalPayMoneyUsdt}&nbsp;U
                         </p>
                         <p>即時匯率:&nbsp;{data?.data.usdtToPhpRate}</p>
                         <p>
@@ -216,28 +218,39 @@ const Home: FC = () => {
                             {processUSDTAddress(data?.data.usdtAddress)}
                         </p>
                         <p className="mt-[8px]">
-                            實際支付：{data?.data.usdtPrice}&nbsp;U
+                            實際支付:&nbsp;{data?.data.usdtPrice}&nbsp;U
                         </p>
                         <p>
-                            尾款支付：
-                            {new Big(data?.data.usdtPrice)
-                                .minus(data?.data.depositMoneyUsdt)
-                                .toNumber()}
-                            &nbsp;U
+                            尾款支付:&nbsp;{data?.data.finalPayMoneyUsdt}&nbsp;U
                         </p>
-                        <p>即時匯率: {data?.data.usdtToPhpRate}</p>
+                        <p>即時匯率:&nbsp;{data?.data.usdtToPhpRate}</p>
+                        <p>支付狀態:&nbsp;{data?.data.paymentStatusDesc}</p>
                         <p>
-                            支付狀態：已支付訂金{data?.data.depositMoneyUsdt}
-                            &nbsp;U, 檔期衝突
-                        </p>
-                        <p>
-                            訂金到款時間:
+                            訂金到款時間:&nbsp;
                             {data?.data.receiveDepositTime}
                         </p>
                         <div className="text-error mt-[16px]">
                             {data?.data.depositMoneyUsdt}
                             &nbsp;U 訂金已返還為待值優惠券，請查收
                         </div>
+                    </>
+                );
+            case StatusType.WAIT_RECEIVE_DEPOSIT_MONEY_TIMEOUT:
+                return (
+                    <>
+                        <p>USDT trc20</p>
+                        <p>
+                            地址:&nbsp;
+                            {processUSDTAddress(data?.data.usdtAddress)}
+                        </p>
+                        <p className="mt-[8px]">
+                            實際支付:&nbsp;{data?.data.usdtPrice}&nbsp;U
+                        </p>
+                        <p>
+                            尾款支付:&nbsp;{data?.data.finalPayMoneyUsdt}&nbsp;U
+                        </p>
+                        <p>即時匯率:&nbsp;{data?.data.usdtToPhpRate}</p>
+                        <p>支付狀態:&nbsp;{data?.data.paymentStatusDesc}</p>
                     </>
                 );
             default:
@@ -322,9 +335,10 @@ const Home: FC = () => {
                     <p className="title mb-[8px]">支付方式</p>
                     <div className="detail">
                         {renderDetail()}
-                        {![StatusType.NO_TIMESLOT].includes(
-                            data?.data.status,
-                        ) && (
+                        {![
+                            StatusType.NO_TIMESLOT,
+                            StatusType.WAIT_RECEIVE_DEPOSIT_MONEY_TIMEOUT,
+                        ].includes(data?.data.status) && (
                             <article className="mt-[8px]">
                                 注意：此地址只接收trc20協議的USDT，充入其它幣種無法到賬，且無法找回，支付金額需等於上面所示實際支付金額，少充無法到賬，多充無法補回，由操作失誤導致的資金問題平台概不付責
                             </article>
