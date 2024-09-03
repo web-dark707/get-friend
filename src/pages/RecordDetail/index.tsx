@@ -190,15 +190,7 @@ const Home: FC = () => {
                             尾款支付:&nbsp;{data?.data.finalPayMoneyUsdt}&nbsp;U
                         </p>
                         <p>即時匯率:&nbsp;{data?.data.usdtToPhpRate}</p>
-                        <p>
-                            支付狀態：已支付訂金&nbsp;
-                            {data?.data.depositMoneyUsdt}
-                            &nbsp;U，尾款&nbsp;
-                            {new Big(data?.data.usdtPrice)
-                                .minus(data?.data.depositMoneyUsdt)
-                                .toNumber()}
-                            &nbsp;U
-                        </p>
+                        <p>支付狀態:&nbsp;{data?.data.paymentStatusDesc}</p>
                         <p>
                             訂金到款時間:&nbsp;
                             {data?.data.receiveDepositTime}

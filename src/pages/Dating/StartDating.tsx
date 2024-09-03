@@ -76,7 +76,9 @@ const StartDating = () => {
                         定金:&nbsp;{depositMoney}&nbsp;U
                     </div>
                 </div>
-                <div className="text-error">{mainDepositPayProcessDesc}</div>
+                <div className="text-error whitespace-pre-line">
+                    {mainDepositPayProcessDesc}
+                </div>
                 <div className="text-error mt-[8px]">
                     注意：請誤惡作劇提單，發現無故提單狀況，一律取消會員資格，餘額不退
                 </div>

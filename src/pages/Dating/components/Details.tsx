@@ -256,8 +256,10 @@ const Details = ({ girlData }: Props) => {
                     </div>
                     <div>即時匯率:&nbsp;{usdtToPhpRate}</div>
                 </div>
-                <div className="text-error mt-[8px]">{mainPayProcessDesc}</div>
-                <div className="mt-[8px]">{mainPayTip}</div>
+                <div className="text-error mt-[8px] whitespace-pre-line">
+                    {mainPayProcessDesc}
+                </div>
+                <div className="mt-[8px] whitespace-pre-line">{mainPayTip}</div>
             </div>
             {/* --------------- */}
             <div className="flex justify-end p-[12px]">
